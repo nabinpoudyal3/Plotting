@@ -1,0 +1,5 @@
+
+
+
+fileNamesBlocks = []
+print 'number of file blocks = ', len(fileNamesBlocks)
