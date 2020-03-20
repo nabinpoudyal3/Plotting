@@ -1253,7 +1253,7 @@ if not os.path.exists(outputhistName):
 	os.makedirs(outputhistName)
 
 eosdir = "root://cmseos.fnal.gov//store/user/npoudyal/"
-localdir = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/src/TTGammaSemiLep_13TeV/Plotting_Nabin/Plotting/"
+localdir = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/"
 #if options.condor:
 #	stdout, stderr = subprocess.Popen("BASH COMMAND", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate() # copy from eos to local dir
 	#command = ["xrdcp","-f",eosdir+outputhistName+"/"+sample+".root", localdir+outputhistName+"/"]
