@@ -42,6 +42,8 @@ TTGamma_nonPrompt_values_all.py
 TTGamma_nonPrompt_values_bothChannelSeparateYear.py
 TTGamma_nonPrompt_values_separateChannelYear.py
 
+CombineFitting/*/*.dot
+
 CombineFitting/oldScript
 CombineFitting/myJupyter
 CombineFitting/AllTexFiles
