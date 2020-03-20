@@ -69,6 +69,8 @@ parser.add_option("--makePlotsFlavour", dest="makePlotsFlavour",action="store_tr
 
 parser.add_option("--makePlotsMEG","--makePlotsMEG", dest="makePlotsMEG",action="store_true",default=False,
 					 help="mass EG histograms" )
+parser.add_option("--verbose",dest="verbose",action="store_true",default=False,
+					 help="verbose mode (extra output printed)" )
 					 
 
 ### nabin
@@ -1213,8 +1215,11 @@ if not "QCD_DD" in sample:
 
 	fileList = [x for x in fileList1 if not any(y in x for y in elementsToRemove)] 
 	
+        if options.verbose:
+                print 'Loading Files'
 	for fileName in fileList:
-		#print "==> ",fileName
+                if options.verbose:
+                        print "==> ","%s%s"%(analysisNtupleLocation,fileName)
 		tree.Add("%s%s"%(analysisNtupleLocation,fileName))
 
 	for hist in histogramsToMake:
@@ -1243,6 +1248,11 @@ if not "QCD_DD" in sample:
 				evtWeight = "%s*%s"%(evtWeight,PhoEff)
 			else:
 				evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
+
+                if options.verbose:
+                        print "Variable Name:", h_Info[0]
+                        print "Histogram Info:", h_Info
+                        print 'Event weight string: "%s"'%evtWeight
 		tree.Draw("%s>>%s_%s"%(h_Info[0],h_Info[1],sample),evtWeight)
 
 
