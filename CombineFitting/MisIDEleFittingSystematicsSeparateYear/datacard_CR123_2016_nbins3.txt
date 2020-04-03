@@ -1,0 +1,35 @@
+imax 2  
+jmax *  
+kmax *  
+---------------------------------
+shapes * * ../../misIDEle_syst_looseCRge2e0plots_2016_3/misIDEle_syst_Prefit.root $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC 
+---------------------------------
+bin			       ele   mu
+observation		   -1    -1
+-------------------------------------------------------------------------------------------
+bin 	  ele                 ele                 ele               ele                      mu                  mu                  mu                mu                 
+process   MisIDEleSixteen     ZgammaBkgPhoton     WgammaBkgPhoton   OtherSampleBkgPhoton     MisIDEleSixteen     ZgammaBkgPhoton     WgammaBkgPhoton   OtherSampleBkgPhoton
+process   0                   1                   2                 3                        0                   1                   2                 3                       
+rate      -1                  -1                  -1                -1                       -1                  -1                  -1                -1                                        
+--------------------------------------------------------------------------------------------
+lumi        lnN     1.025 1.025 1.025 1.025     1.025 1.025 1.025 1.025 
+
+BTagSF_b    shape   1     1     1     1         1     1     1     1    
+BTagSF_l    shape   1     1     1     1         1     1     1     1    
+PU          shape   1     1     1     1         1     1     1     1                          
+MuEff       shape   1     1     1     1         1     1     1     1               
+PhoEff      shape   1     1     1     1         1     1     1     1       
+EleEff      shape   1     1     1     1         1     1     1     1
+Q2          shape   1     1     1     1         1     1     1     1
+
+ZGammaBkgPhotonSF rateParam * ZgammaBkgPhoton  1 [0.1,2.9]
+WGammaBkgPhotonSF rateParam * WgammaBkgPhoton  1 [0.1,2.9]
+
+
+
+* autoMCStats 0 1
+
+syst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff Q2
+
+#ZGammaBkgPhotonSF param 1.0 0.1
+#WGammaBkgPhotonSF param 1.0 0.1
