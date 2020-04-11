@@ -117,7 +117,7 @@ if finalState=='Mu':
 
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
 allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
-if systematics in allsystematics: print "running on systematics"
+if systematics in allsystematics: print "running on systematics", systematics
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
 
 print(Style.RESET_ALL) 
@@ -127,9 +127,9 @@ if level=='down': mylevel='Down'
 
 if tight:      #SR8 
 	isSelectionDir = "tight"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
 	fileDirQCD  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
@@ -143,9 +143,9 @@ if tight:      #SR8
 
 if looseCRge2ge0:  #AR
 	isSelectionDir = "looseCRge2ge0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRge2ge0/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge2ge0/"%(selYear, channel,systematics,level)
@@ -158,70 +158,83 @@ if looseCRge2ge0:  #AR
 
 if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
 	isSelectionDir = "looseCRge2e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRge2e0/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge2e0/"%(selYear, channel,systematics,level)
 		plotDirectory = "misIDEle_syst_looseCRge2e0plots_%s_%s/"%(channel,selYear)		
-
+		plotDirectoryTemplate = "misIDEle_syst_looseCRge2e0plots_%s/"%(selYear)		
 	else:
 		fileDir     = "histograms_%s/%s/hists_looseCRge2e0/"%(selYear, channel)
 		plotDirectory = "misIDEle_syst_looseCRge2e0plots_%s_%s/"%(channel,selYear)
+		plotDirectoryTemplate = "misIDEle_syst_looseCRge2e0plots_%s/"%(selYear)		
 		regionText = "N_{j}#geq2, N_{b}=0"
 
 ###
 if looseCRe2e0:  #CR1
 	isSelectionDir = "looseCRe2e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);			
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);			
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRe2e0/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe2e0/"%(selYear, channel,systematics,level)
-		plotDirectory = "misIDEle_syst_looseCRe2e0plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRe2e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "misIDEle_syst_looseCRe2e0plots_%s/"%(selYear)		
+
 
 	else:
 		fileDir     = "histograms_%s/%s/hists_looseCRe2e0/"%(selYear, channel)
-		plotDirectory = "misIDEle_syst_looseCRe2e0plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRe2e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "misIDEle_syst_looseCRe2e0plots_%s/"%(selYear)		
+
 		regionText = "N_{j}=2, N_{b}=0"
 
 if looseCRe3e0:  #CR2
 	isSelectionDir = "looseCRe3e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRe3e0/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe3e0/"%(selYear, channel,systematics,level)
-		plotDirectory = "misIDEle_syst_looseCRe3e0plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRe3e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "misIDEle_syst_looseCRe3e0plots_%s/"%(selYear)		
+
 
 	else:
 		fileDir     = "histograms_%s/%s/hists_looseCRe3e0/"%(selYear, channel)
-		plotDirectory = "misIDEle_syst_looseCRe3e0plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRe3e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "misIDEle_syst_looseCRe3e0plots_%s/"%(selYear)		
+
 		regionText = "N_{j}=3, N_{b}=0"
 
 if looseCRge4e0:  #CR3
 	isSelectionDir = "looseCRge4e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRge4e0/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics,level)
-		plotDirectory = "misIDEle_syst_looseCRge4e0plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRge4e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "misIDEle_syst_looseCRge4e0plots_%s/"%(selYear)		
+
 
 	else:
 		fileDir     = "histograms_%s/%s/hists_looseCRge4e0/"%(selYear, channel)
-		plotDirectory = "misIDEle_syst_looseCRge4e0plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRge4e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "misIDEle_syst_looseCRge4e0plots_%s/"%(selYear)		
+
 		regionText = "N_{j}#geq4, N_{b}=0"
 
 if looseCRe2e1:  #CR4
 	isSelectionDir = "looseCRe2e1"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRe2e1/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe2e1/"%(selYear, channel,systematics,level)
@@ -234,9 +247,9 @@ if looseCRe2e1:  #CR4
 	
 if looseCRe3e1:  #CR5
 	isSelectionDir = "looseCRe3e1"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRe3e1/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe3e1/"%(selYear, channel,systematics,level)
@@ -249,9 +262,9 @@ if looseCRe3e1:  #CR5
 
 if looseCRe2e2:  #CR6
 	isSelectionDir = "looseCRe2e2"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRe2e2/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe2e2/"%(selYear, channel,systematics,level)
@@ -264,9 +277,9 @@ if looseCRe2e2:  #CR6
 
 if looseCRe3ge2:  #CR7
 	isSelectionDir = "looseCRe3ge2"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRe3ge2/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe3ge2/"%(selYear, channel,systematics,level)
@@ -285,6 +298,9 @@ fileDirQCD = eosFolder+fileDirQCD
 
 if not os.path.exists(plotDirectory):
 	os.mkdir(plotDirectory)
+	
+if not os.path.exists(plotDirectoryTemplate):
+	os.mkdir(plotDirectoryTemplate)
 
 gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
@@ -457,7 +473,7 @@ if systematics=='':
 
 if template:
 
-	myfile = TFile("%s%s.root"%(plotDirectory,myfilename),"update")
+	myfile = TFile("%s%s.root"%(plotDirectoryTemplate,myfilename),"update")
 	# i have to get the nominal histogram from root file first and get the integration value
 
 
@@ -487,7 +503,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["PU","Q2"]:
+			if systematics in ["PU","Q2","BTagSF_b"]:
 				myNominalHist = myfile.Get(mydir+"nominal")
 				valNominal = myNominalHist.Integral()
 				val = myhist.Integral()
@@ -510,7 +526,7 @@ if template:
 			else:
 				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
 			myhist.Write()
-	print "%s%s.root"%(plotDirectory,myfilename)
+	print "rootbrowse %s%s.root"%(plotDirectoryTemplate,myfilename)
 
 	myfile.Close()
 else:

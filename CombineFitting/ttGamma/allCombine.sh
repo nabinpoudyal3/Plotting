@@ -1,4 +1,4 @@
-combineCards datacard_M3ChIso_ele_2016.txt datacard_M3ChIso_mu_2016.txt > datacard_M3ChIso_both_2016.txt
-combineCards datacard_M3ChIso_mu_2017.txt  datacard_M3ChIso_mu_2017.txt > datacard_M3ChIso_both_2017.txt
-combineCards datacard_M3ChIso_mu_2018.txt  datacard_M3ChIso_mu_2017.txt > datacard_M3ChIso_both_2018.txt
-combineCards datacard_M3ChIso_both_2016.txt datacard_M3ChIso_both_2017.txt datacard_M3ChIso_both_2018.txt > datacard_M3ChIso_both_allyear.txt
+combineCards.py datacard_M3ChIso_ele_2016.txt datacard_M3ChIso_mu_2016.txt > datacard_M3ChIso_both_2016.txt
+combineCards.py datacard_M3ChIso_mu_2017.txt  datacard_M3ChIso_mu_2017.txt > datacard_M3ChIso_both_2017.txt
+combineCards.py datacard_M3ChIso_mu_2018.txt  datacard_M3ChIso_mu_2017.txt > datacard_M3ChIso_both_2018.txt
+combineCards.py datacard_M3ChIso_both_2016.txt datacard_M3ChIso_both_2017.txt datacard_M3ChIso_both_2018.txt > datacard_M3ChIso_both_allyear.txt

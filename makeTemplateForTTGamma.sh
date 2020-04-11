@@ -6,6 +6,13 @@ declare -a LEVEL=("up" "down")
 declare -a PLOT=("M3Plot" "ChIsoPlot" "btag0")
 
 for plot in ${PLOT[@]}; do
+	for year in ${YEAR[@]}; do      
+		python makePlots_TTGamma.py -y $year  --useQCDMC -c Ele --tight  --$plot  --template
+		python makePlots_TTGamma.py -y $year  --useQCDMC -c Mu --tight  --$plot  --template
+	done
+done
+
+for plot in ${PLOT[@]}; do
 	for year in ${YEAR[@]}; do
 		for systematics in ${SYSTEMATICS[@]}; do
 			for level in ${LEVEL[@]}; do

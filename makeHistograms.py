@@ -546,7 +546,103 @@ elif finalState=="DiMu":
 		sample = "QCDMu"
 	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Dilepton/%s/"%selYear
 	outputhistName = "histograms_%s/mu/Dilep_%s"%(selYear,outputFileName)
+	
+	if runsystematic:
+		if syst=="PU":
+			print "is here" 
+			if level=="up":
+				Pileup = "PUweight_Up"
+			else:
+				Pileup = "PUweight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_PU_%s"%(selYear,outputFileName,level)
 
+		elif 'Q2' in syst:
+			if level=="up":
+				Q2="q2weight_Up"
+			else:
+				Q2="q2weight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_Q2_%s"%(selYear,outputFileName,level)
+
+		elif 'Pdf' in syst:
+			if syst=="Pdf":
+				if level=="up":
+					Pdf="pdfweight_Up"
+				else:
+					Pdf="pdfweight_Do"
+				outputhistName = "histograms_%s/mu/Dilep_%s_Pdf_%s"%(selYear,outputFileName,level)
+			else:
+				if type(eval(syst[3:]))==type(int()):
+					pdfNumber = eval(syst[3:])
+					Pdf="pdfSystWeight[%i]/pdfWeight"%(pdfNumber-1)
+					outputhistName = "histograms_%s/mu/Dilep_%s_Pdf/Pdf%i"%(selYear,outputFileName,pdfNumber)				
+
+		elif 'MuEff' in syst:
+			if level=="up":
+				MuEff = "muEffWeight_Up"
+			else:
+				MuEff = "muEffWeight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_MuEff_%s"%(selYear,outputFileName,level)
+
+		elif 'EleEff' in syst:
+			if level=="up":
+				EleEff = "eleEffWeight_Up"
+			else:
+				EleEff = "eleEffWeight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_EleEff_%s"%(selYear,outputFileName,level)
+	
+		elif 'PhoEff' in syst:
+			if level=="up":
+				PhoEff = "phoEffWeight_Up"
+				loosePhoEff = "loosePhoEffWeight_Up"
+			else:
+				PhoEff = "phoEffWeight_Do"
+				loosePhoEff = "loosePhoEffWeight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_PhoEff_%s"%(selYear,outputFileName,level)
+
+		elif 'BTagSF_b' in syst:
+			if level=="up":
+				#btagWeightCategory = ["1","(1-btagWeight_Up[0])","(btagWeight_Up[2])","(btagWeight_Up[1])"]
+				btagWeight = "btagWeight_1a_b_Up"
+			else:
+				#btagWeightCategory = ["1","(1-btagWeight_Do[0])","(btagWeight_Do[2])","(btagWeight_Do[1])"]
+				btagWeight = "btagWeight_1a_b_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_BTagSF_b_%s"%(selYear,outputFileName,level)
+
+		elif 'BTagSF_l' in syst:
+			if level=="up":
+				#btagWeightCategory = ["1","(1-btagWeight_Up[0])","(btagWeight_Up[2])","(btagWeight_Up[1])"]
+				btagWeight = "btagWeight_1a_l_Up"
+			else:
+				#btagWeightCategory = ["1","(1-btagWeight_Do[0])","(btagWeight_Do[2])","(btagWeight_Do[1])"]
+				btagWeight = "btagWeight_1a_l_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_BTagSF_l_%s"%(selYear,outputFileName,level)
+
+		elif 'fsr' in syst:
+			if level=="up":
+				fsr = "FSRweight_Up"
+			else:
+				fsr = "FSRweight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_fsr_%s"%(selYear,outputFileName,level)
+			
+		elif 'isr' in syst:
+			if level=="up":
+				isr = "ISRweight_Up"
+			else:
+				isr = "ISRweight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_isr_%s"%(selYear,outputFileName,level)
+			
+	
+	#	elif syst=="isr" or syst=="fsr":
+	#		if level=="up":
+	#			analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_17/13TeV_AnalysisNtuples/muons/%s_up_"%(syst)
+		 #      outputhistName = "histograms_%s/ele/%s%s_up"%(selYear,outputFileName,syst)
+	#		if level=="down":
+	#			analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_17/13TeV_AnalysisNtuples/muons/%s_down_"%(syst)
+		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
+
+		else:
+			print "what is the systematics?"
+			
 	extraCuts            = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
 	extraPhotonCuts      = "(passPresel_Mu && nJet>=3 && nBJet>=1 && %s)*"
 
@@ -606,6 +702,108 @@ elif finalState=="DiEle":
 		sample = "QCDEle"
 	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Dilepton/%s/"%selYear
 	outputhistName = "histograms_%s/ele/Dilep_%s"%(selYear,outputFileName)
+
+	if runsystematic:
+		if syst=="PU":
+			print "is here" 
+			if level=="up":
+				Pileup = "PUweight_Up"
+			else:
+				Pileup = "PUweight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_PU_%s"%(selYear,outputFileName,level)
+
+		elif 'Q2' in syst:
+			if level=="up":
+				Q2="q2weight_Up"
+			else:
+				Q2="q2weight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_Q2_%s"%(selYear,outputFileName,level)
+
+		elif 'Pdf' in syst:
+			if syst=="Pdf":
+				if level=="up":
+					Pdf="pdfweight_Up"
+				else:
+					Pdf="pdfweight_Do"
+				outputhistName = "histograms_%s/ele/Dilep_%s_Pdf_%s"%(selYear,outputFileName,level)
+			else:
+				if type(eval(syst[3:]))==type(int()):
+					pdfNumber = eval(syst[3:])
+					Pdf="pdfSystWeight[%i]/pdfWeight"%(pdfNumber-1)
+					outputhistName = "histograms_%s/ele/Dilep_%s_Pdf/Pdf%i"%(selYear,outputFileName,pdfNumber)				
+
+		elif 'MuEff' in syst:
+			if level=="up":
+				MuEff = "muEffWeight_Up"
+			else:
+				MuEff = "muEffWeight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_MuEff_%s"%(selYear,outputFileName,level)
+
+		elif 'EleEff' in syst:
+			if level=="up":
+				EleEff = "eleEffWeight_Up"
+			else:
+				EleEff = "eleEffWeight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_EleEff_%s"%(selYear,outputFileName,level)
+	
+		elif 'PhoEff' in syst:
+			if level=="up":
+				PhoEff = "phoEffWeight_Up"
+				loosePhoEff = "loosePhoEffWeight_Up"
+			else:
+				PhoEff = "phoEffWeight_Do"
+				loosePhoEff = "loosePhoEffWeight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_PhoEff_%s"%(selYear,outputFileName,level)
+
+		elif 'BTagSF_b' in syst:
+			if level=="up":
+				#btagWeightCategory = ["1","(1-btagWeight_Up[0])","(btagWeight_Up[2])","(btagWeight_Up[1])"]
+				btagWeight = "btagWeight_1a_b_Up"
+			else:
+				#btagWeightCategory = ["1","(1-btagWeight_Do[0])","(btagWeight_Do[2])","(btagWeight_Do[1])"]
+				btagWeight = "btagWeight_1a_b_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_BTagSF_b_%s"%(selYear,outputFileName,level)
+
+		elif 'BTagSF_l' in syst:
+			if level=="up":
+				#btagWeightCategory = ["1","(1-btagWeight_Up[0])","(btagWeight_Up[2])","(btagWeight_Up[1])"]
+				btagWeight = "btagWeight_1a_l_Up"
+			else:
+				#btagWeightCategory = ["1","(1-btagWeight_Do[0])","(btagWeight_Do[2])","(btagWeight_Do[1])"]
+				btagWeight = "btagWeight_1a_l_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_BTagSF_l_%s"%(selYear,outputFileName,level)
+
+		elif 'fsr' in syst:
+			if level=="up":
+				fsr = "FSRweight_Up"
+			else:
+				fsr = "FSRweight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_fsr_%s"%(selYear,outputFileName,level)
+			
+		elif 'isr' in syst:
+			if level=="up":
+				isr = "ISRweight_Up"
+			else:
+				isr = "ISRweight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_isr_%s"%(selYear,outputFileName,level)
+			
+	
+	#	elif syst=="isr" or syst=="fsr":
+	#		if level=="up":
+	#			analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_17/13TeV_AnalysisNtuples/muons/%s_up_"%(syst)
+		 #      outputhistName = "histograms_%s/ele/%s%s_up"%(selYear,outputFileName,syst)
+	#		if level=="down":
+	#			analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_17/13TeV_AnalysisNtuples/muons/%s_down_"%(syst)
+		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
+
+		else:
+			print "what is the systematics?"
+			#if  level=="up":
+			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
+			#	outputhistName = "histograms_%s/ele/Dilep_%s%s_up"%(selYear,outputFileName,syst)
+			#if level=="down":
+			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
+			#	outputhistName = "histograms_%s/ele/Dilep_%s%s_down"%(selYear,outputFileName,syst)
 
 
 	extraCuts            = "(passPresel_Ele && nJet>=3 && nBJet>=1)*"

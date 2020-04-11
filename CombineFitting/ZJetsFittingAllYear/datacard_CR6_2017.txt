@@ -1,0 +1,24 @@
+
+imax 2  
+jmax 1  
+kmax *  
+---------------------------------
+shapes data_obs             elJets ../../ZJets_looseCRe2e2plots_ele_2017/myZJets_Prefit.root  data_obs
+shapes myZJets              elJets ../../ZJets_looseCRe2e2plots_ele_2017/myZJets_Prefit.root  myZJets
+shapes mybackground         elJets ../../ZJets_looseCRe2e2plots_ele_2017/myZJets_Prefit.root  myBackground
+---------------------------------
+shapes data_obs             muJets ../../ZJets_looseCRe2e2plots_mu_2017/myZJets_Prefit.root  data_obs
+shapes myZJets              muJets ../../ZJets_looseCRe2e2plots_mu_2017/myZJets_Prefit.root  myZJets
+shapes mybackground         muJets ../../ZJets_looseCRe2e2plots_mu_2017/myZJets_Prefit.root  myBackground
+-------------------------------------------
+bin			        elJets  muJets
+observation		    -1      -1
+-------------------------------------
+bin 	  elJets        elJets          muJets    muJets
+process   myZJets       mybackground    myZJets   mybackground
+process   0             1               0         1
+rate      -1            -1              -1        -1
+------------------------------------
+elJets autoMCStats 0 1
+muJets autoMCStats 0 1
+

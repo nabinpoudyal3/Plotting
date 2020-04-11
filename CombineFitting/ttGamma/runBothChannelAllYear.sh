@@ -1,16 +1,20 @@
 
 
-combine -M MultiDimFit -n   both_allyear datacard_M3ChIso_both_allyear.txt  -s 314159 -t 5000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file10.txt
+combine -M MultiDimFit -n   both_allyear datacard_M3ChIso_both_allyear.txt  -s 314159 -t 1000 --expectSignal 1 --redefineSignalPOIs r,nonPromptSF
 
-while [ true ] ; do
-	read -t 60 -n 1
-	if [ $? = 0 ] ; then
-	echo "got all SFs ??? "
-	break;	
-	else
-	echo "waiting to finish the MultiDimFit."
-	fi
-done
+#combine -M MultiDimFit -n   both_allyear datacard_M3ChIso_both_allyear.txt  -s 314159 -t 1000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file10.txt
+
+wait
+
+#while [ true ] ; do
+#	read -t 60 -n 1
+#	if [ $? = 0 ] ; then
+#	echo "got all SFs ??? "
+#	break;	
+#	else
+#	echo "waiting to finish the MultiDimFit."
+#	fi
+#done
 
 
 ###########################

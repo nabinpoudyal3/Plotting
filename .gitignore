@@ -4,7 +4,7 @@
 *.png
 *.tgz
 *.log
-*.txt
+
 *.tex
 .*
 !/.gitignore
@@ -56,7 +56,7 @@ CombineFitting/MisIDEleFittingWithSystematics_test
 CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.root
 CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.png
 CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.pdf
-CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.tex
+#CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.tex
 CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.out
 CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.json
 CombineFitting/MisIDEleFittingSystematicsSeparateYear/*.root

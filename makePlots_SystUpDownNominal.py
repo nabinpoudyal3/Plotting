@@ -184,6 +184,7 @@ gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
 from Style import *
 gROOT.ForceStyle()
+
 if selYear=='2016': 
 	myDir = {"ele/MisIDEleSixteen":"ele_MisIDEleSixteen","ele/WgammaBkgPhoton":"ele_WgammaBkgPhoton","ele/ZgammaBkgPhoton":"ele_ZgammaBkgPhoton","ele/OtherSampleBkgPhoton":"ele_OtherSampleBkgPhoton",
              "mu/MisIDEleSixteen":"mu_MisIDEleSixteen","mu/WgammaBkgPhoton":"mu_WgammaBkgPhoton","mu/ZgammaBkgPhoton":"mu_ZgammaBkgPhoton","mu/OtherSampleBkgPhoton":"mu_OtherSampleBkgPhoton"}
@@ -202,7 +203,9 @@ if selYear == '2016':	CMS_lumi.lumi_13TeV = "[2016] 35.92 fb^{-1}"
 if selYear == '2017':	CMS_lumi.lumi_13TeV = "[2017] 41.53 fb^{-1}"
 if selYear == '2018':	CMS_lumi.lumi_13TeV = "[2018] 59.74 fb^{-1}"
 
-
+if not os.path.exists(plotDirectory):
+	os.mkdir(plotDirectory)
+	
 
 filename = "misIDEle_syst_Prefit.root"
 systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2"] # keep adding more systematics 
@@ -425,7 +428,7 @@ for idir in myDir.keys():
 
 from PyPDF2 import PdfFileMerger, PdfFileReader
 
-pdflocation="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/src/TTGammaSemiLep_13TeV/Plotting_Nabin/Plotting/"+plotDirectory
+pdflocation="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/"+plotDirectory
 os.chdir(pdflocation)
 
 print plotDirectory[:-1]

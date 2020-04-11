@@ -43,16 +43,16 @@ parser.add_option("--ChIsoPlot", dest="ChIsoPlot",default=False,action="store_tr
 
 parser.add_option("--btag0", dest="btag0",default=False,action="store_true",
 					help="0 btag " )
+					
 parser.add_option("--tight", dest="tight", default=False,action="store_true",
 					help="draw photon Category for tight selection" )
-
 
 parser.add_option("--syst", "--systematics", dest="systematics", default="",type='str',
 					help="Specify which systematic plots" )
 
 parser.add_option("--level", dest="level", default="",type='str',
 					help="Specify which level Up or Down" )
-					
+				
 					
 parser.add_option("--looseCRge2ge0", dest="looseCRge2ge0", default=False,action="store_true",
 					help="draw photon Category for loose CR ge2 ge0" )
@@ -131,7 +131,6 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
 allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics"
@@ -141,7 +140,6 @@ print(Style.RESET_ALL)
 
 if level=='up': mylevel='Up'
 if level=='down': mylevel='Down'
-
 
 #eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 
@@ -392,7 +390,6 @@ for item in hist_category:
 				else:
 
 					templateHist["nonPromptOther"].Add(tempHist)
-
 	
 #gApplication.Run()
 #print "exited"
@@ -403,8 +400,6 @@ templateHist["isolatedZGamma"].Scale(ZGammaSF)
 templateHist["nonPromptWGamma"].Scale(WGammaSF)
 templateHist["nonPromptZGamma"].Scale(ZGammaSF)
 
-
-
 print ZJetSF, MisIDEleSF, WGammaSF, ZGammaSF	
 	
 if mydistributionName == "M3":
@@ -413,18 +408,8 @@ if mydistributionName == "M3":
 	
 if mydistributionName == "M30btag":
 	myfilename = "M30btag"
-	rebin=20
-	rebinCenter = 10 #2 #4
-	rebinLeftRight =20 # 10 #20
-	rebinLeftRightRight =40 # 10 #20
-	#binning  = numpy.arange(50,500.1,rebin)
+	binning = numpy.array([50,500.])
 
-	binningLeft   = list(numpy.arange(70,90.1,rebinLeftRight)) # 40, 20 start
-	binningCenter = list(numpy.arange(100,200.1,rebinCenter))
-	binningRight  = list(numpy.arange(210,300.1,rebinLeftRight))
-	binningRightRight  = list(numpy.arange(310,500.1,rebinLeftRightRight))
-	binning = numpy.array(binningLeft + binningCenter + binningRight+binningRightRight)
-	
 if mydistributionName == "ChIso":
 	myfilename = "ChIso"
 	binning = numpy.array([0,0.5,1.0,1.5,2.0,3.0,5.0,10.0,20.0])
@@ -435,7 +420,6 @@ for ih in templateHist:
 	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
 	rebinnedHist[ih].SetLineColor(template_category[ih])
 	rebinnedHist[ih].SetFillColor(template_category[ih])
-	
 	
 if systematics=='':	
 	if finalState=='Ele':
@@ -492,12 +476,13 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
 			if systematics in ["PU","Q2"]:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
-			 	valNominal = myNominalHist.Integral()
-			 	val = myhist.Integral()
-			 	if valNominal != 0 and val != 0:
-			 		print "nominal", valNominal, " ==> ", "syst",val
-			 		myhist.Scale(valNominal/val)
-			 		print "normalized", myhist.Integral()
+			 	if myNominalHist != None:
+			 		valNominal = myNominalHist.Integral()
+			 		val = myhist.Integral()
+			 		if valNominal != 0 and val != 0:
+			 			print "nominal", valNominal, " ==> ", "syst",val
+			 			myhist.Scale(valNominal/val)
+			 			print "normalized", myhist.Integral()
 	
 		if myfile.GetDirectory(mydir):
 			gDirectory.cd(mydir)
@@ -527,11 +512,10 @@ else:
 		rebinnedHist["nonPromptWGamma" ].Scale(nonPromptSF)  
 		rebinnedHist["nonPromptZGamma" ].Scale(nonPromptSF)  
 		rebinnedHist["nonPromptOther"  ].Scale(nonPromptSF) 
+	
 	## purpose for plotting 
 	rebinnedData.Scale(1.,"width")
-
 	#print TTGammaSF, nonPromptSF
-
 	stack = THStack()
 	print rebinnedHist.keys()
 

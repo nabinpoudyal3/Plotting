@@ -99,6 +99,7 @@ if finalState=='DiEle':
 	channelText = "ee+jets"
 
 ########
+isSelection = ""
 if tight:      #SR8 
 	isSelection = "tight"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
@@ -252,7 +253,7 @@ histNameData= "presel_DilepMass_%s"
 if finalState=='DiEle':
     sample = "DataEle"
     _file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
-    print sample
+    #print sample
     dataHist = _file[sample].Get(histNameData%(sample))
     dataHist.SetLineColor(kBlack)
     dataHist.SetMarkerStyle(8)
@@ -297,20 +298,32 @@ summedHist['myBackground'].Add(myhist['GJets'])
 if finalState == "DiMu": summedHist['myBackground'].Add(myhist['QCDMu'])
 else: summedHist['myBackground'].Add(myhist['QCDEle'])
 
-rebin = 1
-binning = numpy.arange(0,180.1,rebin)
+rebin = 2
+binning = numpy.arange(80,100.1,rebin)
 
 rebinnedHist ={} 
 
+for ih in summedHist:
+	rebinnedHist[ih] = summedHist[ih].Rebin(len(binning)-1,"",binning)
+	rebinnedHist[ih].SetLineColor(template_category[ih])
+	rebinnedHist[ih].SetFillColor(template_category[ih])
+
+rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)
+
+# print control regions and number of events in Background, signal and data.
+
+print "CR:", isSelection, "Channel:", channel, "Year:", selYear
+print rebinnedHist['myBackground'].Integral()
+print rebinnedHist['myZJets'].Integral()
+print rebinnedData.Integral()
+
+
+
+	
 if template:
 	myfile = TFile.Open(plotDirectory+"myZJets_Prefit.root","recreate")
-	for ih in summedHist:
-		rebinnedHist[ih] = summedHist[ih].Rebin(len(binning)-1,"",binning)
-		rebinnedHist[ih].SetLineColor(template_category[ih])
-		rebinnedHist[ih].SetFillColor(template_category[ih])
-		rebinnedHist[ih].Write()
-
-	rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)
+	rebinnedHist['myBackground'].Write()
+	rebinnedHist['myZJets'].Write()
 	rebinnedData.Write()
 	myfile.Close()
 	sys.exit()

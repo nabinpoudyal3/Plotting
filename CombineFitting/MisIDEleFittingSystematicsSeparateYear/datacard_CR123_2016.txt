@@ -29,5 +29,3 @@ WGammaBkgPhotonSF rateParam * WgammaBkgPhoton  1 [0.1,2.9]
 
 syst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff Q2
 
-#ZGammaBkgPhotonSF param 1.0 0.1
-#WGammaBkgPhotonSF param 1.0 0.1

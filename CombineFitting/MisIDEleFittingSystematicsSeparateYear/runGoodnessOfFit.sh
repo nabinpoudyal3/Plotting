@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 combine -M GoodnessOfFit  -n CR123_gof_2016   datacard_CR123_2016.txt  --toysFrequentist --algo=saturated -t 100 -s -1 --plots
 

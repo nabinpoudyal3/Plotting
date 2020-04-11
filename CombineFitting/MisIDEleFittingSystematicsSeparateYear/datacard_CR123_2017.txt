@@ -26,20 +26,7 @@ Q2          shape   1     1     1     1         1     1     1     1
 ZGammaBkgPhotonSF rateParam * ZgammaBkgPhoton  1 [0.1,2.9]
 WGammaBkgPhotonSF rateParam * WgammaBkgPhoton  1 [0.1,2.9]
 
-#ZGammaBkgPhotonSF param 1.0 0.1
-#WGammaBkgPhotonSF param 1.0 0.1
-
-#
-
 * autoMCStats 0 1
 
-
-#syst group = lumi  
-#syst group = lumi BTagSF_b  
-
-#syst group = lumi BTagSF_b BTagSF_l  
-#syst group = lumi BTagSF_b BTagSF_l PU  
-
-#syst group = lumi BTagSF_b BTagSF_l PU MuEff 
 syst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff Q2
    

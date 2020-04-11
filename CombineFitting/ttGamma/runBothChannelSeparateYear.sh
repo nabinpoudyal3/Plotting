@@ -1,18 +1,23 @@
 
-combine -M MultiDimFit -n   both_2016 datacard_M3ChIso_both_2016.txt -s 314159 -t 5000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file7.txt 
-combine -M MultiDimFit -n   both_2017 datacard_M3ChIso_both_2017.txt -s 314159 -t 5000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file8.txt 
-combine -M MultiDimFit -n   both_2018 datacard_M3ChIso_both_2018.txt -s 314159 -t 5000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file9.txt 
+combine -M MultiDimFit -n   both_2016 datacard_M3ChIso_both_2016.txt -s 314159 -t 1000 --expectSignal 1 --redefineSignalPOIs r,nonPromptSF    
+combine -M MultiDimFit -n   both_2017 datacard_M3ChIso_both_2017.txt -s 314159 -t 1000 --expectSignal 1 --redefineSignalPOIs r,nonPromptSF     
+combine -M MultiDimFit -n   both_2018 datacard_M3ChIso_both_2018.txt -s 314159 -t 1000 --expectSignal 1 --redefineSignalPOIs r,nonPromptSF  
 
 
-while [ true ] ; do
-	read -t 60 -n 1
-	if [ $? = 0 ] ; then
-	echo "got all SFs ??? "
-	break;	
-	else
-	echo "waiting to finish the MultiDimFit."
-	fi
-done
+#combine -M MultiDimFit -n   both_2016 datacard_M3ChIso_both_2016.txt -s 314159 -t 1000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file7.txt 
+#combine -M MultiDimFit -n   both_2017 datacard_M3ChIso_both_2017.txt -s 314159 -t 1000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file8.txt 
+#combine -M MultiDimFit -n   both_2018 datacard_M3ChIso_both_2018.txt -s 314159 -t 1000 --expectSignal 1 --trackParameters PhoEff,Q2,PU,EleEff,BTagSF_b,lumi,BTagSF_l,MuEff,nonPromptSF --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file9.txt 
+wait 
+
+#while [ true ] ; do
+#	read -t 60 -n 1
+#	if [ $? = 0 ] ; then
+#	echo "got all SFs ??? "
+#	break;	
+#	else
+#	echo "waiting to finish the MultiDimFit."
+#	fi
+#done
 
 
 ###########################

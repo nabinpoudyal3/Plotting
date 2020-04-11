@@ -1,3 +1,5 @@
+#!/bin/bash
+
 combine -M FitDiagnostics -n toy_CR123_2016   datacard_CR123_2016.txt  --expectSignal=1 -t 1000 -s -1 --redefineSignalPOIs r,ZGammaBkgPhotonSF,WGammaBkgPhotonSF -v2 --saveNormalizations --saveWithUncertainties --plots 
 combine -M FitDiagnostics -n toy_CR1_2016     datacard_CR1_2016.txt    --expectSignal=1 -t 1000 -s -1 --redefineSignalPOIs r,ZGammaBkgPhotonSF,WGammaBkgPhotonSF -v2 --saveNormalizations --saveWithUncertainties --plots 
 combine -M FitDiagnostics -n toy_CR2_2016     datacard_CR2_2016.txt    --expectSignal=1 -t 1000 -s -1 --redefineSignalPOIs r,ZGammaBkgPhotonSF,WGammaBkgPhotonSF -v2 --saveNormalizations --saveWithUncertainties --plots 
