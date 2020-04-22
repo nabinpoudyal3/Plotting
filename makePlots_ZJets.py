@@ -1,5 +1,5 @@
-from ROOT import TFile, TLegend, TCanvas, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,TObject,gSystem,gDirectory
-#from ROOT import *gSystem,gDirectory
+from ROOT import TFile, TLegend, TCanvas, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory
+#from ROOT import *
 import os
 
 import numpy
@@ -9,7 +9,12 @@ from sampleInformation import sampleList
 import sampleInformation
 from numpy import log10
 from array import array
+
+#from getFullYearMisIDEleSF import getFullYearMisIDEleSF
+from getMisIDEleSF import getMisIDEleSF
 from getZJetsSF import getZJetsSF
+
+from colorama import Fore, Back, Style 
 
 padRatio = 0.25
 padOverlap = 0.15
@@ -22,17 +27,24 @@ parser.add_option("-y", "--year", dest="Year", default="",type='str',
 parser.add_option("-c", "--channel", dest="channel", default="",type='str',
 					help="Specify which channel Mu or Ele? default is Mu" )
 
-parser.add_option("--postfitPlots", dest="postfitPlots", default=False,action="store_true",
-					help="post fit plots" )
-
+parser.add_option("--nBinss", dest="nBinss", default="",type='str',
+					help="Number of bins in template plot" )
 
 parser.add_option("--template", dest="template", default=False,action="store_true",
 					help="post fit plots" )
+	
+parser.add_option("--postfitPlots", dest="postfitPlots", default=False,action="store_true",
+					help="post fit plots" )
 
+parser.add_option("--syst", "--systematics", dest="systematics", default="",type='str',
+					help="Specify which systematic plots" )
 
+parser.add_option("--level", dest="level", default="",type='str',
+					help="Specify which level Up or Down" )
+								
 parser.add_option("--tight", dest="tight", default=False,action="store_true",
 					help="draw photon Category for tight selection" )
-															
+
 parser.add_option("--looseCRge2ge0", dest="looseCRge2ge0", default=False,action="store_true",
 					help="draw photon Category for loose CR ge2 ge0" )
 
@@ -69,148 +81,249 @@ parser.add_option("--useQCDCR",dest="useQCDCR", default=False, action="store_tru
 (options, args) = parser.parse_args()
 selYear = options.Year
 if selYear=="":
-	print "Specify which year 2016, 2017 or 2018?"
+	print(Fore.RED + "Specify which year 2016, 2017 or 2018?")
 	sys.exit()
+	
+systematics = options.systematics
+level=options.level
 finalState = options.channel
 postfitPlots = options.postfitPlots
-tight         = options.tight
+tight = options.tight
+looseCRge2ge0=options.looseCRge2ge0
+looseCRge2e0 =options.looseCRge2e0
+looseCRe2e0  =options.looseCRe2e0
+looseCRe2e1  =options.looseCRe2e1
+looseCRe3e0  =options.looseCRe3e0
+looseCRge4e0 =options.looseCRge4e0
+looseCRe3e1  =options.looseCRe3e1
+looseCRe2e2  =options.looseCRe2e2
+looseCRe3ge2 =options.looseCRe3ge2
+useQCDMC = options.useQCDMC
+useQCDCR = options.useQCDCR
 
-looseCRge2ge0 = options.looseCRge2ge0
-looseCRge2e0  = options.looseCRge2e0
-looseCRe2e0   = options.looseCRe2e0
-looseCRe2e1   = options.looseCRe2e1
-looseCRe3e0   = options.looseCRe3e0
-looseCRge4e0  = options.looseCRge4e0
-looseCRe3e1   = options.looseCRe3e1
-looseCRe2e2   = options.looseCRe2e2
-looseCRe3ge2  = options.looseCRe3ge2
-useQCDMC      = options.useQCDMC
-useQCDCR      = options.useQCDCR
+nBinss = options.nBinss
 
 template = options.template
 
-gROOT.SetBatch(True)
-#print "Caution: To plot postfit pass the argument --postfitPlots!!!"
 if finalState=='DiMu':
 	channel = 'mu'
 	channelText = "#mu#mu+jets"
 if finalState=='DiEle':
 	channel = 'ele'
 	channelText = "ee+jets"
-
+#######
 ########
-isSelection = ""
+
+#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
+if systematics in allsystematics: print "running on systematics", systematics
+else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
+
+print(Style.RESET_ALL) 
+
+if level=='up': mylevel='Up'
+if level=='down': mylevel='Down'
+
 if tight:      #SR8 
-	isSelection = "tight"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_tight/"%(selYear, channel)
-	plotDirectory = "ZJets_tightplots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq4, N_{b}#geq1"
+	isSelectionDir = "tight"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_tight/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_tight/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_tightplots_%s/"%(selYear)
+		regionText = "N_{j}#geq4, N_{b}#geq1"
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_tight/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_tightplots_%s/"%(selYear)
+		regionText = "N_{j}#geq4, N_{b}#geq1"
 
 if looseCRge2ge0:  #AR
-	isSelection = "looseCRge2ge0"
-	if selYear  =='2016': ZJetSF = 1; #getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = 1; #getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = 1; #getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRge2ge0/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRge2ge0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq2, N_{b}#geq0"
+	isSelectionDir = "looseCRge2ge0"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRge2ge0/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRge2ge0/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRge2ge0plots_%s/"%(selYear)
 
-if looseCRge2e0:  #CR1+CR2+CR3
-	isSelection = "looseCRge2e0"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRge2e0/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRge2e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq2, N_{b}=0"
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRge2ge0/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRge2ge0plots_%s/"%(selYear)
+		regionText = "N_{j}#geq2, N_{b}#geq0"
+
+if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
+	isSelectionDir = "looseCRge2e0"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRge2e0/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRge2e0/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRge2e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRge2e0plots_%s/"%(selYear)		
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRge2e0/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRge2e0plots_%s_%s/"%(channel,selYear)
+		plotDirectoryTemplate = "ZJets_syst_looseCRge2e0plots_%s/"%(selYear)		
+		regionText = "N_{j}#geq2, N_{b}=0"
+
 ###
 if looseCRe2e0:  #CR1
-	isSelection = "looseCRe2e0"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection); 
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRe2e0/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRe2e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=2, N_{b}=0"
+	isSelectionDir = "looseCRe2e0"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);			
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRe2e0/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRe2e0/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRe2e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe2e0plots_%s/"%(selYear)		
+
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRe2e0/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRe2e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe2e0plots_%s/"%(selYear)		
+		regionText = "N_{j}=2, N_{b}=0"
 
 if looseCRe3e0:  #CR2
-	isSelection = "looseCRe3e0"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRe3e0/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRe3e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=3, N_{b}=0"
+	isSelectionDir = "looseCRe3e0"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRe3e0/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRe3e0/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRe3e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe3e0plots_%s/"%(selYear)		
+
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRe3e0/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRe3e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe3e0plots_%s/"%(selYear)		
+		regionText = "N_{j}=3, N_{b}=0"
 
 if looseCRge4e0:  #CR3
-	isSelection = "looseCRge4e0"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRge4e0/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRge4e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq4, N_{b}=0"
+	isSelectionDir = "looseCRge4e0"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRge4e0/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRge4e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRge4e0plots_%s/"%(selYear)		
+
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRge4e0/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRge4e0plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRge4e0plots_%s/"%(selYear)		
+		regionText = "N_{j}#geq4, N_{b}=0"
 
 if looseCRe2e1:  #CR4
-	isSelection = "looseCRe2e1"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRe2e1/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRe2e1plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=2, N_{b}=1"
+	isSelectionDir = "looseCRe2e1"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRe2e1/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRe2e1/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRe2e1plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe2e1plots_%s/"%(selYear)		
+
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRe2e1/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRe2e1plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe2e1plots_%s/"%(selYear)	
+		regionText = "N_{j}=2, N_{b}=1"
 	
 if looseCRe3e1:  #CR5
-	isSelection = "looseCRe3e1"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); 
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRe3e1/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRe3e1plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=3, N_{b}=1"
+	isSelectionDir = "looseCRe3e1"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRe3e1/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRe3e1/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRe3e1plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe3e1plots_%s/"%(selYear)		
+
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRe3e1/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRe3e1plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe3e1plots_%s/"%(selYear)	
+		regionText = "N_{j}=3, N_{b}=1"
 
 if looseCRe2e2:  #CR6
-	isSelection = "looseCRe2e2"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRe2e2/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRe2e2plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=2, N_{b}=2"
+	isSelectionDir = "looseCRe2e2"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRe2e2/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRe2e2/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRe2e2plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe2e2plots_%s/"%(selYear)		
+
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRe2e2/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRe2e2plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe2e2plots_%s/"%(selYear)	
+		regionText = "N_{j}=2, N_{b}=2"
 
 if looseCRe3ge2:  #CR7
-	isSelection = "looseCRe3ge2"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection);
-	else                : ZJetSF = getZJetsSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/Dilep_hists_looseCRe3ge2/"%(selYear, channel)
-	plotDirectory = "ZJets_looseCRe3ge2plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=3, N_{b}#geq2"
+	isSelectionDir = "looseCRe3ge2"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
+	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRe3ge2/"%(selYear, channel)
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRe3ge2/"%(selYear, channel,systematics,level)
+		plotDirectory = "ZJets_syst_looseCRe3ge2plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe3ge2plots_%s/"%(selYear)		
+
+
+	else:
+		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRe3ge2/"%(selYear, channel)
+		plotDirectory = "ZJets_syst_looseCRe3ge2plots_%s_%s/"%(channel,selYear)		
+		plotDirectoryTemplate = "ZJets_syst_looseCRe3ge2plots_%s/"%(selYear)	
+		regionText = "N_{j}=3, N_{b}#geq2"
 
 ###
+####
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
-
 fileDir = eosFolder+fileDir
-print fileDir
+fileDirQCD = eosFolder+fileDirQCD
+#print fileDir
 
 if not os.path.exists(plotDirectory):
 	os.mkdir(plotDirectory)
+	
+if not os.path.exists(plotDirectoryTemplate):
+	os.mkdir(plotDirectoryTemplate)
 
 gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
-
 from Style import *
-
 gROOT.ForceStyle()
+if selYear=='2016': myMisIDEle="MisIDEleSixteen"
+elif selYear=='2017': myMisIDEle="MisIDEleSeventeen"
+else: myMisIDEle="MisIDEleEighteen"
 
 sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
-template_category = {"myZJets":kGreen+1, "myBackground":kRed, "myTotal":kBlue }
-template_category_name = {"myZJets":"ZJets", "myBackground":"background", "myTotal":"Total" }
-# template_category = {"MisIDEle":kRed, "ZgammaBkgPhoton":kOrange, "WgammaBkgPhoton":kBlue, "OtherSampleBkgPhoton":kGreen+1,"Total":kGray+3 }
-# hist_category = {"GenuinePhoton":kOrange, "MisIDEle":kRed, "HadronicPhoton":kBlue, "HadronicFake":kGreen+1 }
+
+template_category = {"myZJets":kGreen+1, "myBackground":kRed }
+template_category_name = {"myZJets":"ZJets", "myBackground":"background" }
+
 _file = {}
 
 import CMS_lumi
@@ -224,10 +337,13 @@ if useQCDMC:
 	if channel=="ele":	sampleList[-1] = "QCDEle"
 elif useQCDCR:
 	sampleList[-1] = "QCD_DD"
-	stackList.remove("GJets") 
+	sampleList.remove("GJets") 
 else:
-	print "use --useQCDMC or --useQCDCR!"
-	sys.exit()
+	sampleList[-1] = "QCD_DD"
+	sampleList.remove("GJets") 
+	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
+
+print sampleList
 
 H = 600;
 W = 800;
@@ -250,92 +366,158 @@ TGaxis.SetMaxDigits(3)
 histName    = "presel_DilepMass_%s"
 histNameData= "presel_DilepMass_%s"
 
-if finalState=='DiEle':
-    sample = "DataEle"
-    _file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
-    #print sample
-    dataHist = _file[sample].Get(histNameData%(sample))
-    dataHist.SetLineColor(kBlack)
-    dataHist.SetMarkerStyle(8)
+myfilename = "ZJets_syst_Prefit"
 
-
-elif finalState=='DiMu':
-	sample = "DataMu"
-	_file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
-	dataHist = _file[sample].Get(histNameData%(sample))
-	dataHist.SetLineColor(kBlack)
-	dataHist.SetMarkerStyle(8)
-
-
-else:
-	print "Select the channel !!!"
-	sys.exit()	
-
-myhist ={}
-summedHist ={}
+templateHist ={}
 
 for sample in sampleList:
-	if finalState == 'DiMu'  and sample == 'QCD': sample = 'QCDMu'
-	if finalState == 'DiEle'  and sample == 'QCD': sample = 'QCDEle'
+	if useQCDMC:
+		if finalState == 'DiEle' and sample == 'QCD': sample = 'QCDEle'
+		if finalState == 'DiMu'  and sample == 'QCD': sample = 'QCDMu'
 
-	_file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
-	myhist[sample]= _file[sample].Get(histName%(sample))
+	if sample=="QCD_DD": 
+		#print "==>",sample, fileDirQCD
+		_file[sample] = TFile.Open('%s%s.root'%(fileDirQCD,sample),'read')
+	else:
+		#print sample, fileDir
+		_file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
 
-data_obs = dataHist.Clone("data_obs")
+#print _file["QCD_DD"]	
 
-summedHist['myZJets'] = myhist['ZJets'].Clone('myZJets')
+templateHist["myZJets"]      = None
+templateHist["myBackground"] = None
 
-summedHist['myBackground'] = myhist['TTGamma'].Clone('myBackground')
-summedHist['myBackground'].Add(myhist['TTbar'])
-summedHist['myBackground'].Add(myhist['TGJets'])
-summedHist['myBackground'].Add(myhist['WJets'])
-summedHist['myBackground'].Add(myhist['SingleTop'])
-summedHist['myBackground'].Add(myhist['WGamma'])
-summedHist['myBackground'].Add(myhist['ZGamma'])
-summedHist['myBackground'].Add(myhist['Diboson'])
-summedHist['myBackground'].Add(myhist['TTV'])
-summedHist['myBackground'].Add(myhist['GJets'])
-if finalState == "DiMu": summedHist['myBackground'].Add(myhist['QCDMu'])
-else: summedHist['myBackground'].Add(myhist['QCDEle'])
+
+for sample in sampleList:
+	if sample=='ZJets':
+		tempHist = _file[sample].Get(histName%(sample))
+		if templateHist["myZJets"] is None:
+			templateHist["myZJets"] = tempHist.Clone("ZJets")
+			templateHist["myZJets"].SetDirectory(0)
+		else:
+			templateHist["myZJets"].Add(tempHist)
+	else:
+		tempHist = _file[sample].Get(histName%(sample))
+		if templateHist["myBackground"] is None:
+			templateHist["myBackground"] = tempHist.Clone(sample)
+			templateHist["myBackground"].SetDirectory(0)
+		else:
+			templateHist["myBackground"].Add(tempHist)
 
 rebin = 2
 binning = numpy.arange(80,100.1,rebin)
+	
 
 rebinnedHist ={} 
-
-for ih in summedHist:
-	rebinnedHist[ih] = summedHist[ih].Rebin(len(binning)-1,"",binning)
+for ih in templateHist:
+	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
 	rebinnedHist[ih].SetLineColor(template_category[ih])
 	rebinnedHist[ih].SetFillColor(template_category[ih])
 
-rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)
 
-# print control regions and number of events in Background, signal and data.
+if systematics=='':
+	if finalState=='DiEle':
+		sample = "DataEle"
+		_file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
+    	#print sample
+		dataHist = _file[sample].Get(histNameData%(sample))
+		dataHist.SetLineColor(kBlack)
+		dataHist.SetMarkerStyle(8)
 
-print "CR:", isSelection, "Channel:", channel, "Year:", selYear
-print rebinnedHist['myBackground'].Integral()
-print rebinnedHist['myZJets'].Integral()
-print rebinnedData.Integral()
-
-
-
+	elif finalState=='DiMu':
+		sample = "DataMu"
+		_file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
+		dataHist = _file[sample].Get(histNameData%(sample))
+		dataHist.SetLineColor(kBlack)
+		dataHist.SetMarkerStyle(8)
+	else:
+		print "Select the channel !!!"
+		sys.exit()
 	
+	data_obs = dataHist.Clone("data_obs")
+	rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)
+## input to combine , open root file
+
+
 if template:
-	myfile = TFile.Open(plotDirectory+"myZJets_Prefit.root","recreate")
-	rebinnedHist['myBackground'].Write()
-	rebinnedHist['myZJets'].Write()
-	rebinnedData.Write()
+
+	myfile = TFile("%s%s.root"%(plotDirectoryTemplate,myfilename),"update")
+	# i have to get the nominal histogram from root file first and get the integration value
+
+
+
+	if systematics=='':
+		myDatahist = rebinnedData.Clone("nominal")
+		mydataDir  = "%s/data_obs/"%channel
+
+		if myfile.GetDirectory(mydataDir):
+			gDirectory.cd(mydataDir)
+			gDirectory.Delete("*;*")
+			myDatahist.Write()
+		else:
+			gDirectory.mkdir(mydataDir)
+			gDirectory.cd(mydataDir)
+			gDirectory.Delete("*;*")
+			myDatahist.Write()
+	# create directory only if it does not exist
+	### ele channel
+	for iprocess in template_category.keys():
+
+		myfile.cd()
+		mydir =  "%s/%s/"%(channel,iprocess) 
+		#print "%s/%s/"%(channel,iprocess) 
+
+		if systematics=='':
+			myhist = rebinnedHist[iprocess].Clone("nominal")
+		else:
+			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
+			if systematics in ["PU","Q2","BTagSF_b"]:
+				myNominalHist = myfile.Get(mydir+"nominal")
+				valNominal = myNominalHist.Integral()
+				val = myhist.Integral()
+				print "nominal", valNominal, " ==> ", "syst",val
+				myhist.Scale(valNominal/val)
+				print "normalized", myhist.Integral()
+		
+		if myfile.GetDirectory(mydir):
+			gDirectory.cd(mydir)
+			if systematics=='':
+				gDirectory.Delete("nominal;*")
+			else:
+				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
+			myhist.Write()
+		else:
+			gDirectory.mkdir(mydir)
+			gDirectory.cd(mydir)
+			if systematics=='':
+				gDirectory.Delete("nominal;*")
+			else:
+				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
+			myhist.Write()
+	print "rootbrowse %s%s.root"%(plotDirectoryTemplate,myfilename)
+
 	myfile.Close()
-	sys.exit()
 else:
+	rebinnedData.Scale(1.,"width")
+
+	for ih in rebinnedHist:
+		rebinnedHist[ih].Scale(1.,"width")
+
 	if postfitPlots:
-		rebinnedHist['myZJets'].Scale(ZJetSF)
+		rebinnedHist['ZJets'].Scale(WGammaSF)
 
 	stack = THStack()
 	stack.Add(rebinnedHist['myBackground'])
-	stack.Add(rebinnedHist['myZJets'])
+	stack.Add(rebinnedHist['ZJets'])
 
 
+
+	if postfitPlots:
+		rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
+		x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
+		chi2Text = "#chi^{2}/NDF=%.2f"%x
+
+		
 	canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
 	canvasRatio.SetFillColor(0)
 	canvasRatio.SetBorderMode(0)
@@ -387,11 +569,11 @@ else:
 
 	maxVal = stack.GetMaximum()
 	if not noData: 
-		maxVal = max(rebinnedData.GetMaximum(),maxVal)
+	    maxVal = max(rebinnedData.GetMaximum(),maxVal)
 
 	minVal = 0
 	# minVal = max(stack.GetStack()[0].GetMinimum(),1)
-	stack.SetMaximum(1.25*maxVal)
+	stack.SetMaximum(1.75*maxVal)
 	stack.SetMinimum(minVal)
 
 	errorband=stack.GetStack().Last().Clone("error")
@@ -401,11 +583,83 @@ else:
 	errorband.SetFillStyle(3245)
 	errorband.SetMarkerSize(0)
 
+	##### Uncertainty
+	#h1_up={}
+	#h1_do={}
+	#for sample in stackList:
+	#	h1_up[sample]={}
+	#	h1_do[sample]={}
+	#	for sys in systematics:		
+	#		if sys=="Q2" or sys=="Pdf" or sys=="isr" or sys=="fsr":
+	#			if sample not in ["TTbar","TTGamma"]:continue
+	#
+	#			print sample,sys
+	#			
+	#			if sample=="QCD_DD": 
+	#				h1_up[sample][sys]=qcdHist.Clone("%s_%s_up"%(sys,sample))
+	#				h1_do[sample][sys]=qcdHist.Clone("%s_%s_do"%(sys,sample))
+	#		
+	#			elif sample=="TTGamma" and (sys=="Pdf" or sys=="Q2"):
+	#				#print sample,sys
+	#				h1_up[sample][sys]=_filesys_up[sample][sys].Get("%s_%s"%(histName,sample)).Clone("%s_%s_up"%(sys,sample))
+	#				h1_do[sample][sys]=_filesys_down[sample][sys].Get("%s_%s"%(histName,sample)).Clone("%s_%s_do"%(sys,sample))	
+	#				total=_file[sample].Get("%s_%s"%(histName,sample)).Integral()
+	#				h1_up[sample][sys].Scale(total/h1_up[sample][sys].Integral())
+	#				h1_do[sample][sys].Scale(total/h1_do[sample][sys].Integral())
+	#			elif sample=="TTbar" and sys=="Q2":
+	#				#print sample, sys, _filesys_up[sample][sys], _filesys_down[sample][sys], "%s_%s"%(histName,sample) 	
+	#				h1_up[sample][sys]=_filesys_up[sample][sys].Get("%s_%s"%(histName,sample)).Clone("%s_%s_up"%(sys,sample))
+	#				h1_do[sample][sys]=_filesys_down[sample][sys].Get("%s_%s"%(histName,sample)).Clone("%s_%s_do"%(sys,sample))     
+	#				total=_file[sample].Get("%s_%s"%(histName,sample)).Integral()
+	#				h1_up[sample][sys].Scale(total/h1_up[sample][sys].Integral())
+	#				h1_do[sample][sys].Scale(total/h1_do[sample][sys].Integral())
+	#			
+	#			else:
+	#		#		print sample, sys, _filesys_down[sample][sys], histName
+	#				h1_up[sample][sys]=_filesys_up[sample][sys].Get("%s_%s"%(histName,sample)).Clone("%s_%s_up"%(sys,sample))
+	#				h1_do[sample][sys]=_filesys_down[sample][sys].Get("%s_%s"%(histName,sample)).Clone("%s_%s_do"%(sys,sample))
+	#
+	#			if type(plotInfo[2]) is type(list()):
+	#			
+	#			
+	#				h1_up[sample][sys] = h1_up[sample][sys].Rebin(len(plotInfo[2])-1,"",array('d',plotInfo[2]))
+	#				h1_do[sample][sys] = h1_do[sample][sys].Rebin(len(plotInfo[2])-1,"",array('d',plotInfo[2]))
+	#				h1_do[sample][sys].Scale(1,"width")
+	#				h1_up[sample][sys].Scale(1,"width")
+	#
+	#			else:
+	#				h1_up[sample][sys].Rebin(plotInfo[2])
+	#				h1_do[sample][sys].Rebin(plotInfo[2])
+	#	error=0.
+	#	diff={}		
+	#	sum_={}
+	#	for i_bin in range(1,errorband.GetNbinsX()+1):
+	#		if isLooseCRe3g1Selection or Dilepmass:continue
+	#		sum_[i_bin]=0.	
+	#		diff[i_bin]=[]
+	#		for sys in systematics:
+	#			for sample in stackList:
+	#				if "phosel_PhotonCategory" in histName:
+	#					if sample=="QCD_DD":continue			
+	#				if sys=="Q2" or sys=="Pdf" or sys=="isr" or sys=="fsr":
+	#					if sample not in ["TTbar","TTGamma"]:continue
+	#				if finalState=="Mu" and "ele" in histName:continue
+	#				if finalState=="Ele" and "mu" in histName:continue
+	#				if finalState=="Mu" and "MassEGamma" in histName:continue
+	#				print "adding sys",sample,sys, ((h1_up[sample][sys].GetBinContent(i_bin)-h1_do[sample][sys].GetBinContent(i_bin))/2.)**2
+	#				sum_[i_bin]+=((h1_up[sample][sys].GetBinContent(i_bin)-h1_do[sample][sys].GetBinContent(i_bin))/2.)**2
+	#			#diff[i_bin].append(((h1_up[sample][sys].GetBinContent(i_bin)-h1_do[sample][sys].GetBinContent(i_bin))/2.)**2.)
+	#			
+	# 
+	#		print (sum_[i_bin])**0.5		
+	#		errorband.SetBinError(i_bin,(sum_[i_bin])**0.5)
+	##### Uncertainty end
+
 	legend.AddEntry(rebinnedData,"Data", 'pe')
-	legend.AddEntry(rebinnedHist['myZJets'],'ZJets','f')
-	legend.AddEntry(rebinnedHist['myBackground'],'Background','f')
-	#legend.AddEntry(rebinnedHist['myTotal'],'myTotal','f')
 	legend.AddEntry(errorband,"Uncertainty","f")
+
+	for ih in rebinnedHist:
+		legend.AddEntry(rebinnedHist[ih],template_categoryName[ih],'f')
 
 	pad1.cd()
 
@@ -417,10 +671,14 @@ else:
 	stack.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(1.-padRatio+padOverlap))
 	stack.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
 	stack.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap))
-	stack.SetTitle(';;Events/%i GeV '%rebin)
+	#stack.SetTitle(';;<Events/GeV>')# '%rebin)
+	stack.SetTitle(';;Events/%sGeV'%rebin)
+	#CMS_lumi.channelText = (channelText+"\\n"+regionText)
+	#if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
 
-	CMS_lumi.channelText = channelText
-	CMS_lumi.channelText = regionText
+	CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
+	if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
+
 	CMS_lumi.writeChannelText = True
 	CMS_lumi.writeExtraText = True
 	CMS_lumi.CMS_lumi(pad1, 4, 11)
@@ -434,7 +692,7 @@ else:
 	else:
 		ratio = rebinnedData.Clone("temp")
 		temp = stack.GetStack().Last().Clone("temp")
-		
+	    
 	ratio.SetTitle('')
 	ratio.GetXaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
 	ratio.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
@@ -461,15 +719,17 @@ else:
 	else:
 		ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-	ratio.GetYaxis().SetRangeUser(0.7,1.3)
+	ratio.GetYaxis().SetRangeUser(0.6,1.4)
 	ratio.GetYaxis().SetNdivisions(504)
-	if finalState == "DiMu": ratio.GetXaxis().SetTitle('m_{#mu^{+},#mu^{-}}')
-	else: ratio.GetXaxis().SetTitle('m_{e^{+},e^{-}}')
-
+	if channel == 'ele': ratio.GetXaxis().SetTitle('m_{e,e} GeV')
+	else: ratio.GetXaxis().SetTitle('m_{#mu,#mu} GeV')
 	ratio.GetYaxis().SetTitle("Data/MC")
-	pad2.cd()
-	CMS_lumi.CMS_lumi(pad2, 4, 11)
+	ratio.GetYaxis().SetTitleOffset(.4)
+	ratio.GetYaxis().SetTitleSize(.09)
+	ratio.GetYaxis().SetNdivisions(2)
 
+	CMS_lumi.CMS_lumi(pad2, 4, 11)
+	pad2.cd()
 	ratio.SetMarkerStyle(rebinnedData.GetMarkerStyle())
 	ratio.SetMarkerSize(rebinnedData.GetMarkerSize())
 	ratio.SetLineColor(rebinnedData.GetLineColor())
@@ -482,6 +742,7 @@ else:
 
 	canvasRatio.Update()
 	canvasRatio.RedrawAxis()
+	print plotDirectory
 	if postfitPlots:
 		canvasRatio.SaveAs("%s%s_massDilep_Postfit.root"%(plotDirectory,plotDirectory[:-1]))
 		canvasRatio.Print("%s%s_massDilep_Postfit.pdf" %(plotDirectory,plotDirectory[:-1]))
@@ -489,6 +750,9 @@ else:
 		canvasRatio.SaveAs("%s%s_massDilep.root"%(plotDirectory,plotDirectory[:-1]))
 		canvasRatio.Print("%s%s_massDilep.pdf" %(plotDirectory,plotDirectory[:-1]))
 	canvasRatio.Close()
+
+
+    
 
 
     
