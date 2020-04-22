@@ -5,7 +5,8 @@ cmsTextFont   = 61;  # default is helvetic-bold
 
 writeExtraText = False;
 isPreliminary = False;
-extraText   = "Preliminary";
+#extraText   = "Preliminary";
+extraText   = "Work in Progress";
 extraTextFont = 52;  # default is helvetica-italics
 
 writeChannelText = False
