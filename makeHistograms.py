@@ -71,7 +71,10 @@ parser.add_option("--makePlotsMEG","--makePlotsMEG", dest="makePlotsMEG",action=
 					 help="mass EG histograms" )
 parser.add_option("--verbose",dest="verbose",action="store_true",default=False,
 					 help="verbose mode (extra output printed)" )
-					 
+
+parser.add_option("--makePhotonSplitplots", dest="makePhotonSplitplots",action="store_true",default=False,
+					 help="" )
+					 				 
 
 ### nabin
 parser.add_option("--LooseCR2e1","--looseCR2e1", dest="isLooseCR2e1Selection",default=False,action="store_true",
@@ -154,6 +157,8 @@ isLooseCRe3ge2Selection  = options.isLooseCRe3ge2Selection
 makePlotsForSF = options.makePlotsForSF
 makePlotsFlavour =options.makePlotsFlavour
 makePlotsMEG = options.makePlotsMEG
+
+makePhotonSplitplots = options.makePhotonSplitplots
 ## nabin
 isLooseCR2e1Selection = options.isLooseCR2e1Selection
 isLooseCRe2g1Selection = options.isLooseCRe2g1Selection
@@ -1233,6 +1238,10 @@ if plotList is None:
 	if makeAllPlots:
 		plotList = histogramInfo.keys()
 		if not runQuiet: print "Making full list of plots"
+	elif makePhotonSplitplots:
+		plotList = ["phosel_LeadingPhotonEt", "phosel_LeadingPhotonEt_GenuinePhoton",  "phosel_LeadingPhotonEt_MisIDEle",  "phosel_LeadingPhotonEt_HadronicPhoton",  "phosel_LeadingPhotonEt_HadronicFake",
+			        "phosel_LeadingPhotonEta","phosel_LeadingPhotonEta_GenuinePhoton", "phosel_LeadingPhotonEta_MisIDEle", "phosel_LeadingPhotonEta_HadronicPhoton", "phosel_LeadingPhotonEta_HadronicFake",
+					"phosel_LeadingPhotonPhi","phosel_LeadingPhotonPhi_GenuinePhoton", "phosel_LeadingPhotonPhi_MisIDEle", "phosel_LeadingPhotonPhi_HadronicPhoton", "phosel_LeadingPhotonPhi_HadronicFake"]
 	elif makeJetsplots:
 		plotList = ["presel_jet2Pt","presel_jet3Pt", "presel_jet4Pt"]
 	elif makePlotsFlavour:
