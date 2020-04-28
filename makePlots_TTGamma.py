@@ -1,4 +1,4 @@
-from ROOT import TFile, TLegend, TCanvas, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
+from ROOT import TFile, TLegend, TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
 #from ROOT import *
 import os
 
@@ -14,6 +14,10 @@ from array import array
 #from getFullYearMisIDEleSF import getFullYearMisIDEleSF
 from getMisIDEleSF import getMisIDEleSF
 from getZJetsSF import getZJetsSF
+
+from TTGamma_nonPrompt_values_separateChannelYear import *
+from TTGamma_nonPrompt_values_bothChannelSeparateYear import *
+from TTGamma_nonPrompt_values_all import *
 
 from colorama import Fore, Back, Style 
 
@@ -43,7 +47,11 @@ parser.add_option("--ChIsoPlot", dest="ChIsoPlot",default=False,action="store_tr
 
 parser.add_option("--btag0", dest="btag0",default=False,action="store_true",
 					help="0 btag " )
+
+parser.add_option("--zeroPhoton", dest="zeroPhoton",default=False,action="store_true",
+					help="0 photon " )
 					
+								
 parser.add_option("--tight", dest="tight", default=False,action="store_true",
 					help="draw photon Category for tight selection" )
 
@@ -121,6 +129,7 @@ useQCDCR      = options.useQCDCR
 M3Plot        = options.M3Plot
 ChIsoPlot     = options.ChIsoPlot
 btag0         = options.btag0
+zeroPhoton    = options.zeroPhoton
 
 template        = options.template
 
@@ -132,24 +141,50 @@ if finalState=='Ele':
 	channelText = "e+jets"
 
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]
+
 if systematics in allsystematics: print "running on systematics"
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
 
 print(Style.RESET_ALL) 
 
-if level=='up': mylevel='Up'
+if level=='up':   mylevel='Up'
 if level=='down': mylevel='Down'
 
 #eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
-
 #######
+
+if postfitPlots:
+	if selYear == '2016' and channel == 'ele':
+		TTGammaSF   = ttgammaSF_el_2016
+		nonPromptSF = nonPromptSF_el_2016
+	if selYear == '2016' and channel == 'mu':
+		TTGammaSF   = ttgammaSF_mu_2016
+		nonPromptSF = nonPromptSF_mu_2016
+		
+	if selYear == '2017' and channel == 'ele':
+		TTGammaSF   = ttgammaSF_el_2017
+		nonPromptSF = nonPromptSF_el_2017		
+	if selYear == '2017' and channel == 'mu':
+		TTGammaSF   = ttgammaSF_mu_2017
+		nonPromptSF = nonPromptSF_mu_2017		
+
+	if selYear == '2018' and channel == 'ele':
+		TTGammaSF   = ttgammaSF_el_2018
+		nonPromptSF = nonPromptSF_el_2018		
+	if selYear == '2018' and channel == 'mu':
+		TTGammaSF   = ttgammaSF_mu_2018
+		nonPromptSF = nonPromptSF_mu_2018		
+				
+		
+		
 ########
-if tight:      #SR8 
+if M3Plot or ChIsoPlot:      #SR8 
 	isSelection = "looseCRge2e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	else :                ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
 		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
@@ -161,11 +196,11 @@ if tight:      #SR8
 		regionText = "N_{j}#geq4, N_{b}#geq1"
 	
 	
-if btag0:      #CR3 4jet 0 btag
+if btag0:      #CR3 >=4jet 0 btag
 	isSelection = "looseCRge2e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	else :                ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics,level)
@@ -178,6 +213,23 @@ if btag0:      #CR3 4jet 0 btag
 		regionText = "N_{j}#geq4, N_{b}#geq1"
 
 
+if zeroPhoton:      #tight but 0 photon
+	isSelection = "looseCRge2e0"
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	else :                ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
+		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+		regionText = "N_{j}#geq4, N_{b}#geq1"
+	else:
+		fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
+		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
+		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+		regionText = "N_{j}#geq4, N_{b}#geq1"
+		
+		
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 
@@ -281,13 +333,13 @@ elif btag0:
 	histName  	= "phosel_M3_%s_%s"
 	histNameData= "phosel_M3_%s" 
 	mydistributionName = histNameData[7:-3]+"0btag"
-
 else:
 	print "either M3 or ChIso!!"
 
 
 templateHist ={}
 
+print mydistributionName
 
 	
 for sample in sampleList:
@@ -298,9 +350,8 @@ for sample in sampleList:
 		#print sample, fileDir
 		_file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
 	
-
-
 templateHist = {}
+
 
 templateHist["isolatedTTGamma" ] = None 
 templateHist["nonPromptTTGamma"] = None 
@@ -414,6 +465,10 @@ if mydistributionName == "ChIso":
 	myfilename = "ChIso"
 	binning = numpy.array([0,0.5,1.0,1.5,2.0,3.0,5.0,10.0,20.0])
 
+if mydistributionName == "M30photon":
+	myfilename = "M30photon"
+	binning = numpy.array([50,100,125,150,175,200,250,300,500.])
+	
 rebinnedHist ={} 	
 
 for ih in templateHist:
@@ -474,7 +529,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["PU","Q2"]:
+			if systematics in allsystematics:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
 			 	if myNominalHist != None:
 			 		valNominal = myNominalHist.Integral()
