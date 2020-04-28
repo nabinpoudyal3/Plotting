@@ -1,0 +1,187 @@
+Combination of datacard_ele_2017.txt  datacard_mu_2017.txt
+imax 8 number of bins
+jmax 12 number of processes minus 1
+kmax 13 number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *              ch1_ChIso      ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
+shapes *              ch1_M3         ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
+shapes *              ch1_M30btag    ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root M30btag/$PROCESS/nominal M30btag/$PROCESS/$SYSTEMATIC
+shapes *              ch1_M30photon  ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root M30photon/$PROCESS/nominal M30photon/$PROCESS/$SYSTEMATIC
+shapes *              ch2_ChIso      ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
+shapes *              ch2_M3         ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
+shapes *              ch2_M30btag    ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M30btag/$PROCESS/nominal M30btag/$PROCESS/$SYSTEMATIC
+shapes *              ch2_M30photon  ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M30photon/$PROCESS/nominal M30photon/$PROCESS/$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          ch1_ChIso      ch1_M3         ch1_M30btag    ch1_M30photon  ch2_ChIso      ch2_M3         ch2_M30btag    ch2_M30photon
+observation  -1             -1             -1             -1             -1             -1             -1             -1           
+----------------------------------------------------------------------------------------------------------------------------------
+bin                               ch1_ChIso         ch1_ChIso         ch1_ChIso         ch1_ChIso         ch1_ChIso         ch1_ChIso         ch1_ChIso         ch1_ChIso         ch1_M3            ch1_M3            ch1_M3            ch1_M3            ch1_M3            ch1_M3            ch1_M3            ch1_M3            ch1_M30btag       ch1_M30btag       ch1_M30btag       ch1_M30btag       ch1_M30btag       ch1_M30btag       ch1_M30btag       ch1_M30btag       ch1_M30photon     ch1_M30photon     ch1_M30photon     ch1_M30photon     ch1_M30photon     ch2_ChIso         ch2_ChIso         ch2_ChIso         ch2_ChIso         ch2_ChIso         ch2_ChIso         ch2_ChIso         ch2_ChIso         ch2_M3            ch2_M3            ch2_M3            ch2_M3            ch2_M3            ch2_M3            ch2_M3            ch2_M3            ch2_M30btag       ch2_M30btag       ch2_M30btag       ch2_M30btag       ch2_M30btag       ch2_M30btag       ch2_M30btag       ch2_M30btag       ch2_M30photon     ch2_M30photon     ch2_M30photon     ch2_M30photon     ch2_M30photon   
+process                           nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    TTGamma           WGamma            TTbar             ZGamma            Other             nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    TTGamma           WGamma            TTbar             ZGamma            Other           
+process                           -2                -1                1                 2                 3                 4                 5                 6                 -2                -1                1                 2                 3                 4                 5                 6                 -2                -1                1                 2                 3                 4                 5                 6                 0                 7                 8                 9                 10                -2                -1                1                 2                 3                 4                 5                 6                 -2                -1                1                 2                 3                 4                 5                 6                 -2                -1                1                 2                 3                 4                 5                 6                 0                 7                 8                 9                 10              
+rate                              -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1              
+----------------------------------------------------------------------------------------------------------------------------------
+BTagSF_b                shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0             
+BTagSF_l                shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0             
+EleEff                  shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
+MuEff                   shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
+PU                      shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
+PhoEff                  shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
+Q2                      shape     1.0               1.0               -                 1.0               -                 -                 -                 1.0               1.0               1.0               -                 1.0               -                 -                 -                 1.0               1.0               1.0               -                 1.0               -                 -                 -                 1.0               1.0               -                 1.0               -                 -                 1.0               1.0               -                 1.0               -                 -                 -                 1.0               1.0               1.0               -                 1.0               -                 -                 -                 1.0               1.0               1.0               -                 1.0               -                 -                 -                 1.0               1.0               -                 1.0               -                 -               
+lumi                    lnN       1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025           
+misIDeSF      param  1.0 0.05
+ZGSF          param  1.0 0.2
+TTbarSF       param  1.0 0.2
+OtherSF       param  1.0 0.2
+WGSF          param  1.0 0.2
+WGSF          rateParam ch2_M3 WGamma 1  
+misIDeSF      rateParam ch1_M30photon isolatedOther 1  
+OtherSF       rateParam ch1_M30photon isolatedOther 1  
+misIDeSF      rateParam ch1_M3 isolatedZGamma 1  
+ZGSF          rateParam ch1_M3 isolatedZGamma 1  
+misIDeSF      rateParam ch2_M3 isolatedTTGamma 1  
+misIDeSF      rateParam ch2_M30photon isolatedZGamma 1  
+ZGSF          rateParam ch2_M30photon isolatedZGamma 1  
+nonPromptSF   rateParam ch1_M3 nonPromptTTbar 1  
+TTbarSF       rateParam ch1_M3 nonPromptTTbar 1  
+nonPromptSF   rateParam ch2_ChIso nonPromptTTGamma 1  
+nonPromptSF   rateParam ch1_M3 nonPromptTTGamma 1  
+nonPromptSF   rateParam ch1_M30photon nonPromptTTbar 1  
+TTbarSF       rateParam ch1_M30photon nonPromptTTbar 1  
+nonPromptSF   rateParam ch2_M30btag nonPromptOther 1  
+OtherSF       rateParam ch2_M30btag nonPromptOther 1  
+TTbarSF       rateParam ch1_M30photon isolatedTTbar 1  
+misIDeSF      rateParam ch1_M30photon isolatedTTbar 1  
+misIDeSF      rateParam ch1_M3 isolatedOther 1  
+OtherSF       rateParam ch1_M3 isolatedOther 1  
+misIDeSF      rateParam ch2_M3 isolatedWGamma 1  
+WGSF          rateParam ch2_M3 isolatedWGamma 1  
+OtherSF       rateParam ch1_M30btag Other 1  
+misIDeSF      rateParam ch2_M30btag isolatedWGamma 1  
+WGSF          rateParam ch2_M30btag isolatedWGamma 1  
+OtherSF       rateParam ch2_M30btag Other 1  
+nonPromptSF   rateParam ch2_M30photon nonPromptTTGamma 1  
+OtherSF       rateParam ch1_ChIso Other 1  
+misIDeSF      rateParam ch1_M30btag isolatedOther 1  
+OtherSF       rateParam ch1_M30btag isolatedOther 1  
+misIDeSF      rateParam ch2_M30btag isolatedTTGamma 1  
+OtherSF       rateParam ch2_M30photon Other 1  
+ZGSF          rateParam ch1_M3 ZGamma 1  
+misIDeSF      rateParam ch2_ChIso isolatedTTGamma 1  
+misIDeSF      rateParam ch2_M30photon isolatedTTGamma 1  
+TTbarSF       rateParam ch1_ChIso TTbar 1  
+nonPromptSF   rateParam ch1_M3 nonPromptOther 1  
+OtherSF       rateParam ch1_M3 nonPromptOther 1  
+TTbarSF       rateParam ch1_M3 isolatedTTbar 1  
+misIDeSF      rateParam ch1_M3 isolatedTTbar 1  
+WGSF          rateParam ch1_M30btag WGamma 1  
+ZGSF          rateParam ch2_ChIso ZGamma 1  
+TTbarSF       rateParam ch1_M30photon TTbar 1  
+WGSF          rateParam ch1_M3 WGamma 1  
+nonPromptSF   rateParam ch1_M30btag nonPromptOther 1  
+OtherSF       rateParam ch1_M30btag nonPromptOther 1  
+nonPromptSF   rateParam ch1_M30photon nonPromptOther 1  
+OtherSF       rateParam ch1_M30photon nonPromptOther 1  
+misIDeSF      rateParam ch2_M30photon isolatedOther 1  
+OtherSF       rateParam ch2_M30photon isolatedOther 1  
+misIDeSF      rateParam ch2_M30btag isolatedZGamma 1  
+ZGSF          rateParam ch2_M30btag isolatedZGamma 1  
+TTbarSF       rateParam ch2_M30photon TTbar 1  
+TTbarSF       rateParam ch2_ChIso TTbar 1  
+TTbarSF       rateParam ch1_M30btag isolatedTTbar 1  
+misIDeSF      rateParam ch1_M30btag isolatedTTbar 1  
+nonPromptSF   rateParam ch2_M30photon nonPromptTTbar 1  
+TTbarSF       rateParam ch2_M30photon nonPromptTTbar 1  
+misIDeSF      rateParam ch2_M3 isolatedZGamma 1  
+ZGSF          rateParam ch2_M3 isolatedZGamma 1  
+misIDeSF      rateParam ch2_M30photon isolatedWGamma 1  
+WGSF          rateParam ch2_M30photon isolatedWGamma 1  
+ZGSF          rateParam ch1_M30btag ZGamma 1  
+nonPromptSF   rateParam ch1_M30btag nonPromptTTGamma 1  
+WGSF          rateParam ch2_ChIso WGamma 1  
+WGSF          rateParam ch1_M30photon WGamma 1  
+WGSF          rateParam ch2_M30btag WGamma 1  
+misIDeSF      rateParam ch1_M30btag isolatedZGamma 1  
+ZGSF          rateParam ch1_M30btag isolatedZGamma 1  
+misIDeSF      rateParam ch2_M30btag isolatedOther 1  
+OtherSF       rateParam ch2_M30btag isolatedOther 1  
+ZGSF          rateParam ch2_M30photon ZGamma 1  
+misIDeSF      rateParam ch1_ChIso isolatedZGamma 1  
+ZGSF          rateParam ch1_ChIso isolatedZGamma 1  
+TTbarSF       rateParam ch2_ChIso isolatedTTbar 1  
+misIDeSF      rateParam ch2_ChIso isolatedTTbar 1  
+misIDeSF      rateParam ch2_ChIso isolatedZGamma 1  
+ZGSF          rateParam ch2_ChIso isolatedZGamma 1  
+TTbarSF       rateParam ch2_M3 TTbar 1  
+misIDeSF      rateParam ch2_ChIso isolatedOther 1  
+OtherSF       rateParam ch2_ChIso isolatedOther 1  
+nonPromptSF   rateParam ch2_M3 nonPromptTTGamma 1  
+OtherSF       rateParam ch1_M3 Other 1  
+TTbarSF       rateParam ch2_M30photon isolatedTTbar 1  
+misIDeSF      rateParam ch2_M30photon isolatedTTbar 1  
+misIDeSF      rateParam ch1_M30photon isolatedTTGamma 1  
+TTbarSF       rateParam ch2_M30btag TTbar 1  
+OtherSF       rateParam ch2_ChIso Other 1  
+nonPromptSF   rateParam ch2_M30btag nonPromptTTbar 1  
+TTbarSF       rateParam ch2_M30btag nonPromptTTbar 1  
+ZGSF          rateParam ch1_M30photon ZGamma 1  
+nonPromptSF   rateParam ch2_ChIso nonPromptOther 1  
+OtherSF       rateParam ch2_ChIso nonPromptOther 1  
+OtherSF       rateParam ch1_M30photon Other 1  
+misIDeSF      rateParam ch1_M30btag isolatedTTGamma 1  
+nonPromptSF   rateParam ch1_ChIso nonPromptTTbar 1  
+TTbarSF       rateParam ch1_ChIso nonPromptTTbar 1  
+TTbarSF       rateParam ch1_M30btag TTbar 1  
+misIDeSF      rateParam ch1_ChIso isolatedOther 1  
+OtherSF       rateParam ch1_ChIso isolatedOther 1  
+nonPromptSF   rateParam ch1_M30photon nonPromptTTGamma 1  
+ZGSF          rateParam ch1_ChIso ZGamma 1  
+TTbarSF       rateParam ch1_M3 TTbar 1  
+misIDeSF      rateParam ch1_ChIso isolatedTTGamma 1  
+ZGSF          rateParam ch2_M30btag ZGamma 1  
+nonPromptSF   rateParam ch2_M30btag nonPromptTTGamma 1  
+nonPromptSF   rateParam ch1_ChIso nonPromptTTGamma 1  
+misIDeSF      rateParam ch1_M30photon isolatedWGamma 1  
+WGSF          rateParam ch1_M30photon isolatedWGamma 1  
+nonPromptSF   rateParam ch1_ChIso nonPromptOther 1  
+OtherSF       rateParam ch1_ChIso nonPromptOther 1  
+misIDeSF      rateParam ch2_ChIso isolatedWGamma 1  
+WGSF          rateParam ch2_ChIso isolatedWGamma 1  
+misIDeSF      rateParam ch1_M3 isolatedTTGamma 1  
+nonPromptSF   rateParam ch2_M3 nonPromptTTbar 1  
+TTbarSF       rateParam ch2_M3 nonPromptTTbar 1  
+nonPromptSF   rateParam ch2_ChIso nonPromptTTbar 1  
+TTbarSF       rateParam ch2_ChIso nonPromptTTbar 1  
+misIDeSF      rateParam ch1_M30photon isolatedZGamma 1  
+ZGSF          rateParam ch1_M30photon isolatedZGamma 1  
+TTbarSF       rateParam ch2_M3 isolatedTTbar 1  
+misIDeSF      rateParam ch2_M3 isolatedTTbar 1  
+OtherSF       rateParam ch2_M3 Other 1  
+nonPromptSF   rateParam ch1_M30btag nonPromptTTbar 1  
+TTbarSF       rateParam ch1_M30btag nonPromptTTbar 1  
+misIDeSF      rateParam ch1_ChIso isolatedWGamma 1  
+WGSF          rateParam ch1_ChIso isolatedWGamma 1  
+nonPromptSF   rateParam ch2_M30photon nonPromptOther 1  
+OtherSF       rateParam ch2_M30photon nonPromptOther 1  
+misIDeSF      rateParam ch1_M3 isolatedWGamma 1  
+WGSF          rateParam ch1_M3 isolatedWGamma 1  
+TTbarSF       rateParam ch1_ChIso isolatedTTbar 1  
+misIDeSF      rateParam ch1_ChIso isolatedTTbar 1  
+ZGSF          rateParam ch2_M3 ZGamma 1  
+TTbarSF       rateParam ch2_M30btag isolatedTTbar 1  
+misIDeSF      rateParam ch2_M30btag isolatedTTbar 1  
+nonPromptSF   rateParam ch2_M3 nonPromptOther 1  
+OtherSF       rateParam ch2_M3 nonPromptOther 1  
+WGSF          rateParam ch2_M30photon WGamma 1  
+misIDeSF      rateParam ch2_M3 isolatedOther 1  
+OtherSF       rateParam ch2_M3 isolatedOther 1  
+WGSF          rateParam ch1_ChIso WGamma 1  
+misIDeSF      rateParam ch1_M30btag isolatedWGamma 1  
+WGSF          rateParam ch1_M30btag isolatedWGamma 1  
+ch2_M30btag autoMCStats 0 1 1
+ch2_M3 autoMCStats 0 1 1
+ch1_M30photon autoMCStats 0 1 1
+ch1_M30btag autoMCStats 0 1 1
+ch1_M3 autoMCStats 0 1 1
+ch2_ChIso autoMCStats 0 1 1
+ch1_ChIso autoMCStats 0 1 1
+ch2_M30photon autoMCStats 0 1 1
