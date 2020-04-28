@@ -1,9 +1,10 @@
-from ROOT import TFile, TLegend, TCanvas, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kViolet,kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,kYellow,kCyan,kSpring
+from ROOT import TFile, TLegend, TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
 #from ROOT import *
 import os
 
 import numpy
 import sys
+import argparse
 from optparse import OptionParser
 from sampleInformation import sampleList
 import sampleInformation
@@ -13,6 +14,8 @@ from array import array
 #from getFullYearMisIDEleSF import getFullYearMisIDEleSF
 from getMisIDEleSF import getMisIDEleSF
 from getZJetsSF import getZJetsSF
+
+from colorama import Fore, Back, Style 
 
 padRatio = 0.25
 padOverlap = 0.15
@@ -28,18 +31,24 @@ parser.add_option("-c", "--channel", dest="channel", default="",type='str',
 parser.add_option("--postfitPlots", dest="postfitPlots", default=False,action="store_true",
 					help="post fit plots" )
 
-parser.add_option("--M3Plot", dest="M3Plot",default=False,action="store_true",
-					help="Specify M3 or ChIso" )
-
-parser.add_option("--ChIsoPlot", dest="ChIsoPlot",default=False,action="store_true",
-					help="Specify M3 or ChIso" )
+parser.add_option("--template", dest="template", default=False,action="store_true",
+					help="post fit plots" )
 					
 					
-parser.add_option("--M3pho0Plot", dest="M3pho0Plot",default=False,action="store_true",
-					help="M3 control region" )
+parser.add_option("--zeroPhoton", dest="zeroPhoton",default=False,action="store_true",
+					help="0 photon " )
+					
+								
 parser.add_option("--tight", dest="tight", default=False,action="store_true",
 					help="draw photon Category for tight selection" )
 
+parser.add_option("--syst", "--systematics", dest="systematics", default="",type='str',
+					help="Specify which systematic plots" )
+
+parser.add_option("--level", dest="level", default="",type='str',
+					help="Specify which level Up or Down" )
+				
+					
 parser.add_option("--looseCRge2ge0", dest="looseCRge2ge0", default=False,action="store_true",
 					help="draw photon Category for loose CR ge2 ge0" )
 
@@ -72,30 +81,41 @@ parser.add_option("--useQCDMC","--qcdMC",dest="useQCDMC", default=False, action=
 
 parser.add_option("--useQCDCR",dest="useQCDCR", default=False, action="store_true",
                      help="to make plots in QCDCR region")
+############
+#parser=argparse.ArgumentParser(
+#    description='''How to run this script? ''',
+#    epilog=""" python makePlot_signal_prompt.py -c Ele -y 2016 --tight --useQCDMC --M3Plot --posfitPlots""")
+
+#args=parser.parse_args()
 
 (options, args) = parser.parse_args()
 selYear = options.Year
 if selYear=="":
 	print "Specify which year 2016, 2017 or 2018?"
 	sys.exit()
-finalState = options.channel
-postfitPlots = options.postfitPlots
-tight = options.tight
-looseCRge2ge0=options.looseCRge2ge0
-looseCRge2e0 =options.looseCRge2e0
-looseCRe2e0  =options.looseCRe2e0
-looseCRe2e1  =options.looseCRe2e1
-looseCRe3e0  =options.looseCRe3e0
-looseCRge4e0 =options.looseCRge4e0
-looseCRe3e1  =options.looseCRe3e1
-looseCRe2e2  =options.looseCRe2e2
-looseCRe3ge2 =options.looseCRe3ge2
-useQCDMC = options.useQCDMC
-useQCDCR = options.useQCDCR
 
-M3Plot = options.M3Plot
-ChIsoPlot=options.ChIsoPlot
-M3pho0Plot=options.M3pho0Plot
+finalState    = options.channel
+postfitPlots  = options.postfitPlots
+
+systematics   = options.systematics
+level         = options.level
+
+tight         = options.tight
+looseCRge2ge0 = options.looseCRge2ge0
+looseCRge2e0  = options.looseCRge2e0
+looseCRe2e0   = options.looseCRe2e0
+looseCRe2e1   = options.looseCRe2e1
+looseCRe3e0   = options.looseCRe3e0
+looseCRge4e0  = options.looseCRge4e0
+looseCRe3e1   = options.looseCRe3e1
+looseCRe2e2   = options.looseCRe2e2
+looseCRe3ge2  = options.looseCRe3ge2
+useQCDMC      = options.useQCDMC
+useQCDCR      = options.useQCDCR
+
+zeroPhoton    = options.zeroPhoton
+
+template        = options.template
 
 if finalState=='Mu':
 	channel = 'mu'
@@ -104,114 +124,43 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-rebinCenter = 2
-rebinLeftRight = 10
-eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
+if systematics in allsystematics: print "running on systematics"
+else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
+
+print(Style.RESET_ALL) 
+
+if level=='up': mylevel='Up'
+if level=='down': mylevel='Down'
+
+#eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 
 #######
 ########
-if tight:      #SR8 
+
+if zeroPhoton:      #tight but 0 photon
 	isSelection = "looseCRge2e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	if channel=='ele':
-		isoTTGammaSF = 0.871212  #-0.0421535/+0.0423445 # WGamma non prompt came out empty so fitting failed.
-		nonPromptTTGammaSF = 0.88642  # +/-  1.36e+00
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	else :                ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+
+	if systematics in allsystematics:
+		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
+		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+		regionText = "N_{j}#geq4, N_{b}#geq1"
 	else:
-		isoTTGammaSF = 0.916049  #-0.022929/+0.0230016 ; 0.970489  #-0.0275155/+0.0275579
-		nonPromptTTGammaSF = 3.9909 #         +/-  6.48e-01# 3.1048    # +/-  8.47e-01 
-	fileDir  = "%shistograms_%s/%s/hists_tight/"%(eosFolder,selYear, channel)
-	#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
-	plotDirectory = "M3ChIso_tightplots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq4, N_{b}#geq1"
-	print fileDir
+		fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
+		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
+		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+		regionText = "N_{j}#geq4, N_{b}#geq1"
+		
+		
 
+eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 
-if looseCRge2ge0:  #AR
-	isSelection = "looseCRge2ge0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/hists_looseCRge2ge0/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRge2ge0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq2, N_{b}#geq0"
-
-if looseCRge2e0:  #CR1+CR2+CR3
-	isSelection = "looseCRge2e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/hists_looseCRge2e0/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRge2e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq2, N_{b}=0"
-
-###
-if looseCRe2e0:  #CR1
-	isSelection = "looseCRe2e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);		
-	fileDir  = "histograms_%s/%s/hists_looseCRe2e0/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRe2e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=2, N_{b}=0"
-
-if looseCRe3e0:  #CR2
-	isSelection = "looseCRe3e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/hists_looseCRe3e0/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRe3e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=3, N_{b}=0"
-
-if looseCRge4e0:  #CR3
-	isSelection = "looseCRge4e0"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	fileDir  = "histograms_%s/%s/hists_looseCRge4e0/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRge4e0plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}#geq4, N_{b}=0"
-
-if looseCRe2e1:  #CR4
-	isSelection = "looseCRe2e1"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	fileDir  = "histograms_%s/%s/hists_looseCRe2e1/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRe2e1plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=2, N_{b}=1"
-	
-if looseCRe3e1:  #CR5
-	isSelection = "looseCRe3e1"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	fileDir  = "histograms_%s/%s/hists_looseCRe3e1/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRe3e1plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=3, N_{b}=1"
-
-if looseCRe2e2:  #
-	isSelection = "looseCRe2e2" #
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	fileDir  = "histograms_%s/%s/hists_looseCRe2e2/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRe2e2plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=2, N_{b}=2"
-
-if looseCRe3ge2:  #CR7
-	isSelection = "looseCRe3ge2"
-	if selYear  =='2016': ZJetSF = 1.23; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	elif selYear=='2017': ZJetSF = 1.30; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	else :                ZJetSF = 1.26; MisIDEleSF,ZGammaSF,WGammaSF = (1,1,1);
-	fileDir  = "histograms_%s/%s/hists_looseCRe3ge2/"%(selYear, channel)
-	plotDirectory = "M3ChIso_looseCRe3ge2plots_%s_%s/"%(channel, selYear)
-	regionText = "N_{j}=3, N_{b}#geq2"
-
-###
-####
+fileDir = eosFolder + fileDir
+print fileDir
 
 if not os.path.exists(plotDirectory):
 	os.mkdir(plotDirectory)
@@ -226,6 +175,8 @@ gROOT.ForceStyle()
 
 sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'TGJets':kGray,'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
+
+
 template_category = {"TTGamma":kOrange,  
 					 "TTbar":  kRed+1,    
 					 "WGamma": kBlue-4, 
@@ -249,10 +200,13 @@ if useQCDMC:
 	if channel=="ele":	sampleList[-1] = "QCDEle"
 elif useQCDCR:
 	sampleList[-1] = "QCD_DD"
-	stackList.remove("GJets") 
+	sampleList.remove("GJets") 
 else:
-	print "use --useQCDMC or --useQCDCR!"
-	sys.exit()
+	#sampleList[-1] = "QCD_DD"
+	#sampleList.remove("GJets") 
+	sampleList.remove("QCD") 
+	sampleList.remove("GJets") 
+	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
 
 H = 600;
 W = 800;
@@ -286,33 +240,18 @@ legend.SetFillColor(0)
 
 histName  	= "presel_M3_%s"
 histNameData= "presel_M3_%s" 
-mydistributionName = histNameData[7:-3]+"_Pho0"
-
-if finalState=='Ele':
-    sample = "DataEle"
-    _file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
-    dataHist = _file[sample].Get(histNameData%(sample))
-    dataHist.SetLineColor(kBlack)
-    dataHist.SetMarkerStyle(8)
-
-
-elif finalState=='Mu':
-	sample = "DataMu"
-	_file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
-	dataHist = _file[sample].Get(histNameData%(sample))
-	dataHist.SetLineColor(kBlack)
-	dataHist.SetMarkerStyle(8)
-else:
-	print "Select the channel !!!"
-	sys.exit()	
+mydistributionName = histNameData[7:-3]+"0photon"
+print mydistributionName
 
 templateHist ={}
-
-
+	
 for sample in sampleList:
-	if finalState == 'Ele' and sample == 'QCD': sample = 'QCDEle'
-	if finalState == 'Mu'  and sample == 'QCD': sample = 'QCDMu'
-	_file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
+	if sample=="QCD_DD": 
+		#print "==>",sample, fileDirQCD
+		_file[sample] = TFile.Open('%s%s.root'%(fileDirQCD,sample),'read')
+	else:
+		#print sample, fileDir
+		_file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
 	
 templateHist = {}
 
@@ -346,224 +285,296 @@ templateHist["WGamma"].Scale(WGammaSF)
 templateHist["ZGamma"].Scale(ZGammaSF)
 print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
 
-data_obs = dataHist.Clone("data_obs")
+binning = numpy.array([50,100,125,150,175,200,250,300,500.])
 
-rebin=20
-rebinCenter = 10 #2 #4
-rebinLeftRight =20 # 10 #20
-rebinLeftRightRight =40 # 10 #20
-#binning  = numpy.arange(50,500.1,rebin)
-
-binningLeft   = list(numpy.arange(50,90.1,rebinLeftRight)) # 40, 20 start
-binningCenter = list(numpy.arange(100,200.1,rebinCenter))
-binningRight  = list(numpy.arange(210,300.1,rebinLeftRight))
-binningRightRight  = list(numpy.arange(310,500.1,rebinLeftRightRight))
-binning = numpy.array(binningLeft + binningCenter + binningRight+binningRightRight)
-
-
-
-
-rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)
 rebinnedHist ={} 
-
-if postfitPlots:
- 	print"no need save root file"
-else:
- 	myfile = TFile(plotDirectory+"promptTemplate_%s_%s_Prefit.root"%(channel,mydistributionName),"recreate")
 
 for ih in templateHist:
 	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
 	rebinnedHist[ih].SetLineColor(template_category[ih])
 	rebinnedHist[ih].SetFillColor(template_category[ih])
-	rebinnedHist[ih].Write()
-
-rebinnedData.Write()
-# forget about plotting right now. Just make a template.
-
-## purpose for plotting 
-rebinnedData.Scale(1.,"width")
 	
-stack = THStack()
-print rebinnedHist.keys()
+if systematics=='':	
+	if finalState=='Ele':
+	    sample = "DataEle"
+	    _file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
+	    dataHist = _file[sample].Get(histNameData%(sample))
+	    dataHist.SetLineColor(kBlack)
+	    dataHist.SetMarkerStyle(8)
 
-for ih in rebinnedHist:
-	rebinnedHist[ih].Scale(1.,"width")
+	elif finalState=='Mu':
+		sample = "DataMu"
+		_file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
+		dataHist = _file[sample].Get(histNameData%(sample))
+		dataHist.SetLineColor(kBlack)
+		dataHist.SetMarkerStyle(8)
+	else:
+		print "Select the channel !!!"
+		sys.exit()		
 
-stack.Add(rebinnedHist["Other"])
-stack.Add(rebinnedHist["ZGamma"])
-stack.Add(rebinnedHist["WGamma"])
-stack.Add(rebinnedHist["TTbar"])
-stack.Add(rebinnedHist["TTGamma"])
-
-
-if postfitPlots:
-	MC = stack.GetStack().Last().Clone("MC")
-	x = rebinnedData.Chi2Test(MC,"UW CHI2/NDF") 
-	chi2Text = "#chi^{2}/NDF=%.2f"%x
-
+	data_obs = dataHist.Clone("data_obs")
+	rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)	
 	
-canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
-canvasRatio.SetFillColor(0)
-canvasRatio.SetBorderMode(0)
-canvasRatio.SetFrameFillStyle(0)
-canvasRatio.SetFrameBorderMode(0)
-canvasRatio.SetLeftMargin( L/W )
-canvasRatio.SetRightMargin( R/W )
-canvasRatio.SetTopMargin( T/H )
-canvasRatio.SetBottomMargin( B/H )
-canvasRatio.SetTickx(0)
-canvasRatio.SetTicky(0)
-canvasRatio.Draw()
-canvasRatio.cd()
+	
+myfile = TFile("%s%s.root"%(plotDirectory,"ttgamma_Prefit"),"update")
+	# i have to get the nominal histogram from root file first and get the integration value
 
-pad1 = TPad("zxc_p1","zxc_p1",0,padRatio-padOverlap,1,1)
-pad2 = TPad("qwe_p2","qwe_p2",0,0,1,padRatio+padOverlap)
-pad1.SetLeftMargin( L/W )
-pad1.SetRightMargin( R/W )
-pad1.SetTopMargin( T/H/(1-padRatio+padOverlap) )
-pad1.SetBottomMargin( (padOverlap+padGap)/(1-padRatio+padOverlap) )
-pad1.SetFillColor(0)
-pad1.SetBorderMode(0)
-pad1.SetFrameFillStyle(0)
-pad1.SetFrameBorderMode(0)
-pad1.SetTickx(0)
-pad1.SetTicky(0)
+myfilename = mydistributionName
 
-pad2.SetLeftMargin( L/W )
-pad2.SetRightMargin( R/W )
-pad2.SetTopMargin( (padOverlap)/(padRatio+padOverlap) )
-pad2.SetBottomMargin( B/H/(padRatio+padOverlap) )
-pad2.SetFillColor(0)
-pad2.SetFillStyle(4000)
-pad2.SetBorderMode(0)
-pad2.SetFrameFillStyle(0)
-pad2.SetFrameBorderMode(0)
-pad2.SetTickx(0)
-pad2.SetTicky(0)
+if systematics=='':
+	myDatahist = rebinnedData.Clone("nominal")
+	mydataDir  = "%s/data_obs/"%myfilename
 
-pad1.Draw()
-pad2.Draw()
+	if myfile.GetDirectory(mydataDir):
+		gDirectory.cd(mydataDir)
+		gDirectory.Delete("*;*")
+		myDatahist.Write()
+	else:
+		gDirectory.mkdir(mydataDir)
+		gDirectory.cd(mydataDir)
+		gDirectory.Delete("*;*")
+		myDatahist.Write()
+# create directory only if it does not exist
+### ele channel
+for iprocess in template_category.keys():
 
-noData = False
+	myfile.cd()
+	mydir =  "%s/%s/"%(myfilename,iprocess) 
+	print "%s/%s/"%(myfilename,iprocess) 
 
-oneLine = TF1("oneline","1",-9e9,9e9)
-oneLine.SetLineColor(kBlack)
-oneLine.SetLineWidth(1)
-oneLine.SetLineStyle(2)
+	if systematics=='':
+		myhist = rebinnedHist[iprocess].Clone("nominal")
+	else:
+		myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
+		if systematics in allsystematics:
+		 	myNominalHist = myfile.Get(mydir+"nominal")
+		 	if myNominalHist != None:
+		 		valNominal = myNominalHist.Integral()
+		 		val = myhist.Integral()
+		 		if valNominal != 0 and val != 0:
+		 			print "nominal", valNominal, " ==> ", "syst",val
+		 			myhist.Scale(valNominal/val)
+		 			print "normalized", myhist.Integral()
+	
+	if myfile.GetDirectory(mydir):
+		gDirectory.cd(mydir)
+		if systematics=='':
+			gDirectory.Delete("nominal;*")
+		else:
+			gDirectory.Delete("%s%s;*"%(systematics,mylevel))
+		myhist.Write()
+	else:
+		gDirectory.mkdir(mydir)
+		gDirectory.cd(mydir)
+		if systematics=='':
+			gDirectory.Delete("nominal;*")
+		else:
+			gDirectory.Delete("%s%s;*"%(systematics,mylevel))
+		myhist.Write()
+print "%s%s.root"%(plotDirectory,"ttgamma_Prefit")
 
-maxVal = stack.GetMaximum()
-if not noData: 
-    maxVal = max(rebinnedData.GetMaximum(),maxVal)
-
-minVal = 1
-# minVal = max(stack.GetStack()[0].GetMinimum(),1)
-stack.SetMaximum(1.25*maxVal)
-stack.SetMinimum(minVal)
-
-errorband=stack.GetStack().Last().Clone("error")
-errorband.Sumw2()
-errorband.SetLineColor(kBlack)
-errorband.SetFillColor(kBlack)
-errorband.SetFillStyle(3245)
-errorband.SetMarkerSize(0)
-
-legend.AddEntry(rebinnedData,"Data", 'pe')
-legend.AddEntry(errorband,"Uncertainty","f")
-
-for ih in rebinnedHist:
-	legend.AddEntry(rebinnedHist[ih],template_categoryName[ih],'f')
-
-pad1.cd()
-
-stack.Draw('HIST')
-rebinnedData.Draw('E,X0,SAME')
-legend.Draw("same")
-stack.GetXaxis().SetTitle('')
-stack.GetXaxis().SetLabelSize(0)
-stack.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(1.-padRatio+padOverlap))
-stack.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
-stack.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap))
-stack.SetTitle(';;<Events/GeV>')# '%rebin)
-
-#CMS_lumi.channelText = (channelText+"\\n"+regionText)
-#if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
-
-CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
-if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
-
-CMS_lumi.writeChannelText = True
-CMS_lumi.writeExtraText = True
-CMS_lumi.CMS_lumi(pad1, 4, 11)
-
-if not noData:
-	ratio = rebinnedData.Clone("temp")
-	temp = stack.GetStack().Last().Clone("temp")
-	for i_bin in range(1,temp.GetNbinsX()+1):
-		temp.SetBinError(i_bin,0.)
-	ratio.Divide(temp)
-else:
-	ratio = rebinnedData.Clone("temp")
-	temp = stack.GetStack().Last().Clone("temp")
-    
-ratio.SetTitle('')
-ratio.GetXaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
-ratio.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
-ratio.GetXaxis().SetTitleSize(gStyle.GetTitleSize()/(padRatio+padOverlap))
-ratio.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
-ratio.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap-padGap))
-
-maxRatio = ratio.GetMaximum()
-minRatio = ratio.GetMinimum()
-
-for i_bin in range(1,ratio.GetNbinsX()):
-	if ratio.GetBinError(i_bin)<1:
-		if ratio.GetBinContent(i_bin)>maxRatio:
-			maxRatio = ratio.GetBinContent(i_bin)
-		if ratio.GetBinContent(i_bin)<minRatio:
-			minRatio = ratio.GetBinContent(i_bin)
-
-if maxRatio > 1.8:
-	ratio.GetYaxis().SetRangeUser(0,round(0.5+maxRatio))
-elif maxRatio < 1:
-	ratio.GetYaxis().SetRangeUser(0,1.2)
-elif maxRatio-1 < 1-minRatio:
-	ratio.GetYaxis().SetRangeUser((1-(1-minRatio)*1.2),1.1*maxRatio)		
-else:
-	ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
-
-ratio.GetYaxis().SetRangeUser(0.8,1.2)
-ratio.GetYaxis().SetNdivisions(504)
-
-ratio.GetXaxis().SetTitle('%s(GeV)'%mydistributionName)
-
-ratio.GetYaxis().SetTitle("Data/MC")
-ratio.GetYaxis().SetTitleOffset(.4)
-ratio.GetYaxis().SetTitleSize(.09)
-ratio.GetYaxis().SetNdivisions(2) 
-CMS_lumi.CMS_lumi(pad2, 4, 11)
-pad2.cd()
-maxRatio = 1.5
-minRatio = 0.5
-ratio.SetMarkerStyle(rebinnedData.GetMarkerStyle())
-ratio.SetMarkerSize(rebinnedData.GetMarkerSize())
-ratio.SetLineColor(rebinnedData.GetLineColor())
-ratio.SetLineWidth(rebinnedData.GetLineWidth())
-ratio.Draw('e,x0')
-errorbandRatio = errorband.Clone("errorRatio")
-errorbandRatio.Divide(temp)
-errorbandRatio.Draw('e2,same')
-oneLine.Draw("same")
-
-canvasRatio.Update()
-canvasRatio.RedrawAxis()
-if postfitPlots:
-	canvasRatio.SaveAs("%s%s_%s_postfit.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
-	canvasRatio.Print("%s%s_%s_postfit.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
-else:
-	canvasRatio.SaveAs("%s%s_%s.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
-	canvasRatio.Print("%s%s_%s.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
-	myfile.Close()
-canvasRatio.Close()
+myfile.Close()
 
 
-    
+#
+#if postfitPlots:
+# 	print"no need save root file"
+#else:
+# 	myfile = TFile(plotDirectory+"promptTemplate_%s_%s_Prefit.root"%(channel,mydistributionName),"recreate")
+#
+#for ih in templateHist:
+#	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
+#	rebinnedHist[ih].SetLineColor(template_category[ih])
+#	rebinnedHist[ih].SetFillColor(template_category[ih])
+#	rebinnedHist[ih].Write()
+#
+#rebinnedData.Write()
+## forget about plotting right now. Just make a template.
+#
+### purpose for plotting 
+#rebinnedData.Scale(1.,"width")
+#	
+#stack = THStack()
+#print rebinnedHist.keys()
+#
+#for ih in rebinnedHist:
+#	rebinnedHist[ih].Scale(1.,"width")
+#
+#stack.Add(rebinnedHist["Other"])
+#stack.Add(rebinnedHist["ZGamma"])
+#stack.Add(rebinnedHist["WGamma"])
+#stack.Add(rebinnedHist["TTbar"])
+#stack.Add(rebinnedHist["TTGamma"])
+#
+#
+#if postfitPlots:
+#	MC = stack.GetStack().Last().Clone("MC")
+#	x = rebinnedData.Chi2Test(MC,"UW CHI2/NDF") 
+#	chi2Text = "#chi^{2}/NDF=%.2f"%x
+#
+#	
+#canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
+#canvasRatio.SetFillColor(0)
+#canvasRatio.SetBorderMode(0)
+#canvasRatio.SetFrameFillStyle(0)
+#canvasRatio.SetFrameBorderMode(0)
+#canvasRatio.SetLeftMargin( L/W )
+#canvasRatio.SetRightMargin( R/W )
+#canvasRatio.SetTopMargin( T/H )
+#canvasRatio.SetBottomMargin( B/H )
+#canvasRatio.SetTickx(0)
+#canvasRatio.SetTicky(0)
+#canvasRatio.Draw()
+#canvasRatio.cd()
+#
+#pad1 = TPad("zxc_p1","zxc_p1",0,padRatio-padOverlap,1,1)
+#pad2 = TPad("qwe_p2","qwe_p2",0,0,1,padRatio+padOverlap)
+#pad1.SetLeftMargin( L/W )
+#pad1.SetRightMargin( R/W )
+#pad1.SetTopMargin( T/H/(1-padRatio+padOverlap) )
+#pad1.SetBottomMargin( (padOverlap+padGap)/(1-padRatio+padOverlap) )
+#pad1.SetFillColor(0)
+#pad1.SetBorderMode(0)
+#pad1.SetFrameFillStyle(0)
+#pad1.SetFrameBorderMode(0)
+#pad1.SetTickx(0)
+#pad1.SetTicky(0)
+#
+#pad2.SetLeftMargin( L/W )
+#pad2.SetRightMargin( R/W )
+#pad2.SetTopMargin( (padOverlap)/(padRatio+padOverlap) )
+#pad2.SetBottomMargin( B/H/(padRatio+padOverlap) )
+#pad2.SetFillColor(0)
+#pad2.SetFillStyle(4000)
+#pad2.SetBorderMode(0)
+#pad2.SetFrameFillStyle(0)
+#pad2.SetFrameBorderMode(0)
+#pad2.SetTickx(0)
+#pad2.SetTicky(0)
+#
+#pad1.Draw()
+#pad2.Draw()
+#
+#noData = False
+#
+#oneLine = TF1("oneline","1",-9e9,9e9)
+#oneLine.SetLineColor(kBlack)
+#oneLine.SetLineWidth(1)
+#oneLine.SetLineStyle(2)
+#
+#maxVal = stack.GetMaximum()
+#if not noData: 
+#    maxVal = max(rebinnedData.GetMaximum(),maxVal)
+#
+#minVal = 1
+## minVal = max(stack.GetStack()[0].GetMinimum(),1)
+#stack.SetMaximum(1.25*maxVal)
+#stack.SetMinimum(minVal)
+#
+#errorband=stack.GetStack().Last().Clone("error")
+#errorband.Sumw2()
+#errorband.SetLineColor(kBlack)
+#errorband.SetFillColor(kBlack)
+#errorband.SetFillStyle(3245)
+#errorband.SetMarkerSize(0)
+#
+#legend.AddEntry(rebinnedData,"Data", 'pe')
+#legend.AddEntry(errorband,"Uncertainty","f")
+#
+#for ih in rebinnedHist:
+#	legend.AddEntry(rebinnedHist[ih],template_categoryName[ih],'f')
+#
+#pad1.cd()
+#
+#stack.Draw('HIST')
+#rebinnedData.Draw('E,X0,SAME')
+#legend.Draw("same")
+#stack.GetXaxis().SetTitle('')
+#stack.GetXaxis().SetLabelSize(0)
+#stack.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(1.-padRatio+padOverlap))
+#stack.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
+#stack.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap))
+#stack.SetTitle(';;<Events/GeV>')# '%rebin)
+#
+##CMS_lumi.channelText = (channelText+"\\n"+regionText)
+##if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
+#
+#CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
+#if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
+#
+#CMS_lumi.writeChannelText = True
+#CMS_lumi.writeExtraText = True
+#CMS_lumi.CMS_lumi(pad1, 4, 11)
+#
+#if not noData:
+#	ratio = rebinnedData.Clone("temp")
+#	temp = stack.GetStack().Last().Clone("temp")
+#	for i_bin in range(1,temp.GetNbinsX()+1):
+#		temp.SetBinError(i_bin,0.)
+#	ratio.Divide(temp)
+#else:
+#	ratio = rebinnedData.Clone("temp")
+#	temp = stack.GetStack().Last().Clone("temp")
+#    
+#ratio.SetTitle('')
+#ratio.GetXaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
+#ratio.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
+#ratio.GetXaxis().SetTitleSize(gStyle.GetTitleSize()/(padRatio+padOverlap))
+#ratio.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
+#ratio.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap-padGap))
+#
+#maxRatio = ratio.GetMaximum()
+#minRatio = ratio.GetMinimum()
+#
+#for i_bin in range(1,ratio.GetNbinsX()):
+#	if ratio.GetBinError(i_bin)<1:
+#		if ratio.GetBinContent(i_bin)>maxRatio:
+#			maxRatio = ratio.GetBinContent(i_bin)
+#		if ratio.GetBinContent(i_bin)<minRatio:
+#			minRatio = ratio.GetBinContent(i_bin)
+#
+#if maxRatio > 1.8:
+#	ratio.GetYaxis().SetRangeUser(0,round(0.5+maxRatio))
+#elif maxRatio < 1:
+#	ratio.GetYaxis().SetRangeUser(0,1.2)
+#elif maxRatio-1 < 1-minRatio:
+#	ratio.GetYaxis().SetRangeUser((1-(1-minRatio)*1.2),1.1*maxRatio)		
+#else:
+#	ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
+#
+#ratio.GetYaxis().SetRangeUser(0.8,1.2)
+#ratio.GetYaxis().SetNdivisions(504)
+#
+#ratio.GetXaxis().SetTitle('%s(GeV)'%mydistributionName)
+#
+#ratio.GetYaxis().SetTitle("Data/MC")
+#ratio.GetYaxis().SetTitleOffset(.4)
+#ratio.GetYaxis().SetTitleSize(.09)
+#ratio.GetYaxis().SetNdivisions(2) 
+#CMS_lumi.CMS_lumi(pad2, 4, 11)
+#pad2.cd()
+#maxRatio = 1.5
+#minRatio = 0.5
+#ratio.SetMarkerStyle(rebinnedData.GetMarkerStyle())
+#ratio.SetMarkerSize(rebinnedData.GetMarkerSize())
+#ratio.SetLineColor(rebinnedData.GetLineColor())
+#ratio.SetLineWidth(rebinnedData.GetLineWidth())
+#ratio.Draw('e,x0')
+#errorbandRatio = errorband.Clone("errorRatio")
+#errorbandRatio.Divide(temp)
+#errorbandRatio.Draw('e2,same')
+#oneLine.Draw("same")
+#
+#canvasRatio.Update()
+#canvasRatio.RedrawAxis()
+#if postfitPlots:
+#	canvasRatio.SaveAs("%s%s_%s_postfit.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+#	canvasRatio.Print("%s%s_%s_postfit.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+#else:
+#	canvasRatio.SaveAs("%s%s_%s.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+#	canvasRatio.Print("%s%s_%s.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+#	myfile.Close()
+#canvasRatio.Close()
+#
+#
+#    
