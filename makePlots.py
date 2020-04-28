@@ -70,7 +70,12 @@ parser.add_option("--postfitplot",dest="postfitplot", default=False, action="sto
 
 parser.add_option("--makePlotsForSF","--makePlotsForSF", dest="makePlotsForSF",action="store_true",default=False,
 		help="Extra jets" )
-##nabin                                          
+##nabin       
+
+parser.add_option("--makePhotonSplitplots", dest="makePhotonSplitplots",action="store_true",default=False,
+					 help="" )
+					 
+					                                    
 parser.add_option("--LooseCRe3g1","--looseCRe3g1", dest="isLooseCRe3g1Selection", default=False,action="store_true",
 		help="Use 3j exactly 0t control region selection" )
 parser.add_option("--LooseCRe3g0","--looseCRe3g0", dest="isLooseCRe3g0Selection", default=False,action="store_true",
@@ -135,6 +140,7 @@ useQCDMC = options.useQCDMC
 useQCDCR = options.useQCDCR
 makePlotsForSF = options.makePlotsForSF
 
+makePhotonSplitplots = options.makePhotonSplitplots
 #
 isLooseCR2g0Selection = options.isLooseCR2g0Selection
 isLooseCR2g1Selection = options.isLooseCR2g1Selection
@@ -364,8 +370,8 @@ if not inputFile is None:
 #                 plotDirectory = "tightplots_ele_%s"%(selYear)
 #                 regionText = ", N_{j}#geq4, N_{b}#geq1"
 
-eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
-_fileDir = eosFolder+_fileDir
+#eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+#_fileDir = eosFolder+_fileDir
 
 print _fileDir
 
@@ -415,18 +421,22 @@ histograms = {
 		"presel_nVtxdo"   : ["N Vtx down"               , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		"presel_nVtxNoPU" : ["N Vtx noPU"               , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		## nabin
-		"phosel_LeadingPhotonEt"               : ["Photon Et (GeV)"                  , "Events", 5, [20,150], regionText,  NoLog, " "],     
-		"phosel_LeadingPhotonEt_GenuinePhoton" : ["GenuinePhoton Et (GeV)"           , "Events", 5, [20,150], regionText,  NoLog, " "],   
-		"phosel_LeadingPhotonEt_MisIDEle"      : ["MisIDElePhoton Et (GeV)"          , "Events", 5, [20,150], regionText,  NoLog, " "],   
-		"phosel_LeadingPhotonEt_HadronicPhoton": ["HadronicPhoton Et (GeV)"          , "Events", 5, [20,150], regionText,  NoLog, " "],   
-		"phosel_LeadingPhotonEt_HadronicFake"  : ["HadronicFakePhoton Et (GeV)"      , "Events", 5, [20,150], regionText,  NoLog, " "], 
-		  
+		"phosel_LeadingPhotonEt"               : ["Photon Et (GeV)"                  , "Events", 2, [0,300], regionText,  NoLog, " "],     
+		"phosel_LeadingPhotonEt_GenuinePhoton" : ["GenuinePhoton Et (GeV)"           , "Events", 5, [0,300], regionText,  NoLog, " "],   
+		"phosel_LeadingPhotonEt_MisIDEle"      : ["MisIDElePhoton Et (GeV)"          , "Events", 5, [0,300], regionText,  NoLog, " "],   
+		"phosel_LeadingPhotonEt_HadronicPhoton": ["HadronicPhoton Et (GeV)"          , "Events", 5, [0,300], regionText,  NoLog, " "],   
+		"phosel_LeadingPhotonEt_HadronicFake"  : ["HadronicFakePhoton Et (GeV)"      , "Events", 5, [0,300], regionText,  NoLog, " "], 
+		
+		"phosel_LeadingPhotonPhi"               : ["Photon Phi "         , "Events", 2, [-4,4],     regionText,  NoLog, " "],   
+		"phosel_LeadingPhotonEta"               : ["Photon Eta "         , "Events", 2, [-2.5,2.5], regionText,  NoLog, " "],  
+		
+		
 		  ## nabin
 		  
 
 		"phosel_LeadingPhotonEt_barrel"         : ["Photon Et (GeV)"          , "Events", 5, [20,150], regionText,  NoLog, " "],
 		#"phosel_SecondLeadingPhotonEt"          : ["Photon Phi (GeV)"         , "Events", 1, [-1,-1], regionText,  NoLog, " "],    
-		"phosel_LeadingPhotonEta"               : ["Photon Eta (GeV)"         , "Events/0.1", 1, [-1,-1], regionText,  NoLog, " "],   
+ 
 		"phosel_LeadingPhotonSCEta"             : ["Photon SCEta (GeV)"       , "Events/0.1", 1, [-1,-1], regionText,  NoLog, " "], 
 		"phosel_LeadingPhotonEta_barrel"               : ["Photon Eta (GeV)"         , "Events/0.1", 1, [-1.47,1.47], regionText,  NoLog, " "],
 		"phosel_LeadingPhotonSCEta_barrel"             : ["Photon SCEta (GeV)"       , "Events/0.1", 1, [-1.47,1.47], regionText,  NoLog, " "],	
@@ -466,7 +476,7 @@ histograms = {
 		"phosel_elePt"                   : ["Electron p_{T} (GeV)"       , "Events", 5,[35,200.], regionText,  NoLog, " "],
 		"phosel_eleSCEta"                : ["Electron SC#eta"            , "Events/0.04", 4, [-2.1,2.1], regionText,  NoLog, " "],
 		"phosel_Njet"                    : ["N Jets"                     , "Events", 1, [-1,-1], regionText,  NoLog, " "],
-		  "phosel_Njet_barrel"                    : ["N Jets"                     , "Events", 1, [4,10], regionText,  NoLog, " "],
+		"phosel_Njet_barrel"                    : ["N Jets"                     , "Events", 1, [4,10], regionText,  NoLog, " "],
 		"phosel_Nbjet"                   : ["N B-Jets"                   , "Events",1, [-1,1], regionText,  NoLog, " "],
 		"phosel_HoverE_barrel"           : ["H over E"                   , "Events/0.004", 10, [0,0.4], regionText, YesLog, " "],
 		"phosel_SIEIE_barrel"                   : ["Sigma Ieta Ieta"            , "Events/0.0003", 1, [-1,-1], regionText, YesLog, " "],
@@ -567,7 +577,7 @@ histograms = {
 		"phosel_noCut_SIEIE_HadronicPhoton"      : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Photon"],
 		"phosel_noCut_SIEIE_HadronicFake"     : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Fake"],
 
-		"phosel_MassEGamma"                             : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
+		"phosel_MassEGamma"                             : ["m_{e,#gamma} GeV",           "Events/2 GeV", 2, [50,140], regionText,  NoLog, " "],
 		"phosel_MassEGamma_GenuinePhoton"               : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
 		"phosel_MassEGamma_MisIDEle"                    : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
 		"phosel_MassEGamma_HadronicPhoton"              : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
@@ -614,6 +624,9 @@ if plotList is None:
 	if makeSignalRegionPlots:
 		plotList = ["presel_M3", "phosel_M3", "phosel_M3_GenuinePhoton","phosel_M3_MisIDEle","phosel_M3_HadronicPhoton","phosel_M3_HadronicFake",
 					"phosel_mediumID_ChIso", "phosel_mediumID_ChIso_GenuinePhoton", "phosel_mediumID_ChIso_MisIDEle","phosel_mediumID_ChIso_HadronicPhoton","phosel_mediumID_ChIso_HadronicFake"]
+	elif makePhotonSplitplots:
+		plotList = ["phosel_LeadingPhotonEt", "phosel_LeadingPhotonEta", "phosel_LeadingPhotonPhi"]
+	
 	elif makePlotsForSF:
 		plotList =["presel_Njet","presel_WtransMass", "phosel_MassEGamma", "phosel_MassEGamma_GenuinePhoton",  
 	   "phosel_MassEGamma_MisIDEle", "phosel_MassEGamma_HadronicPhoton", "phosel_MassEGamma_HadronicFake",
@@ -846,10 +859,10 @@ if useQCDCR:
 #else:
 #	systematics = ["JER","JECTotal","phosmear","phoscale","BTagSF_b","BTagSF_l","Q2","Pdf","PU","EleEff","PhoEff","elesmear","elescale","isr","fsr"]
 
-if finalState=="Mu":
-	systematics = ["BTagSF_b"]
-else:
-	systematics = ["BTagSF_b"]
+#if finalState=="Mu":
+#	systematics = ["BTagSF_b"]
+#else:
+#	systematics = ["BTagSF_b"]
 
 if finalState=="Mu" or "DiMu":
 	ZJetsSF=1.22 # just for now, need to check again
@@ -873,8 +886,8 @@ skipData = False
 #if selYear in ["2017","2018"] and isTightSelection: # blinding 2017 and 2018 for validation region
 #    skipData = True
 
-if selYear in ["2017","2018"]:
-	skipData = True
+#if selYear in ["2017","2018"]:
+#	skipData = True
 
 #_file_sys = TFile.Open("Combine_withDDTemplateData_v6_%s_tight_binned_PDF.root"%(channel),"read")
 
@@ -1048,7 +1061,7 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 	
 		if finalState=="Ele" and "mu" in histName:continue
 		if finalState=="Mu" and "ele" in histName:continue
-		if "PhotonCategory" in histName and "QCD" in sample:continue
+		#if "PhotonCategory" in histName and "QCD" in sample:continue
 		if finalState =="Mu" and "MassEGamma" in histName: plotInfo[0] = "m_{#mu,#gamma} GeV"
 		#print sample, histName, _file[sample], "%s_%s"%(histName,sample)
 	#if 'phosel_nVtx' in histName and sample=="QCD_DD":
@@ -1197,13 +1210,13 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 		# print stack.GetStack()[0].GetName()
 		# print stack.GetStack()[0].GetMinimum()
 	else:
-		stack.SetMaximum(1.5*maxVal)
+		stack.SetMaximum(2.5*maxVal) # 1.5 to 2.5
 		stack.SetMinimum(minVal)
 
 	if not noData:
-		stack.SetMaximum(1.35*max(dataHist.GetMaximum(),stack.GetMaximum()))
+		stack.SetMaximum(2.35*max(dataHist.GetMaximum(),stack.GetMaximum()))
 	else:
-		stack.SetMaximum(1.35*stack.GetMaximum())
+		stack.SetMaximum(2.35*stack.GetMaximum())
 
 	errorband=stack.GetStack().Last().Clone("error")
 	errorband.Sumw2()
