@@ -1,0 +1,45 @@
+imax 4  
+jmax *  
+kmax *  
+---------------------------------
+shapes *  *  ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
+---------------------------------
+bin			    ChIso    M3   M30btag  M30photon
+observation		-1       -1   -1       -1
+-------------------------------------
+bin	ChIso	ChIso	ChIso	ChIso	ChIso	ChIso	ChIso	ChIso	M3	M3	M3	M3	M3	M3	M3	M3	M30btag	M30btag	M30btag	M30btag	M30btag	M30btag	M30btag	M30btag	M30photon	M30photon	M30photon	M30photon	M30photon
+process	isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	nonPromptOther	isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	nonPromptOther	isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	nonPromptOther	TTGamma	TTbar	WGamma	ZGamma	Other
+process	0	1	2	3	4	0	1	4	0	1	2	3	4	0	1	4	0	1	2	3	4	0	1	4	0	1	2	3	4
+rate	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1	-1
+
+--------------------------------------------------------------------------------------------
+lumi		lnN		1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025	1.025
+BTagSF_b	shape	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	0	0	0	0	0	0	0	0	1	1	1	1	1
+BTagSF_l	shape	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	0	0	0	0	0	0	0	0	1	1	1	1	1
+PU			shape	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+MuEff		shape	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+PhoEff		shape	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+EleEff		shape	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Q2			shape	1	1	0	0	0	1	1	0	1	1	0	0	0	1	1	0	1	1	0	0	0	1	1	0	1	1	0	0	0
+
+
+
+* autoMCStats 0 1
+
+nonPromptSF rateParam * nonPrompt*  1 
+
+TTbarSF rateParam * *TTbar 1
+TTbarSF param  1.0   0.2
+
+misIDeSF rateParam * isolated*  1
+misIDeSF param 1.0 0.05
+
+WGSF rateParam * *WGamma 1
+WGSF param  1.0   0.2
+
+ZGSF rateParam * *ZGamma 1
+ZGSF param  1.0   0.2
+
+OtherSF rateParam * *Other 1
+OtherSF param  1.0   0.2
+
