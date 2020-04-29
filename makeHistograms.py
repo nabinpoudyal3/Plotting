@@ -222,6 +222,10 @@ btagWeight="btagWeight_1a"
 #						  ],
 #			}
 
+if selYear=='2016': myEtaPhiCuts = "(phoPhi < 1.1)"
+if selYear=='2017': myEtaPhiCuts = "(phoPhi < 2.6 && phoEta < 1)"
+if selYear=='2018': myEtaPhiCuts = "(phoPhi < 0.4 && phoPhi > 1)"
+
 if finalState=="Mu":
 	sampleList[-1] = "DataMu"
 	sampleList[-2] = "QCDMu"
@@ -331,52 +335,52 @@ if finalState=="Mu":
 				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
 				outputhistName = "histograms_%s/mu/%s%s_down"%(selYear,outputFileName,syst)
 
-	extraCuts                = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
-	extraPhotonCuts          = "(passPresel_Mu && nJet>=3 && nBJet>=1 && %s)*"
+	extraCuts                = "(passPresel_Mu && %s  && nJet>=3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCuts          = "(passPresel_Mu && %s  && nJet>=3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight           = "(passPresel_Mu && nJet>=4 && nBJet>=1)*"
-	extraPhotonCutsTight     = "(passPresel_Mu && nJet>=4 && nBJet>=1 && %s)*"
+	extraCutsTight           = "(passPresel_Mu && %s  && nJet>=4 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsTight     = "(passPresel_Mu && %s  && nJet>=4 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 	
-	extraCutsVeryTight       = "(passPresel_Mu && nJet>=4 && nBJet>=2)*"
-	extraPhotonCutsVeryTight = "(passPresel_Mu && nJet>=4 && nBJet>=2 && %s)*"
+	extraCutsVeryTight       = "(passPresel_Mu && %s  && nJet>=4 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsVeryTight = "(passPresel_Mu && %s  && nJet>=4 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 	
-	extraCutsTight0b          = "(passPresel_Mu && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight0b    = "(passPresel_Mu && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight0b          = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight0b    = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	###
-	extraCutsLooseCR2e1       = "(passPresel_Mu && nJet>=2 && nBJet==1)*"
-	extraPhotonCutsLooseCR2e1 = "(passPresel_Mu && nJet>=2 && nBJet==1 && %s)*"
+	extraCutsLooseCR2e1       = "(passPresel_Mu && %s  && nJet>=2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e1 = "(passPresel_Mu && %s  && nJet>=2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g1       = "(passPresel_Mu && nJet==2 && nBJet>=1)*"
-	extraPhotonCutsLooseCR2g1 = "(passPresel_Mu && nJet==2 && nBJet>=1 && %s)*"
+	extraCutsLooseCR2g1       = "(passPresel_Mu && %s  && nJet==2 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g1 = "(passPresel_Mu && %s  && nJet==2 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e0       = "(passPresel_Mu && nJet>=2)*"
-	extraPhotonCutsLooseCR2e0 = "(passPresel_Mu && nJet>=2 && %s)*"
+	extraCutsLooseCR2e0       = "(passPresel_Mu && %s  && nJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e0 = "(passPresel_Mu && %s  && nJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g1       = "(passPresel_Mu && nJet==3 && nBJet>=1)*"
-	extraPhotonCutsLooseCRe3g1 = "(passPresel_Mu && nJet==3 && nBJet>=1 && %s)*"
+	extraCutsLooseCRe3g1       = "(passPresel_Mu && %s  && nJet==3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g1 = "(passPresel_Mu && %s  && nJet==3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g0       = "(passPresel_Mu && nJet>=3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g0 = "(passPresel_Mu && nJet>=3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g0       = "(passPresel_Mu && %s  && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g0 = "(passPresel_Mu && %s  && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	
 	## nabin Mu
-	extraCutsLooseCRge2e0        = "(passPresel_Mu && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCRge2e0  = "(passPresel_Mu && nJet>=2 && nBJet==0 && %s)*"
-	extraCutsLooseCRge2ge0       = "(passPresel_Mu && nJet>=2 && nBJet>=0)*"
-	extraPhotonCutsLooseCRge2ge0 = "(passPresel_Mu && nJet>=2 && nBJet>=0 && %s)*"
-	extraCutsLooseCRe2e0         = "(passPresel_Mu && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCRe2e0   = "(passPresel_Mu && nJet==2 && nBJet==0 && %s)*"
-	extraCutsLooseCRe2e1         = "(passPresel_Mu && nJet==2 && nBJet==1)*"
-	extraPhotonCutsLooseCRe2e1   = "(passPresel_Mu && nJet==2 && nBJet==1 && %s)*"
-	extraCutsLooseCRe3e0         = "(passPresel_Mu && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3e0   = "(passPresel_Mu && nJet==3 && nBJet==0 && %s)*"
-	extraCutsLooseCRge4e0        = "(passPresel_Mu && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsLooseCRge4e0  = "(passPresel_Mu && nJet>=4 && nBJet==0 && %s)*"
-	extraCutsLooseCRe3e1         = "(passPresel_Mu && nJet==3 && nBJet==1)*"
-	extraPhotonCutsLooseCRe3e1   = "(passPresel_Mu && nJet==3 && nBJet==1 && %s)*"
-	extraCutsLooseCRe2e2         = "(passPresel_Mu && nJet==2 && nBJet==2)*"
-	extraPhotonCutsLooseCRe2e2   = "(passPresel_Mu && nJet==2 && nBJet==2 && %s)*"
-	extraCutsLooseCRe3ge2        = "(passPresel_Mu && nJet==3 && nBJet>=2)*"
-	extraPhotonCutsLooseCRe3ge2  = "(passPresel_Mu && nJet==3 && nBJet>=2 && %s)*"
+	extraCutsLooseCRge2e0        = "(passPresel_Mu && %s  && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2e0  = "(passPresel_Mu && %s  && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge2ge0       = "(passPresel_Mu && %s  && nJet>=2 && nBJet>=0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2ge0 = "(passPresel_Mu && %s  && nJet>=2 && nBJet>=0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e0         = "(passPresel_Mu && %s  && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e0   = "(passPresel_Mu && %s  && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e1         = "(passPresel_Mu && %s  && nJet==2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e1   = "(passPresel_Mu && %s  && nJet==2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e0         = "(passPresel_Mu && %s  && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e0   = "(passPresel_Mu && %s  && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge4e0        = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge4e0  = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e1         = "(passPresel_Mu && %s  && nJet==3 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e1   = "(passPresel_Mu && %s  && nJet==3 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e2         = "(passPresel_Mu && %s  && nJet==2 && nBJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e2   = "(passPresel_Mu && %s  && nJet==2 && nBJet==2 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3ge2        = "(passPresel_Mu && %s  && nJet==3 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3ge2  = "(passPresel_Mu && %s  && nJet==3 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
 elif finalState=="Ele":
 	sampleList[-1] = "DataEle"
@@ -490,55 +494,57 @@ elif finalState=="Ele":
 				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
 				outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
-	extraCuts                = "(passPresel_Ele && nJet>=3 && nBJet>=1)*"
-	extraPhotonCuts          = "(passPresel_Ele && nJet>=3 && nBJet>=1 && %s)*"
+	extraCuts                = "(passPresel_Ele && %s  && nJet>=3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCuts          = "(passPresel_Ele && %s  && nJet>=3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight           = "(passPresel_Ele && nJet>=4 && nBJet>=1)*"
-	extraPhotonCutsTight     = "(passPresel_Ele && nJet>=4 && nBJet>=1 && %s)*"
+	extraCutsTight           = "(passPresel_Ele && %s  && nJet>=4 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsTight     = "(passPresel_Ele && %s  && nJet>=4 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 	
-	extraCutsVeryTight       = "(passPresel_Ele && nJet>=4 && nBJet>=2)*"
-	extraPhotonCutsVeryTight = "(passPresel_Ele && nJet>=4 && nBJet>=2 && %s)*"
+	extraCutsVeryTight       = "(passPresel_Ele && %s  && nJet>=4 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsVeryTight = "(passPresel_Ele && %s  && nJet>=4 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight0b         = "(passPresel_Ele && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight0b   = "(passPresel_Ele && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight0b         = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight0b   = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e1       = "(passPresel_Ele && nJet>=2 && nBJet==1)*"
-	extraPhotonCutsLooseCR2e1 = "(passPresel_Ele && nJet>=2 && nBJet==1 && %s)*"
+	extraCutsLooseCR2e1       = "(passPresel_Ele && %s  && nJet>=2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e1 = "(passPresel_Ele && %s  && nJet>=2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g0       = "(passPresel_Ele && nJet==2)*"
-	extraPhotonCutsLooseCR2g0 = "(passPresel_Ele && nJet==2 && %s)*"
+	extraCutsLooseCR2g0       = "(passPresel_Ele && %s  && nJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g0 = "(passPresel_Ele && %s  && nJet==2 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g1       = "(passPresel_Ele && nJet==2 && nBJet>=1)*"
-	extraPhotonCutsLooseCR2g1 = "(passPresel_Ele && nJet==2 && nBJet>=1 && %s)*"
+	extraCutsLooseCR2g1       = "(passPresel_Ele && %s  && nJet==2 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g1 = "(passPresel_Ele && %s  && nJet==2 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e0       = "(passPresel_Ele && nJet>=2)*"
-	extraPhotonCutsLooseCR2e0 = "(passPresel_Ele && nJet>=2 && %s)*"
+	extraCutsLooseCR2e0       = "(passPresel_Ele && %s  && nJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e0 = "(passPresel_Ele && %s  && nJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g1       = "(passPresel_Ele && nJet==3 && nBJet>=1)*"
-	extraPhotonCutsLooseCRe3g1 = "(passPresel_Ele && nJet==3 && nBJet>=1 && %s)*"
+	extraCutsLooseCRe3g1       = "(passPresel_Ele && %s  && nJet==3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g1 = "(passPresel_Ele && %s  && nJet==3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g0       = "(passPresel_Ele && nJet>=3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g0 = "(passPresel_Ele && nJet>=3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g0       = "(passPresel_Ele && %s  && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g0 = "(passPresel_Ele && %s  && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	
 	## nabin Ele
-	extraCutsLooseCRge2e0         = "(passPresel_Ele && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCRge2e0   = "(passPresel_Ele && nJet>=2 && nBJet==0 && %s)*"
-	extraCutsLooseCRge2ge0        = "(passPresel_Ele && nJet>=2 && nBJet>=0)*"
-	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Ele && nJet>=2 && nBJet>=0 && %s)*"
-	extraCutsLooseCRe2e0          = "(passPresel_Ele && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCRe2e0    = "(passPresel_Ele && nJet==2 && nBJet==0 && %s)*"
-	extraCutsLooseCRe2e1          = "(passPresel_Ele && nJet==2 && nBJet==1)*"
-	extraPhotonCutsLooseCRe2e1    = "(passPresel_Ele && nJet==2 && nBJet==1 && %s)*"
-	extraCutsLooseCRe3e0          = "(passPresel_Ele && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3e0    = "(passPresel_Ele && nJet==3 && nBJet==0 && %s)*"
-	extraCutsLooseCRge4e0         = "(passPresel_Ele && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsLooseCRge4e0   = "(passPresel_Ele && nJet>=4 && nBJet==0 && %s)*"
-	extraCutsLooseCRe3e1          = "(passPresel_Ele && nJet==3 && nBJet==1)*"
-	extraPhotonCutsLooseCRe3e1    = "(passPresel_Ele && nJet==3 && nBJet==1 && %s)*"
-	extraCutsLooseCRe2e2          = "(passPresel_Ele && nJet==2 && nBJet==2)*"
-	extraPhotonCutsLooseCRe2e2    = "(passPresel_Ele && nJet==2 && nBJet==2 && %s)*"
-	extraCutsLooseCRe3ge2         = "(passPresel_Ele && nJet==3 && nBJet>=2)*"
-	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Ele && nJet==3 && nBJet>=2 && %s)*"
+	extraCutsLooseCRge2e0         = "(passPresel_Ele && %s  && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2e0   = "(passPresel_Ele && %s  && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge2ge0        = "(passPresel_Ele && %s  && nJet>=2 && nBJet>=0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Ele && %s  && nJet>=2 && nBJet>=0 && %s)*"%(myEtaPhiCuts,"%s")
+	
+	extraCutsLooseCRe2e0          = "(passPresel_Ele && %s  && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e0    = "(passPresel_Ele && %s  && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	
+	extraCutsLooseCRe2e1          = "(passPresel_Ele && %s  && nJet==2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e1    = "(passPresel_Ele && %s  && nJet==2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e0          = "(passPresel_Ele && %s  && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e0    = "(passPresel_Ele && %s  && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge4e0         = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge4e0   = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e1          = "(passPresel_Ele && %s  && nJet==3 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e1    = "(passPresel_Ele && %s  && nJet==3 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e2          = "(passPresel_Ele && %s  && nJet==2 && nBJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e2    = "(passPresel_Ele && %s  && nJet==2 && nBJet==2 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3ge2         = "(passPresel_Ele && %s  && nJet==3 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Ele && %s  && nJet==3 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 	#nabin
 	
 elif finalState=="DiMu":
@@ -648,54 +654,54 @@ elif finalState=="DiMu":
 		else:
 			print "what is the systematics?"
 			
-	extraCuts            = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
-	extraPhotonCuts      = "(passPresel_Mu && nJet>=3 && nBJet>=1 && %s)*"
+	extraCuts            = "(passPresel_Mu && %s  && nJet>=3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCuts      = "(passPresel_Mu && %s  && nJet>=3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight       = "(passPresel_Mu && nJet>=4 && nBJet>=1)*"
-	extraPhotonCutsTight = "(passPresel_Mu && nJet>=4 && nBJet>=1 && %s)*"
+	extraCutsTight       = "(passPresel_Mu && %s  && nJet>=4 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsTight = "(passPresel_Mu && %s  && nJet>=4 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight0b       = "(passPresel_Mu && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight0b = "(passPresel_Mu && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight0b       = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight0b = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e1       = "(passPresel_Mu && nJet>=2 && nBJet==1)*"
-	extraPhotonCutsLooseCR2e1 = "(passPresel_Mu && nJet>=2 && nBJet==1 && %s)*"
+	extraCutsLooseCR2e1       = "(passPresel_Mu && %s  && nJet>=2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e1 = "(passPresel_Mu && %s  && nJet>=2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e0       = "(passPresel_Mu && nJet==2)*"
-	extraPhotonCutsLooseCR2e0 = "(passPresel_Mu && nJet==2 && %s)*"
+	extraCutsLooseCR2e0       = "(passPresel_Mu && %s  && nJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e0 = "(passPresel_Mu && %s  && nJet==2 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g0       = "(passPresel_Mu && nJet>=2)*"
-	extraPhotonCutsLooseCR2g0 = "(passPresel_Mu && nJet>=2 && %s)*"
+	extraCutsLooseCR2g0       = "(passPresel_Mu && %s  && nJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g0 = "(passPresel_Mu && %s  && nJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g1       = "(passPresel_Mu && nJet==2 && nBJet>=1)*"
-	extraPhotonCutsLooseCR2g1 = "(passPresel_Mu && nJet==2 && nBJet>=1 && %s)*"
+	extraCutsLooseCR2g1       = "(passPresel_Mu && %s  && nJet==2 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g1 = "(passPresel_Mu && %s  && nJet==2 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR3g0       = "(passPresel_Mu && nJet>=3 && nBJet>=0)*"
-	extraPhotonCutsLooseCR3g0 = "(passPresel_Mu && nJet>=3 && nBJet>=0 && %s)*"
+	extraCutsLooseCR3g0       = "(passPresel_Mu && %s  && nJet>=3 && nBJet>=0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR3g0 = "(passPresel_Mu && %s  && nJet>=3 && nBJet>=0 && %s)*"%(myEtaPhiCuts,"%s")
  
-	extraCutsLooseCRe3g1       = "(passPresel_Mu && nJet==3 && nBJet>=1)*"
-	extraPhotonCutsLooseCRe3g1 = "(passPresel_Mu && nJet==3 && nBJet>=1 && %s)*"
+	extraCutsLooseCRe3g1       = "(passPresel_Mu && %s  && nJet==3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g1 = "(passPresel_Mu && %s  && nJet==3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g0       = "(passPresel_Mu && nJet>=3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g0 = "(passPresel_Mu && nJet>=3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g0       = "(passPresel_Mu && %s  && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g0 = "(passPresel_Mu && %s  && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	# nabin
-	extraCutsLooseCRge2e0         = "(passPresel_Mu && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCRge2e0   = "(passPresel_Mu && nJet>=2 && nBJet==0 && %s)*"
-	extraCutsLooseCRge2ge0        = "(passPresel_Mu && nJet>=2 && nBJet>=0)*"
-	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Mu && nJet>=2 && nBJet>=0 && %s)*"
-	extraCutsLooseCRe2e0          = "(passPresel_Mu && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCRe2e0    = "(passPresel_Mu && nJet==2 && nBJet==0 && %s)*"
-	extraCutsLooseCRe2e1          = "(passPresel_Mu && nJet==2 && nBJet==1)*"
-	extraPhotonCutsLooseCRe2e1    = "(passPresel_Mu && nJet==2 && nBJet==1 && %s)*"
-	extraCutsLooseCRe3e0          = "(passPresel_Mu && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3e0    = "(passPresel_Mu && nJet==3 && nBJet==0 && %s)*"
-	extraCutsLooseCRge4e0         = "(passPresel_Mu && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsLooseCRge4e0   = "(passPresel_Mu && nJet>=4 && nBJet==0 && %s)*"
-	extraCutsLooseCRe3e1          = "(passPresel_Mu && nJet==3 && nBJet==1)*"
-	extraPhotonCutsLooseCRe3e1    = "(passPresel_Mu && nJet==3 && nBJet==1 && %s)*"
-	extraCutsLooseCRe2e2          = "(passPresel_Mu && nJet==2 && nBJet==2)*"
-	extraPhotonCutsLooseCRe2e2    = "(passPresel_Mu && nJet==2 && nBJet==2 && %s)*"
-	extraCutsLooseCRe3ge2         = "(passPresel_Mu && nJet==3 && nBJet>=2)*"
-	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Mu && nJet==3 && nBJet>=2 && %s)*"
+	extraCutsLooseCRge2e0         = "(passPresel_Mu && %s  && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2e0   = "(passPresel_Mu && %s  && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge2ge0        = "(passPresel_Mu && %s  && nJet>=2 && nBJet>=0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Mu && %s  && nJet>=2 && nBJet>=0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e0          = "(passPresel_Mu && %s  && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e0    = "(passPresel_Mu && %s  && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e1          = "(passPresel_Mu && %s  && nJet==2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e1    = "(passPresel_Mu && %s  && nJet==2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e0          = "(passPresel_Mu && %s  && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e0    = "(passPresel_Mu && %s  && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge4e0         = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge4e0   = "(passPresel_Mu && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e1          = "(passPresel_Mu && %s  && nJet==3 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e1    = "(passPresel_Mu && %s  && nJet==3 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e2          = "(passPresel_Mu && %s  && nJet==2 && nBJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e2    = "(passPresel_Mu && %s  && nJet==2 && nBJet==2 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3ge2         = "(passPresel_Mu && %s  && nJet==3 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Mu && %s  && nJet==3 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
 	
 elif finalState=="DiEle":
@@ -811,50 +817,50 @@ elif finalState=="DiEle":
 			#	outputhistName = "histograms_%s/ele/Dilep_%s%s_down"%(selYear,outputFileName,syst)
 
 
-	extraCuts            = "(passPresel_Ele && nJet>=3 && nBJet>=1)*"
-	extraPhotonCuts      = "(passPresel_Ele && nJet>=3 && nBJet>=1 && %s)*"
+	extraCuts            = "(passPresel_Ele && %s  && nJet>=3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCuts      = "(passPresel_Ele && %s  && nJet>=3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight       = "(passPresel_Ele && nJet>=4 && nBJet>=1)*"
-	extraPhotonCutsTight = "(passPresel_Ele && nJet>=4 && nBJet>=1 && %s)*"
+	extraCutsTight       = "(passPresel_Ele && %s  && nJet>=4 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsTight = "(passPresel_Ele && %s  && nJet>=4 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight0b       = "(passPresel_Ele && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight0b = "(passPresel_Ele && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight0b       = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight0b = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e1       = "(passPresel_Ele && nJet>=2 && nBJet==1)*"
-	extraPhotonCutsLooseCR2e1 = "(passPresel_Ele && nJet>=2 && nBJet==1 &&%s)*"
+	extraCutsLooseCR2e1       = "(passPresel_Ele && %s  && nJet>=2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e1 = "(passPresel_Ele && %s  && nJet>=2 && nBJet==1 &&%s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g1       = "(passPresel_Ele && nJet==2 && nBJet>=1)*"
-	extraPhotonCutsLooseCR2g1 = "(passPresel_Ele && nJet==2 && nBJet>=1 && %s)*"
+	extraCutsLooseCR2g1       = "(passPresel_Ele && %s  && nJet==2 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g1 = "(passPresel_Ele && %s  && nJet==2 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g0       = "(passPresel_Ele && nJet>=2)*"
-	extraPhotonCutsLooseCR2g0 = "(passPresel_Ele && nJet>=2 && %s)*"
+	extraCutsLooseCR2g0       = "(passPresel_Ele && %s  && nJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g0 = "(passPresel_Ele && %s  && nJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g1       = "(passPresel_Ele && nJet==3 && nBJet>=1)*"
-	extraPhotonCutsLooseCRe3g1 = "(passPresel_Ele && nJet==3 && nBJet>=1 && %s)*"
+	extraCutsLooseCRe3g1       = "(passPresel_Ele && %s  && nJet==3 && nBJet>=1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g1 = "(passPresel_Ele && %s  && nJet==3 && nBJet>=1 && %s)*"%(myEtaPhiCuts,"%s")
 
 
-	extraCutsLooseCRe3g0       = "(passPresel_Ele && nJet>=3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g0 = "(passPresel_Ele && nJet>=3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g0       = "(passPresel_Ele && %s  && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g0 = "(passPresel_Ele && %s  && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	
 	## nabin Ele
-	extraCutsLooseCRge2e0         = "(passPresel_Ele && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCRge2e0   = "(passPresel_Ele && nJet>=2 && nBJet==0 && %s)*"
-	extraCutsLooseCRge2ge0        = "(passPresel_Ele && nJet>=2 && nBJet>=0)*"
-	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Ele && nJet>=2 && nBJet>=0 && %s)*"
-	extraCutsLooseCRe2e0          = "(passPresel_Ele && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCRe2e0    = "(passPresel_Ele && nJet==2 && nBJet==0 && %s)*"
-	extraCutsLooseCRe2e1          = "(passPresel_Ele && nJet==2 && nBJet==1)*"
-	extraPhotonCutsLooseCRe2e1    = "(passPresel_Ele && nJet==2 && nBJet==1 && %s)*"
-	extraCutsLooseCRe3e0          = "(passPresel_Ele && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3e0    = "(passPresel_Ele && nJet==3 && nBJet==0 && %s)*"
-	extraCutsLooseCRge4e0         = "(passPresel_Ele && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsLooseCRge4e0   = "(passPresel_Ele && nJet>=4 && nBJet==0 && %s)*"
-	extraCutsLooseCRe3e1          = "(passPresel_Ele && nJet==3 && nBJet==1)*"
-	extraPhotonCutsLooseCRe3e1    = "(passPresel_Ele && nJet==3 && nBJet==1 && %s)*"
-	extraCutsLooseCRe2e2          = "(passPresel_Ele && nJet==2 && nBJet==2)*"
-	extraPhotonCutsLooseCRe2e2    = "(passPresel_Ele && nJet==2 && nBJet==2 && %s)*"
-	extraCutsLooseCRe3ge2         = "(passPresel_Ele && nJet==3 && nBJet>=2)*"
-	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Ele && nJet==3 && nBJet>=2 && %s)*"
+	extraCutsLooseCRge2e0         = "(passPresel_Ele && %s  && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2e0   = "(passPresel_Ele && %s  && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge2ge0        = "(passPresel_Ele && %s  && nJet>=2 && nBJet>=0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Ele && %s  && nJet>=2 && nBJet>=0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e0          = "(passPresel_Ele && %s  && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e0    = "(passPresel_Ele && %s  && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e1          = "(passPresel_Ele && %s  && nJet==2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e1    = "(passPresel_Ele && %s  && nJet==2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e0          = "(passPresel_Ele && %s  && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e0    = "(passPresel_Ele && %s  && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRge4e0         = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge4e0   = "(passPresel_Ele && %s  && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e1          = "(passPresel_Ele && %s  && nJet==3 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e1    = "(passPresel_Ele && %s  && nJet==3 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e2          = "(passPresel_Ele && %s  && nJet==2 && nBJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e2    = "(passPresel_Ele && %s  && nJet==2 && nBJet==2 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3ge2         = "(passPresel_Ele && %s  && nJet==3 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Ele && %s  && nJet==3 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
 elif finalState=="QCDMu":
 	sampleList[-1] = "DataMu"
@@ -871,55 +877,55 @@ elif finalState=="QCDMu":
 
 	nBJets = 0
 
-	extraCuts            = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=3 && nBJet==0)*"
-	extraPhotonCuts      = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=3 && nBJet==0 && %s)*"
+	extraCuts            = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCuts      = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight            = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight      = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight            = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight      = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsVeryTight       = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsVeryTight = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsVeryTight       = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsVeryTight = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight0b            = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight0b      = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight0b            = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight0b      = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e1       = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCR2e1 = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLooseCR2e1       = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e1 = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e0       = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCR2e0 = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLooseCR2e0       = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e0 = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g0       = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCR2g0 = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLooseCR2g0       = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g0 = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	
-	extraCutsLooseCR2g1       = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCR2g1 = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==0 && %s)*"
+	extraCutsLooseCR2g1       = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g1 = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g1       = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g1 = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g1       = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g1 = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g0       = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g0 = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g0       = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g0 = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
 	## nabin qcd mu
-	extraCutsLooseCRge2e0         = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCRge2e0   = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"	
-	extraCutsLooseCRge2ge0        = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet>=0)*"
-	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=2 && nBJet>=0 && %s)*"
-	extraCutsLooseCRe2e0          = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCRe2e0    = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==0 && %s)*"
-	extraCutsLooseCRe2e1          = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==1)*"
-	extraPhotonCutsLooseCRe2e1    = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==1 && %s)*"
-	extraCutsLooseCRe3e0          = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3e0    = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet==0 && %s)*"    
-	extraCutsLooseCRge4e0         = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsLooseCRge4e0   = "(passPresel_Mu && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"  
-	extraCutsLooseCRe3e1          = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet==1)*"
-	extraPhotonCutsLooseCRe3e1    = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet==1 && %s)*"   
-	extraCutsLooseCRe2e2          = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==2)*"
-	extraPhotonCutsLooseCRe2e2    = "(passPresel_Mu && muPFRelIso<0.3 && nJet==2 && nBJet==2 && %s)*"
-	extraCutsLooseCRe3ge2         = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet>=2)*"
-	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Mu && muPFRelIso<0.3 && nJet==3 && nBJet>=2 && %s)*"
+	extraCutsLooseCRge2e0         = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2e0   = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")	
+	extraCutsLooseCRge2ge0        = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet>=0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=2 && nBJet>=0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e0          = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e0    = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe2e1          = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e1    = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3e0          = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e0    = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")    
+	extraCutsLooseCRge4e0         = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge4e0   = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")  
+	extraCutsLooseCRe3e1          = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e1    = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s")   
+	extraCutsLooseCRe2e2          = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e2    = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==2 && nBJet==2 && %s)*"%(myEtaPhiCuts,"%s")
+	extraCutsLooseCRe3ge2         = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Mu && %s  && muPFRelIso<0.3 && nJet==3 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
 
 
@@ -939,20 +945,20 @@ elif finalState=="QCDMu2":
 
 	nBJets = 0
 
-	extraCuts            = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=3 && nBJet==0)*"
-	extraPhotonCuts      = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=3 && nBJet==0 && %s)*"
+	extraCuts            = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCuts      = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight            = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight      = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight            = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight      = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight0b            = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight0b      = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight0b            = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight0b      = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLoose            = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLoose      = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLoose            = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLoose      = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR          = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCR    = "(passPresel_Mu && muPFRelIso>0.3 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLooseCR          = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR    = "(passPresel_Mu && %s  && muPFRelIso>0.3 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	
 elif finalState=="QCDEle":
 	sampleList[-1] = "DataEle"
@@ -969,56 +975,56 @@ elif finalState=="QCDEle":
 
 	nBJets = 0
 
-	extraCuts                 = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=3 && nBJet==0)*"
-	extraPhotonCuts           = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=3 && nBJet==0 && %s)*"
+	extraCuts                 = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCuts           = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight            = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight      = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight            = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight      = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsVeryTight       = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsVeryTight = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsVeryTight       = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsVeryTight = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsTight0b            = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsTight0b      = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*"
+	extraCutsTight0b            = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsTight0b      = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLoose            = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLoose      = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLoose            = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLoose      = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2e1       = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCR2e1 = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLooseCR2e1       = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2e1 = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR2g1       = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCR2g1 = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==0 && %s)*"
+	extraCutsLooseCR2g1       = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR2g1 = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCR          = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCR    = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*"
+	extraCutsLooseCR          = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCR    = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
 
-	extraCutsLooseCRe3g1       = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g1 = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g1       = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g1 = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 
-	extraCutsLooseCRe3g0       = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3g0 = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=3 && nBJet==0 && %s)*"
+	extraCutsLooseCRe3g0       = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3g0 = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s")
 	
 	   ## nabin qcd ele
-	extraCutsLooseCRge2e0         = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"
-	extraPhotonCutsLooseCRge2e0   = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*" 	
-	extraCutsLooseCRge2ge0        = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet>=0)*"
-	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=2 && nBJet>=0 && %s)*" 
-	extraCutsLooseCRe2e0          = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==0)*"
-	extraPhotonCutsLooseCRe2e0    = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==0 && %s)*" 
-	extraCutsLooseCRe2e1          = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==1)*"
-	extraPhotonCutsLooseCRe2e1    = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==1 && %s)*" 
-	extraCutsLooseCRe3e0          = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet==0)*"
-	extraPhotonCutsLooseCRe3e0    = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet==0 && %s)*" 
-	extraCutsLooseCRge4e0         = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"
-	extraPhotonCutsLooseCRge4e0   = "(passPresel_Ele && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*" 
-	extraCutsLooseCRe3e1          = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet==1)*"
-	extraPhotonCutsLooseCRe3e1    = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet==1 && %s)*" 
-	extraCutsLooseCRe2e2          = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==2)*"
-	extraPhotonCutsLooseCRe2e2    = "(passPresel_Ele && elePFRelIso>0.01 && nJet==2 && nBJet==2 && %s)*" 
-	extraCutsLooseCRe3ge2         = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet>=2)*"
-	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet>=2 && %s)*"
+	extraCutsLooseCRge2e0         = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2e0   = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s") 	
+	extraCutsLooseCRge2ge0        = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet>=0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge2ge0  = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=2 && nBJet>=0 && %s)*"%(myEtaPhiCuts,"%s") 
+	extraCutsLooseCRe2e0          = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e0    = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s") 
+	extraCutsLooseCRe2e1          = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e1    = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s") 
+	extraCutsLooseCRe3e0          = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e0    = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s") 
+	extraCutsLooseCRge4e0         = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRge4e0   = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet>=4 && nBJet==0 && %s)*"%(myEtaPhiCuts,"%s") 
+	extraCutsLooseCRe3e1          = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet==1)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3e1    = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet==1 && %s)*"%(myEtaPhiCuts,"%s") 
+	extraCutsLooseCRe2e2          = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe2e2    = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==2 && nBJet==2 && %s)*"%(myEtaPhiCuts,"%s") 
+	extraCutsLooseCRe3ge2         = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet>=2)*"%myEtaPhiCuts
+	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Ele && %s  && elePFRelIso>0.01 && nJet==3 && nBJet>=2 && %s)*"%(myEtaPhiCuts,"%s")
 
 
 
@@ -1438,7 +1444,7 @@ if not "QCD_DD" in sample:
 		histograms.append(TH1F("%s_%s"%(h_Info[1],sample),"%s_%s_%s"%(h_Info[1],sample,timeString),h_Info[2][0],h_Info[2][1],h_Info[2][2]))
 		if h_Info[4]=="":
 			evtWeight = "%s%s"%(h_Info[3],weights)
-
+			
 		else:
 			evtWeight = h_Info[4]
 
@@ -1464,7 +1470,7 @@ if not "QCD_DD" in sample:
 
 
 
-## histogramtodraw, cuts(passPresel_Mu && nJet>=4 && nBJet>=1 && nPho==1) weight*evtWeight*PUweight*muEffWeight*eleEffWeight*1.0*1.0*btagWeight_1a
+## histogramtodraw, cuts(passPresel_Mu && %s  && nJet>=4 && nBJet>=1 && nPho==1) weight*evtWeight*PUweight*muEffWeight*eleEffWeight*1.0*1.0*btagWeight_1a
 
 if not os.path.exists(outputhistName):
 	os.makedirs(outputhistName)
