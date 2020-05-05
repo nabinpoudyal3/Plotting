@@ -31,7 +31,7 @@ else
 
 fi
 
-outputdir="root://cmseos.fnal.gov//store/user/npoudyal"
+outputdir="root://cmseos.fnal.gov//store/user/npoudyal/TEST"
 
 echo "Running python makeHistograms "
 declare -a    SampleList=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )

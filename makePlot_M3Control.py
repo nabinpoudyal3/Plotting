@@ -346,7 +346,7 @@ for iprocess in template_category.keys():
 		myhist = rebinnedHist[iprocess].Clone("nominal")
 	else:
 		myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-		if systematics in allsystematics:
+		if systematics in ["Q2"]: #allsystematics:
 		 	myNominalHist = myfile.Get(mydir+"nominal")
 		 	if myNominalHist != None:
 		 		valNominal = myNominalHist.Integral()

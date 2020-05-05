@@ -30,14 +30,14 @@ else
         x=1234260
 fi
         echo $x
-        combine -M MultiDimFit -n el_2016_nonPrompt_$i datacard_M3ChIso_ele_2016.txt --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file16.txt 
-        combine -M MultiDimFit -n mu_2016_nonPrompt_$i datacard_M3ChIso_mu_2016.txt  --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file15.txt 
+        combine -M MultiDimFit -n el_2016_nonPrompt_$i datacard_ele_2016.txt --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file16.txt 
+        combine -M MultiDimFit -n mu_2016_nonPrompt_$i datacard_mu_2016.txt  --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file15.txt 
        
-        combine -M MultiDimFit -n el_2017_nonPrompt_$i datacard_M3ChIso_ele_2017.txt --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file14.txt 
-        combine -M MultiDimFit -n mu_2017_nonPrompt_$i datacard_M3ChIso_mu_2017.txt  --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file13.txt 
+        combine -M MultiDimFit -n el_2017_nonPrompt_$i datacard_ele_2017.txt --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file14.txt 
+        combine -M MultiDimFit -n mu_2017_nonPrompt_$i datacard_mu_2017.txt  --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file13.txt 
         
-        combine -M MultiDimFit -n el_2018_nonPrompt_$i datacard_M3ChIso_ele_2018.txt --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file12.txt 
-        combine -M MultiDimFit -n mu_2018_nonPrompt_$i datacard_M3ChIso_mu_2018.txt  --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file11.txt   
+        combine -M MultiDimFit -n el_2018_nonPrompt_$i datacard_ele_2018.txt --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file12.txt 
+        combine -M MultiDimFit -n mu_2018_nonPrompt_$i datacard_mu_2018.txt  --setParameters nonPromptSF=$i -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2   >& outputFiles/file11.txt   
 
 
 done
@@ -73,14 +73,14 @@ else
         x=1234260
 fi
         echo $x
-        combine -M MultiDimFit -n el_2016_$i datacard_M3ChIso_ele_2016.txt -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file17.txt   
-        combine -M MultiDimFit -n mu_2016_$i datacard_M3ChIso_mu_2016.txt  -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file18.txt 
+        combine -M MultiDimFit -n el_2016_$i datacard_ele_2016.txt -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file17.txt   
+        combine -M MultiDimFit -n mu_2016_$i datacard_mu_2016.txt  -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file18.txt 
         
-        combine -M MultiDimFit -n el_2017_$i datacard_M3ChIso_ele_2017.txt -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file19.txt 
-        combine -M MultiDimFit -n mu_2017_$i datacard_M3ChIso_mu_2017.txt  -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file20.txt 
+        combine -M MultiDimFit -n el_2017_$i datacard_ele_2017.txt -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file19.txt 
+        combine -M MultiDimFit -n mu_2017_$i datacard_mu_2017.txt  -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file20.txt 
        
-        combine -M MultiDimFit -n el_2018_$i datacard_M3ChIso_ele_2018.txt -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file21.txt 
-        combine -M MultiDimFit -n mu_2018_$i datacard_M3ChIso_mu_2018.txt  -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file22.txt 
+        combine -M MultiDimFit -n el_2018_$i datacard_ele_2018.txt -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file21.txt 
+        combine -M MultiDimFit -n mu_2018_$i datacard_mu_2018.txt  -s $x -t 1000 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v2  >& outputFiles/file22.txt 
 
         
 done

@@ -370,8 +370,8 @@ if not inputFile is None:
 #                 plotDirectory = "tightplots_ele_%s"%(selYear)
 #                 regionText = ", N_{j}#geq4, N_{b}#geq1"
 
-#eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
-#_fileDir = eosFolder+_fileDir
+eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/TEST/"
+_fileDir = eosFolder+_fileDir
 
 print _fileDir
 

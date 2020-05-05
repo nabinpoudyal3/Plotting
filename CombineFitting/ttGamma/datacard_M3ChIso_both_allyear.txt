@@ -7,14 +7,14 @@ shapes *              ch1_ch1_ChIso  ../../ttgamma_tightplots_ele_2016/ttgamma_P
 shapes *              ch1_ch1_M3     ../../ttgamma_tightplots_ele_2016/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
 shapes *              ch1_ch2_ChIso  ../../ttgamma_tightplots_mu_2016/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
 shapes *              ch1_ch2_M3     ../../ttgamma_tightplots_mu_2016/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
-shapes *              ch2_ch1_ChIso  ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
-shapes *              ch2_ch1_M3     ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
+shapes *              ch2_ch1_ChIso  ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
+shapes *              ch2_ch1_M3     ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
 shapes *              ch2_ch2_ChIso  ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
 shapes *              ch2_ch2_M3     ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
-shapes *              ch3_ch1_ChIso  ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
-shapes *              ch3_ch1_M3     ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
-shapes *              ch3_ch2_ChIso  ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
-shapes *              ch3_ch2_M3     ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
+shapes *              ch3_ch1_ChIso  ../../ttgamma_tightplots_ele_2018/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
+shapes *              ch3_ch1_M3     ../../ttgamma_tightplots_ele_2018/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
+shapes *              ch3_ch2_ChIso  ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
+shapes *              ch3_ch2_M3     ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          ch1_ch1_ChIso  ch1_ch1_M3     ch1_ch2_ChIso  ch1_ch2_M3     ch2_ch1_ChIso  ch2_ch1_M3     ch2_ch2_ChIso  ch2_ch2_M3     ch3_ch1_ChIso  ch3_ch1_M3     ch3_ch2_ChIso  ch3_ch2_M3   
 observation  -1             -1             -1             -1             -1             -1             -1             -1             -1             -1             -1             -1           

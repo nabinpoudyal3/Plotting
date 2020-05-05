@@ -18,8 +18,8 @@ parser = OptionParser()
 parser.add_option("-y", "--year", dest="Year", default="",type='str',
 					help="Specify which year 2016, 2017 or 2018?" )
 
-# parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
-#                 help="Specify which channel Mu or Ele? default is Mu" )
+parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
+                    help="Specify which channel Mu or Ele? default is Mu" )
 
 parser.add_option("--tight", dest="tight", default=False,action="store_true",
 					help="draw photon Category for tight selection" )

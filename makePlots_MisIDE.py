@@ -291,9 +291,10 @@ if looseCRe3ge2:  #CR7
 
 ###
 ####
-eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/TEST/"
+eosFolderOLD="root://cmseos.fnal.gov//store/user/npoudyal/"
 fileDir = eosFolder+fileDir
-fileDirQCD = eosFolder+fileDirQCD
+fileDirQCD = eosFolderOLD+fileDirQCD
 #print fileDir
 
 if not os.path.exists(plotDirectory):
@@ -503,12 +504,12 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["PU","Q2","BTagSF_b"]:
+			if systematics in ["Q2"]: #allsystematics:
 				myNominalHist = myfile.Get(mydir+"nominal")
 				valNominal = myNominalHist.Integral()
 				val = myhist.Integral()
 				print "nominal", valNominal, " ==> ", "syst",val
-				myhist.Scale(valNominal/val)
+				if val != 0: myhist.Scale(valNominal/val)
 				print "normalized", myhist.Integral()
 		
 		if myfile.GetDirectory(mydir):

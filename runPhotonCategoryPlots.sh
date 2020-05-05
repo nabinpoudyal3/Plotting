@@ -12,6 +12,6 @@ for plot in ${PLOT[@]}; do
 	done
 done
 wait
+
+
 echo "All processes done!"
-
-

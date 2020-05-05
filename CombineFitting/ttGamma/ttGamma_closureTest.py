@@ -199,6 +199,7 @@ zerosData = []
 for ifile in ListOfFiles:
 	zerosData.append(0)
 	myfile = ROOT.TFile(ifile,"read")
+	print myfile
 	mytree=myfile.limit
 	mytree.Draw("r>>hist1")
 	hist1 = ROOT.gDirectory.Get('hist1')

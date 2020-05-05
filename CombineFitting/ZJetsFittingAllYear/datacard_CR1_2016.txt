@@ -1,22 +1,30 @@
 imax 2  
-jmax 1  
+jmax *  
 kmax *  
 ---------------------------------
-shapes data_obs             elJets ../../ZJets_looseCRe2e0plots_ele_2016/myZJets_Prefit.root  data_obs
-shapes myZJets              elJets ../../ZJets_looseCRe2e0plots_ele_2016/myZJets_Prefit.root  myZJets
-shapes mybackground         elJets ../../ZJets_looseCRe2e0plots_ele_2016/myZJets_Prefit.root  myBackground
+shapes * * ../../ZJets_syst_looseCRe2e0plots_2016/ZJets_syst_Prefit.root $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC 
 ---------------------------------
-shapes data_obs             muJets ../../ZJets_looseCRe2e0plots_mu_2016/myZJets_Prefit.root  data_obs
-shapes myZJets              muJets ../../ZJets_looseCRe2e0plots_mu_2016/myZJets_Prefit.root  myZJets
-shapes mybackground         muJets ../../ZJets_looseCRe2e0plots_mu_2016/myZJets_Prefit.root  myBackground
--------------------------------------------
-bin			        elJets  muJets
-observation		    -1      -1
--------------------------------------
-bin 	  elJets        elJets          muJets    muJets
-process   myZJets       mybackground    myZJets   mybackground
+bin			       ele   mu
+observation		   -1    -1
+--------------------------------------------------------------------------------------------
+bin 	  ele           ele             mu        mu
+process   myZJets       myBackground    myZJets   myBackground
 process   0             1               0         1
 rate      -1            -1              -1        -1
-------------------------------------
-elJets autoMCStats 0 1
-muJets autoMCStats 0 1
+--------------------------------------------------------------------------------------------
+
+lumi        lnN     1.025 1.025 1.025 1.025     
+
+BTagSF_b    shape   1     1     1     1         
+BTagSF_l    shape   1     1     1     1         
+PU          shape   1     1     1     1         
+MuEff       shape   1     1     1     1         
+PhoEff      shape   1     1     1     1         
+EleEff      shape   1     1     1     1         
+Q2          shape   1     1     1     1         
+
+* autoMCStats 0 1
+
+#syst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff Q2
+
+

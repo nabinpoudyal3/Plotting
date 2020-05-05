@@ -32,7 +32,7 @@ canvas.SetFrameFillColor(0);
 canvas.SetFrameBorderMode(0);
    
    
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2016_nbins3.root','read')
+f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2016.root','read')
 h_background = f1.Get('covariance_fit_b')
 h_signal = f1.Get('covariance_fit_s')
 
@@ -55,64 +55,14 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_misIDEle_2016_nbins3.pdf')
+canvas.SaveAs('covariance_misIDEle_2016.pdf')
 
 
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2016_nbins6.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
-
-h_signal.GetYaxis().SetLabelSize(0.02)
-h_signal.GetXaxis().SetLabelSize(0.02)
-h_signal.GetZaxis().SetLabelSize(0.03)
-h_signal.SetMarkerSize(0.7)
-
-
-h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
-
-mypal = h_signal.GetListOfFunctions().FindObject('palette')
-mypal.SetX1NDC(0.02);
-mypal.SetX2NDC(0.06);
-mypal.SetY1NDC(0.1);
-mypal.SetY2NDC(0.9);
-canvas.Modified();
-canvas.Update();
-   
-#ROOT.gApplication.Run()
-
-canvas.SaveAs('covariance_misIDEle_2016_nbins6.pdf')
-
-
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2016_nbins9.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
-
-h_signal.GetYaxis().SetLabelSize(0.02)
-h_signal.GetXaxis().SetLabelSize(0.02)
-h_signal.GetZaxis().SetLabelSize(0.03)
-h_signal.SetMarkerSize(0.7)
-
-
-h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
-
-mypal = h_signal.GetListOfFunctions().FindObject('palette')
-mypal.SetX1NDC(0.02);
-mypal.SetX2NDC(0.06);
-mypal.SetY1NDC(0.1);
-mypal.SetY2NDC(0.9);
-canvas.Modified();
-canvas.Update();
-   
-#ROOT.gApplication.Run()
-
-canvas.SaveAs('covariance_misIDEle_2016_nbins9.pdf')
 ####################
 ####################
 ####################
    
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2017_nbins3.root','read')
+f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2017.root','read')
 h_background = f1.Get('covariance_fit_b')
 h_signal = f1.Get('covariance_fit_s')
 
@@ -135,66 +85,14 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_misIDEle_2017_nbins3.pdf')
-
-
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2017_nbins6.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
-
-h_signal.GetYaxis().SetLabelSize(0.02)
-h_signal.GetXaxis().SetLabelSize(0.02)
-h_signal.GetZaxis().SetLabelSize(0.03)
-h_signal.SetMarkerSize(0.7)
-
-
-h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
-
-mypal = h_signal.GetListOfFunctions().FindObject('palette')
-mypal.SetX1NDC(0.02);
-mypal.SetX2NDC(0.06);
-mypal.SetY1NDC(0.1);
-mypal.SetY2NDC(0.9);
-canvas.Modified();
-canvas.Update();
-   
-#ROOT.gApplication.Run()
-
-canvas.SaveAs('covariance_misIDEle_2017_nbins6.pdf')
-
-
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2017_nbins9.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
-
-h_signal.GetYaxis().SetLabelSize(0.02)
-h_signal.GetXaxis().SetLabelSize(0.02)
-h_signal.GetZaxis().SetLabelSize(0.03)
-h_signal.SetMarkerSize(0.7)
-
-
-h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
-
-mypal = h_signal.GetListOfFunctions().FindObject('palette')
-mypal.SetX1NDC(0.02);
-mypal.SetX2NDC(0.06);
-mypal.SetY1NDC(0.1);
-mypal.SetY2NDC(0.9);
-canvas.Modified();
-canvas.Update();
-   
-#ROOT.gApplication.Run()
-
-canvas.SaveAs('covariance_misIDEle_2017_nbins9.pdf')
+canvas.SaveAs('covariance_misIDEle_2017.pdf')
 
 #####################
 #####################
 #####################
 
    
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2018_nbins3.root','read')
+f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2018.root','read')
 h_background = f1.Get('covariance_fit_b')
 h_signal = f1.Get('covariance_fit_s')
 
@@ -217,56 +115,6 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_misIDEle_2018_nbins3.pdf')
+canvas.SaveAs('covariance_misIDEle_2018.pdf')
 
 
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2018_nbins6.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
-
-h_signal.GetYaxis().SetLabelSize(0.02)
-h_signal.GetXaxis().SetLabelSize(0.02)
-h_signal.GetZaxis().SetLabelSize(0.03)
-h_signal.SetMarkerSize(0.7)
-
-
-h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
-
-mypal = h_signal.GetListOfFunctions().FindObject('palette')
-mypal.SetX1NDC(0.02);
-mypal.SetX2NDC(0.06);
-mypal.SetY1NDC(0.1);
-mypal.SetY2NDC(0.9);
-canvas.Modified();
-canvas.Update();
-   
-#ROOT.gApplication.Run()
-
-canvas.SaveAs('covariance_misIDEle_2018_nbins6.pdf')
-
-
-f1 = ROOT.TFile.Open('fitDiagnosticsCR123_2018_nbins9.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
-
-h_signal.GetYaxis().SetLabelSize(0.02)
-h_signal.GetXaxis().SetLabelSize(0.02)
-h_signal.GetZaxis().SetLabelSize(0.03)
-h_signal.SetMarkerSize(0.7)
-
-
-h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
-
-mypal = h_signal.GetListOfFunctions().FindObject('palette')
-mypal.SetX1NDC(0.02);
-mypal.SetX2NDC(0.06);
-mypal.SetY1NDC(0.1);
-mypal.SetY2NDC(0.9);
-canvas.Modified();
-canvas.Update();
-   
-#ROOT.gApplication.Run()
-
-canvas.SaveAs('covariance_misIDEle_2018_nbins9.pdf')

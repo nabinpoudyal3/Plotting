@@ -231,7 +231,7 @@ if zeroPhoton:      #tight but 0 photon
 		
 		
 
-eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/TEST/"
 
 fileDir = eosFolder + fileDir
 print fileDir
@@ -529,7 +529,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in allsystematics:
+			if systematics in ["Q2"]: #allsystematics:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
 			 	if myNominalHist != None:
 			 		valNominal = myNominalHist.Integral()

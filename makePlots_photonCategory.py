@@ -163,7 +163,6 @@ if looseCRe3ge2:  #CR7
 #fileDir = eosFolder + fileDir
 print fileDir
 
-
 if not os.path.exists(plotDirectory):
 	os.mkdir(plotDirectory)
 
@@ -253,7 +252,7 @@ if finalState=='Ele':
 	dataHist = _file[sample].Get(histNameData%(sample))
 	dataHist.SetLineColor(kBlack)
 	dataHist.SetMarkerStyle(8)
-	dataHist.Rebin(rebin)
+	dataHist.Rebin(rebin)	
 
 elif finalState=='Mu':
 	sample = "DataMu"
@@ -261,13 +260,19 @@ elif finalState=='Mu':
 	dataHist = _file[sample].Get(histNameData%(sample))
 	dataHist.SetLineColor(kBlack)
 	dataHist.SetMarkerStyle(8)
-	dataHist.Rebin(rebin)
+	dataHist.Rebin(rebin)	
 
 else:
 	print "Select the channel !!!"
 	sys.exit()	
 
+
 summedHist ={}
+
+summedHist['HadronicPhoton'] = None
+summedHist['HadronicFake'] = None
+summedHist['GenuinePhoton'] = None
+summedHist['MisIDEle'] = None
 
 for item in category.keys():
 	summedHist[item] = None

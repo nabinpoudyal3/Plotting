@@ -1,10 +1,10 @@
-Combination of datacard_M3ChIso_mu_2017.txt  datacard_M3ChIso_mu_2017.txt
+Combination of datacard_M3ChIso_ele_2017.txt  datacard_M3ChIso_mu_2017.txt
 imax 4 number of bins
 jmax 7 number of processes minus 1
 kmax 11 number of nuisance parameters
 ----------------------------------------------------------------------------------------------------------------------------------
-shapes *          ch1_ChIso  ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
-shapes *          ch1_M3     ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
+shapes *          ch1_ChIso  ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
+shapes *          ch1_M3     ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
 shapes *          ch2_ChIso  ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
 shapes *          ch2_M3     ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
 ----------------------------------------------------------------------------------------------------------------------------------
