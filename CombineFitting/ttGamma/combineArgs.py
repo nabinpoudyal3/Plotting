@@ -729,3 +729,113 @@ Significance specific options:
                                         Tolerance for minimizer when doing 
                                         brute-force search
 
+
+
+###########################################################################################
+###########################################################################################
+###########################################################################################
+usage: combineTool.py [-M METHOD]
+                      [--job-mode {interactive,script,lxbatch,SGE,condor,crab3}]
+                      [--prefix-file PREFIX_FILE] [--task-name TASK_NAME]
+                      [--parallel PARALLEL] [--merge MERGE] [--dry-run]
+                      [--sub-opts SUB_OPTS] [--memory MEMORY]
+                      [--crab-area CRAB_AREA] [--custom-crab CUSTOM_CRAB]
+                      [--crab-extra-files CRAB_EXTRA_FILES [CRAB_EXTRA_FILES ...]]
+                      [--pre-cmd PRE_CMD]
+                      [--custom-crab-post CUSTOM_CRAB_POST] [-m MASS]
+                      [--points POINTS] [--singlePoint SINGLEPOINT] [-s SEED]
+                      [-d [DATACARD [DATACARD ...]]] [--name NAME]
+                      [--setParameterRanges SETPARAMETERRANGES]
+                      [--opts OPTS [OPTS ...]] [--there]
+                      [--split-points SPLIT_POINTS] [--boundlist BOUNDLIST]
+                      [--generate [GENERATE [GENERATE ...]]] [-h]
+
+Available methods:
+
+  EnhancedCombine      : combine pass-through with special treatment for some options [DEFAULT]
+  T2W                  : Run text2workspace.py on multiple cards or directories
+  PrintWorkspace       : Load a Workspace and call Print()
+  ModifyDataSet        : Change the name of a dataset in an existing workspace
+  Impacts              : Calculate nuisance parameter impacts
+  ImpactsFromScans     : Calculate nuisance parameter impacts
+  CollectLimits        : Aggregate limit output from combine
+  CollectGoodnessOfFit : Aggregate Goodness of Fit output from fit and toys
+  CovMatrix            : Build a fit covariance matrix from scan results
+  PrintFit             : Print the output of MultimDitFit
+  AsymptoticGrid       : Calculate asymptotic limits on parameter grids
+  HybridNewGrid        : Calculate toy-based limits on parameter grids
+  FastScan             : Calculate nuisance parameter impacts
+  TaylorExpand         : Calculate nuisance parameter impacts
+
+optional arguments:
+  -M METHOD, --method METHOD
+  -h, --help
+
+job options:
+  options for creating, running and submitting jobs
+
+  --job-mode {interactive,script,lxbatch,SGE,condor,crab3}
+                        Task execution mode
+  --prefix-file PREFIX_FILE
+                        Path to file containing job prefix
+  --task-name TASK_NAME
+                        Task name, used for job script and log filenames for
+                        batch system tasks
+  --parallel PARALLEL   Number of jobs to run in parallel [only affects
+                        interactive job-mode]
+  --merge MERGE         Number of jobs to run in a single script [only affects
+                        batch submission]
+  --dry-run             Print commands to the screen but do not run them
+  --sub-opts SUB_OPTS   Options for batch/crab submission
+  --memory MEMORY       Request memory for job [MB]
+  --crab-area CRAB_AREA
+                        crab working area
+  --custom-crab CUSTOM_CRAB
+                        python file containing a function with name signature
+                        "custom_crab(config)" that can be used to modify the
+                        default crab configuration
+  --crab-extra-files CRAB_EXTRA_FILES [CRAB_EXTRA_FILES ...]
+                        Extra files that should be shipped to crab
+  --pre-cmd PRE_CMD     Prefix the call to combine with this string
+  --custom-crab-post CUSTOM_CRAB_POST
+                        txt file containing command lines that can be used in
+                        the crab job script instead of the defaults.
+
+EnhancedCombine options:
+  options specific to this method
+
+  --opts OPTS [OPTS ...]
+                        Add preset combine option groups
+  --there               Run combine in the same directory as the workspace
+  --split-points SPLIT_POINTS
+                        When used in conjunction with --points will create
+                        multiple combine calls that each run at most the
+                        number of points specified here.
+  --boundlist BOUNDLIST
+                        Name of json-file which contains the ranges of
+                        physical parameters depending on the given mass and
+                        given physics model
+  --generate [GENERATE [GENERATE ...]]
+                        Generate sets of options
+
+combine options:
+  standard combine options that will be re-interpreted
+
+  -m MASS, --mass MASS  Supports range strings for multiple masses, e.g.
+                        "120:130:5,140 will produce three combine calls with
+                        mass values of 120, 125, 130 and 140"
+  --points POINTS       For use with "-M MultiDimFit --algo grid" to split
+                        scan points into separate jobs
+  --singlePoint SINGLEPOINT
+                        Supports range strings for multiple points to test,
+                        uses the same format as the --mass argument
+  -s SEED, --seed SEED  Supports range strings for multiple RNG seeds, uses
+                        the same format as the --mass argument
+  -d [DATACARD [DATACARD ...]], --datacard [DATACARD [DATACARD ...]]
+                        Operate on multiple datacards
+  --name NAME, -n NAME  Name used to label the combine output file, can be
+                        modified by other options
+  --setParameterRanges SETPARAMETERRANGES
+                        Some other options will modify or add to the list of
+                        parameter ranges
+

@@ -17,6 +17,8 @@ from getZJetsSF import getZJetsSF
 
 from colorama import Fore, Back, Style 
 
+from TTGamma_nonPrompt_2016 import *
+
 padRatio = 0.25
 padOverlap = 0.15
 
@@ -124,8 +126,8 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
+#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]#,"fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics"
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
 
@@ -160,6 +162,7 @@ if zeroPhoton:      #tight but 0 photon
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 
 fileDir = eosFolder + fileDir
+
 print fileDir
 
 if not os.path.exists(plotDirectory):
@@ -172,9 +175,61 @@ from Style import *
 
 gROOT.ForceStyle()
 
+if postfitPlots:
+	if selYear == '2016' and channel == 'ele':
+		TTGammaSF   = ttgammaSF_el_2016
+		nonPromptSF = nonPromptSF_el_2016
+		TTbarSF = TTbarSF_el_2016
+		WGSF    = WGSF_el_2016
+		ZGSF    = ZGSF_el_2016
+		OtherSF = OtherSF_el_2016
+		 
+	if selYear == '2016' and channel == 'mu':
+		TTGammaSF   = ttgammaSF_mu_2016
+		nonPromptSF = nonPromptSF_mu_2016
+		TTbarSF = TTbarSF_mu_2016
+		WGSF    = WGSF_mu_2016
+		ZGSF    = ZGSF_mu_2016
+		OtherSF = OtherSF_mu_2016
+		
+	if selYear == '2017' and channel == 'ele':
+		TTGammaSF   = ttgammaSF_el_2017
+		nonPromptSF = nonPromptSF_el_2017	
+		TTbarSF = TTbarSF_el_2017
+		WGSF    = WGSF_el_2017
+		ZGSF    = ZGSF_el_2017
+		OtherSF = OtherSF_el_2017
+			
+	if selYear == '2017' and channel == 'mu':
+		TTGammaSF   = ttgammaSF_mu_2017
+		nonPromptSF = nonPromptSF_mu_2017		
+		TTbarSF = TTbarSF_mu_2017
+		WGSF    = WGSF_mu_2017
+		ZGSF    = ZGSF_mu_2017
+		OtherSF = OtherSF_mu_2017
+		
+	if selYear == '2018' and channel == 'ele':
+		TTGammaSF   = ttgammaSF_el_2018
+		nonPromptSF = nonPromptSF_el_2018	
+		TTbarSF = TTbarSF_el_2018
+		WGSF    = WGSF_el_2018
+		ZGSF    = ZGSF_el_2018
+		OtherSF = OtherSF_el_2018	
+		
+	if selYear == '2018' and channel == 'mu':
+		TTGammaSF   = ttgammaSF_mu_2018
+		nonPromptSF = nonPromptSF_mu_2018		
+		TTbarSF = TTbarSF_mu_2018
+		WGSF    = WGSF_mu_2018
+		ZGSF    = ZGSF_mu_2018
+		OtherSF = OtherSF_mu_2018			
+		
 
 sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'TGJets':kGray,'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
+
+#sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV']
+#sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'TGJets':kGray,'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7}
 
 
 template_category = {"TTGamma":kOrange,  
@@ -261,6 +316,8 @@ templateHist["WGamma"  ] = None
 templateHist["ZGamma"  ] = None  
 templateHist["Other"   ] = None 
 
+print sampleList
+
 for sample in sampleList:
 	tempHist = _file[sample].Get(histName%(sample))
 	if sample=='ZJets': 
@@ -285,7 +342,7 @@ templateHist["WGamma"].Scale(WGammaSF)
 templateHist["ZGamma"].Scale(ZGammaSF)
 print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
 
-binning = numpy.array([50,100,125,150,175,200,250,300,500.])
+binning = numpy.array([50,105,155,185,260,500.])
 
 rebinnedHist ={} 
 
@@ -315,65 +372,280 @@ if systematics=='':
 	data_obs = dataHist.Clone("data_obs")
 	rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)	
 	
-	
-myfile = TFile("%s%s.root"%(plotDirectory,"ttgamma_Prefit"),"update")
-	# i have to get the nominal histogram from root file first and get the integration value
+if template:	
+	myfile = TFile("%s%s.root"%(plotDirectory,"ttgamma_Prefit"),"update")
+		# i have to get the nominal histogram from root file first and get the integration value
 
-myfilename = mydistributionName
-
-if systematics=='':
-	myDatahist = rebinnedData.Clone("nominal")
-	mydataDir  = "%s/data_obs/"%myfilename
-
-	if myfile.GetDirectory(mydataDir):
-		gDirectory.cd(mydataDir)
-		gDirectory.Delete("*;*")
-		myDatahist.Write()
-	else:
-		gDirectory.mkdir(mydataDir)
-		gDirectory.cd(mydataDir)
-		gDirectory.Delete("*;*")
-		myDatahist.Write()
-# create directory only if it does not exist
-### ele channel
-for iprocess in template_category.keys():
-
-	myfile.cd()
-	mydir =  "%s/%s/"%(myfilename,iprocess) 
-	print "%s/%s/"%(myfilename,iprocess) 
+	myfilename = mydistributionName
 
 	if systematics=='':
-		myhist = rebinnedHist[iprocess].Clone("nominal")
-	else:
-		myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-		if systematics in allsystematics:
-		 	myNominalHist = myfile.Get(mydir+"nominal")
-		 	if myNominalHist != None:
-		 		valNominal = myNominalHist.Integral()
-		 		val = myhist.Integral()
-		 		if valNominal != 0 and val != 0:
-		 			print "nominal", valNominal, " ==> ", "syst",val
-		 			myhist.Scale(valNominal/val)
-		 			print "normalized", myhist.Integral()
-	
-	if myfile.GetDirectory(mydir):
-		gDirectory.cd(mydir)
-		if systematics=='':
-			gDirectory.Delete("nominal;*")
-		else:
-			gDirectory.Delete("%s%s;*"%(systematics,mylevel))
-		myhist.Write()
-	else:
-		gDirectory.mkdir(mydir)
-		gDirectory.cd(mydir)
-		if systematics=='':
-			gDirectory.Delete("nominal;*")
-		else:
-			gDirectory.Delete("%s%s;*"%(systematics,mylevel))
-		myhist.Write()
-print "%s%s.root"%(plotDirectory,"ttgamma_Prefit")
+		myDatahist = rebinnedData.Clone("nominal")
+		mydataDir  = "%s/data_obs/"%myfilename
 
-myfile.Close()
+		if myfile.GetDirectory(mydataDir):
+			gDirectory.cd(mydataDir)
+			gDirectory.Delete("*;*")
+			myDatahist.Write()
+		else:
+			gDirectory.mkdir(mydataDir)
+			gDirectory.cd(mydataDir)
+			gDirectory.Delete("*;*")
+			myDatahist.Write()
+	# create directory only if it does not exist
+	### ele channel
+	for iprocess in template_category.keys():
+
+		myfile.cd()
+		mydir =  "%s/%s/"%(myfilename,iprocess) 
+		print "%s/%s/"%(myfilename,iprocess) 
+
+		if systematics=='':
+			myhist = rebinnedHist[iprocess].Clone("nominal")
+		else:
+			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
+			if systematics in ["Q2","isr","fsr"]:
+			 	myNominalHist = myfile.Get(mydir+"nominal")
+			 	if myNominalHist != None:
+					valNominal = myNominalHist.Integral()
+			 		val = myhist.Integral()
+			 		if valNominal != 0 and val != 0:
+			 			print "nominal", valNominal, " ==> ", "syst %s"%systematics,val
+			 			myhist.Scale(valNominal/val)
+			 			print "normalized", myhist.Integral()
+			 	else:
+			 		print "either nominal histogram is empty, systematics histogram is empty."
+		if myfile.GetDirectory(mydir):
+			gDirectory.cd(mydir)
+			if systematics=='':
+				gDirectory.Delete("nominal;*")
+			else:
+				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
+			myhist.Write()
+		else:
+			gDirectory.mkdir(mydir)
+			gDirectory.cd(mydir)
+			if systematics=='':
+				gDirectory.Delete("nominal;*")
+			else:
+				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
+			myhist.Write()
+	print "%s%s.root"%(plotDirectory,"ttgamma_Prefit")
+
+	myfile.Close()
+	sys.exit()
+
+else:
+	## purpose for plotting 
+	if postfitPlots:
+		#rebinnedHist["TTGamma"].Scale(TTGammaSF)
+		#rebinnedHist["TTGamma"].Scale(nonPromptSF)
+		rebinnedHist["TTbar"].Scale(TTbarSF) 
+		rebinnedHist["WGamma"].Scale(WGSF) 
+		rebinnedHist["ZGamma"].Scale(ZGSF) 
+		rebinnedHist["Other"].Scale(OtherSF) 	
+		
+		print "TTGammaSF and nonPromptSF ==>",TTGammaSF, nonPromptSF
+		print "TTbarSF, WGSF, ZGSF and OtherSF ==> ", TTbarSF, WGSF, ZGSF, OtherSF
+		
+	rebinnedData.Scale(1.,"width")
+	#rebinnedHist["TTGamma"].Scale(TTGammaSF), idk how to use sf in control M3 plots
+	stack = THStack()
+	for ih in rebinnedHist:
+		rebinnedHist[ih].Scale(1.,"width")
+
+	stack.Add(rebinnedHist["Other"  ])
+	stack.Add(rebinnedHist["ZGamma" ])   
+	stack.Add(rebinnedHist["WGamma" ])   
+	stack.Add(rebinnedHist["TTbar"  ]) 
+	stack.Add(rebinnedHist["TTGamma"])  
+
+
+	rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
+	print rebinnedMC.GetBinContent(8)
+
+	if postfitPlots:
+		rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
+		x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
+		chi2Text = "#chi^{2}/NDF=%.1f"%x
+
+		
+	canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
+	canvasRatio.SetFillColor(0)
+	canvasRatio.SetBorderMode(0)
+	canvasRatio.SetFrameFillStyle(0)
+	canvasRatio.SetFrameBorderMode(0)
+	canvasRatio.SetLeftMargin( L/W )
+	canvasRatio.SetRightMargin( R/W )
+	canvasRatio.SetTopMargin( T/H )
+	canvasRatio.SetBottomMargin( B/H )
+	canvasRatio.SetTickx(0)
+	canvasRatio.SetTicky(0)
+	canvasRatio.Draw()
+	canvasRatio.cd()
+
+	pad1 = TPad("zxc_p1","zxc_p1",0,padRatio-padOverlap,1,1)
+	pad2 = TPad("qwe_p2","qwe_p2",0,0,1,padRatio+padOverlap)
+	pad1.SetLeftMargin( L/W )
+	pad1.SetRightMargin( R/W )
+	pad1.SetTopMargin( T/H/(1-padRatio+padOverlap) )
+	pad1.SetBottomMargin( (padOverlap+padGap)/(1-padRatio+padOverlap) )
+	pad1.SetFillColor(0)
+	pad1.SetBorderMode(0)
+	pad1.SetFrameFillStyle(0)
+	pad1.SetFrameBorderMode(0)
+	pad1.SetTickx(0)
+	pad1.SetTicky(0)
+
+	pad2.SetLeftMargin( L/W )
+	pad2.SetRightMargin( R/W )
+	pad2.SetTopMargin( (padOverlap)/(padRatio+padOverlap) )
+	pad2.SetBottomMargin( B/H/(padRatio+padOverlap) )
+	pad2.SetFillColor(0)
+	pad2.SetFillStyle(4000)
+	pad2.SetBorderMode(0)
+	pad2.SetFrameFillStyle(0)
+	pad2.SetFrameBorderMode(0)
+	pad2.SetTickx(0)
+	pad2.SetTicky(0)
+
+	pad1.Draw()
+	pad2.Draw()
+
+	noData = False
+
+	oneLine = TF1("oneline","1",-9e9,9e9)
+	oneLine.SetLineColor(kBlack)
+	oneLine.SetLineWidth(1)
+	oneLine.SetLineStyle(2)
+
+	maxVal = stack.GetMaximum()
+	if not noData: 
+	    maxVal = max(rebinnedData.GetMaximum(),maxVal)
+
+	minVal = 0
+	if mydistributionName == "ChIso": minVal = 1
+	print minVal
+	# minVal = max(stack.GetStack()[0].GetMinimum(),1)
+	stack.SetMaximum(1.5*maxVal)
+	if mydistributionName == "ChIso": stack.SetMaximum(20*maxVal)
+	stack.SetMinimum(minVal)
+
+	errorband=stack.GetStack().Last().Clone("error")
+	errorband.Sumw2()
+	errorband.SetLineColor(kBlack)
+	errorband.SetFillColor(kBlack)
+	errorband.SetFillStyle(3245)
+	errorband.SetMarkerSize(0)
+
+	if not noData == True:
+		legend.AddEntry(rebinnedData,"Data", 'pe')
+
+	legend.AddEntry(errorband,"Uncertainty","f")
+
+	#for ih in rebinnedHist:
+	#	legend.AddEntry(rebinnedHist[ih],template_categoryName[ih],'f')
+
+	legend.AddEntry(rebinnedHist["TTGamma" ],template_categoryName["TTGamma" ],'f')	
+	legend.AddEntry(rebinnedHist["TTbar"   ],template_categoryName["TTbar"   ],'f') 
+	legend.AddEntry(rebinnedHist["WGamma"  ],template_categoryName["WGamma"  ],'f')  
+	legend.AddEntry(rebinnedHist["ZGamma"  ],template_categoryName["ZGamma"  ],'f')
+	legend.AddEntry(rebinnedHist["Other"   ],template_categoryName["Other"   ],'f')  
+	
+	pad1.cd()
+
+	stack.Draw('HIST')
+	if not noData == True:
+		rebinnedData.Draw('E,X0,SAME')
+	legend.Draw("same")
+	stack.GetXaxis().SetTitle('')
+	stack.GetXaxis().SetLabelSize(0)
+	stack.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(1.-padRatio+padOverlap))
+	stack.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
+	stack.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap))
+	stack.SetTitle(';;<Events/GeV>')# '%rebin)
+	if mydistributionName == "ChIso": gPad.SetLogy()
+
+	#CMS_lumi.channelText = (channelText+"\\n"+regionText)
+	#if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
+
+	CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
+	if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
+
+	CMS_lumi.writeChannelText = True
+	CMS_lumi.writeExtraText = True
+	CMS_lumi.CMS_lumi(pad1, 4, 11)
+
+	if not noData:
+		ratio = rebinnedData.Clone("temp")
+		temp = stack.GetStack().Last().Clone("temp")
+		for i_bin in range(1,temp.GetNbinsX()+1):
+			temp.SetBinError(i_bin,0.)
+		ratio.Divide(temp)
+	else:
+		ratio = rebinnedData.Clone("temp")
+		temp = stack.GetStack().Last().Clone("temp")
+	    
+	ratio.SetTitle('')
+	ratio.GetXaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
+	ratio.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
+	ratio.GetXaxis().SetTitleSize(gStyle.GetTitleSize()/(padRatio+padOverlap))
+	ratio.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
+	ratio.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap-padGap))
+
+	maxRatio = ratio.GetMaximum()
+	minRatio = ratio.GetMinimum()
+
+	for i_bin in range(1,ratio.GetNbinsX()):
+		if ratio.GetBinError(i_bin)<1:
+			if ratio.GetBinContent(i_bin)>maxRatio:
+				maxRatio = ratio.GetBinContent(i_bin)
+			if ratio.GetBinContent(i_bin)<minRatio:
+				minRatio = ratio.GetBinContent(i_bin)
+
+	if maxRatio > 1.8:
+		ratio.GetYaxis().SetRangeUser(0,round(0.5+maxRatio))
+	elif maxRatio < 1:
+		ratio.GetYaxis().SetRangeUser(0,1.2)
+	elif maxRatio-1 < 1-minRatio:
+		ratio.GetYaxis().SetRangeUser((1-(1-minRatio)*1.2),1.1*maxRatio)		
+	else:
+		ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
+
+	ratio.GetYaxis().SetRangeUser(0.8,1.2)
+	ratio.GetYaxis().SetNdivisions(504)
+
+	ratio.GetXaxis().SetTitle('%s(GeV)'%mydistributionName)
+
+	ratio.GetYaxis().SetTitle("Data/MC")
+	ratio.GetYaxis().SetTitleOffset(.4)
+	ratio.GetYaxis().SetTitleSize(.09)
+	ratio.GetYaxis().SetNdivisions(2) 
+	CMS_lumi.CMS_lumi(pad2, 4, 11)
+	pad2.cd()
+	maxRatio = 1.5
+	minRatio = 0.5
+	ratio.SetMarkerStyle(rebinnedData.GetMarkerStyle())
+	ratio.SetMarkerSize(rebinnedData.GetMarkerSize())
+	ratio.SetLineColor(rebinnedData.GetLineColor())
+	ratio.SetLineWidth(rebinnedData.GetLineWidth())
+	ratio.Draw('e,x0')
+	errorbandRatio = errorband.Clone("errorRatio")
+	errorbandRatio.Divide(temp)
+	errorbandRatio.Draw('e2,same')
+	oneLine.Draw("same")
+
+	# canvasRatio.Update()
+	canvasRatio.RedrawAxis()
+
+	if postfitPlots:
+		canvasRatio.SaveAs("%s%s_%s_postfit.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+		canvasRatio.Print("%s%s_%s_postfit.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+	else:
+
+		canvasRatio.SaveAs("%s%s_%s.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+		canvasRatio.Print("%s%s_%s.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+		#myfile.Close()
+	canvasRatio.Close()
 
 
 #

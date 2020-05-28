@@ -197,6 +197,8 @@ isQCD = False # what is it doing now?
 dir_=""
 Q2 = 1.  
 Pdf = 1. 
+isr = 1.
+fsr = 1.
 Pileup ="PUweight"
 MuEff = "muEffWeight"
 EleEff= "eleEffWeight"
@@ -1218,13 +1220,11 @@ if "QCD" in finalState:
 	nBJets = 0
 	#btagWeight="btagWeight[0]"
 
-weights = "%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,btagWeight)
+weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
 #weights = "%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,1,1,Q2,Pdf,btagWeight)
 print extraCuts
 print extraPhotonCuts
 print "using weights", weights
-
-
 
 if not runQuiet: print " the output folder is:", outputhistName
 
@@ -1451,15 +1451,22 @@ if not "QCD_DD" in sample:
 		if 'phosel' in h_Info[1]:
 			if h_Info[0][:8]=="loosePho":
 				evtWeight = "%s*%s"%(evtWeight,loosePhoEff)
+				if options.verbose:
+					print "Variable Name:", h_Info[0]
+					print "Histogram Info:", h_Info
+					print 'Event weight string: "%s"'%evtWeight
 			elif h_Info[0][:3]=="pho":
-				evtWeight = "%s*%s"%(evtWeight,PhoEff)
+				evtWeight = "%s*%s[0]"%(evtWeight,PhoEff) # asked for only the first photon
+				if options.verbose:
+					print "Variable Name:", h_Info[0]
+					print "Histogram Info:", h_Info
+					print 'Event weight string: "%s"'%evtWeight
 			else:
 				evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
-
-                if options.verbose:
-                        print "Variable Name:", h_Info[0]
-                        print "Histogram Info:", h_Info
-                        print 'Event weight string: "%s"'%evtWeight
+				if options.verbose:
+					print "Variable Name:", h_Info[0]
+					print "Histogram Info:", h_Info
+					print 'Event weight string: "%s"'%evtWeight
 		tree.Draw("%s>>%s_%s"%(h_Info[0],h_Info[1],sample),evtWeight)
 
 

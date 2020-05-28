@@ -71,7 +71,10 @@ parser.add_option("--makePlotsMEG","--makePlotsMEG", dest="makePlotsMEG",action=
 					 help="mass EG histograms" )
 parser.add_option("--verbose",dest="verbose",action="store_true",default=False,
 					 help="verbose mode (extra output printed)" )
-					 
+
+parser.add_option("--makePhotonSplitplots", dest="makePhotonSplitplots",action="store_true",default=False,
+					 help="" )
+					 				 
 
 ### nabin
 parser.add_option("--LooseCR2e1","--looseCR2e1", dest="isLooseCR2e1Selection",default=False,action="store_true",
@@ -154,6 +157,8 @@ isLooseCRe3ge2Selection  = options.isLooseCRe3ge2Selection
 makePlotsForSF = options.makePlotsForSF
 makePlotsFlavour =options.makePlotsFlavour
 makePlotsMEG = options.makePlotsMEG
+
+makePhotonSplitplots = options.makePhotonSplitplots
 ## nabin
 isLooseCR2e1Selection = options.isLooseCR2e1Selection
 isLooseCRe2g1Selection = options.isLooseCRe2g1Selection
@@ -192,6 +197,8 @@ isQCD = False # what is it doing now?
 dir_=""
 Q2 = 1.  
 Pdf = 1. 
+isr = 1.
+fsr = 1.
 Pileup ="PUweight"
 MuEff = "muEffWeight"
 EleEff= "eleEffWeight"
@@ -1213,13 +1220,11 @@ if "QCD" in finalState:
 	nBJets = 0
 	#btagWeight="btagWeight[0]"
 
-weights = "%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,btagWeight)
+weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
 #weights = "%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,1,1,Q2,Pdf,btagWeight)
 print extraCuts
 print extraPhotonCuts
 print "using weights", weights
-
-
 
 if not runQuiet: print " the output folder is:", outputhistName
 
@@ -1233,6 +1238,10 @@ if plotList is None:
 	if makeAllPlots:
 		plotList = histogramInfo.keys()
 		if not runQuiet: print "Making full list of plots"
+	elif makePhotonSplitplots:
+		plotList = ["phosel_LeadingPhotonEt", "phosel_LeadingPhotonEt_GenuinePhoton",  "phosel_LeadingPhotonEt_MisIDEle",  "phosel_LeadingPhotonEt_HadronicPhoton",  "phosel_LeadingPhotonEt_HadronicFake",
+			        "phosel_LeadingPhotonEta","phosel_LeadingPhotonEta_GenuinePhoton", "phosel_LeadingPhotonEta_MisIDEle", "phosel_LeadingPhotonEta_HadronicPhoton", "phosel_LeadingPhotonEta_HadronicFake",
+					"phosel_LeadingPhotonPhi","phosel_LeadingPhotonPhi_GenuinePhoton", "phosel_LeadingPhotonPhi_MisIDEle", "phosel_LeadingPhotonPhi_HadronicPhoton", "phosel_LeadingPhotonPhi_HadronicFake"]
 	elif makeJetsplots:
 		plotList = ["presel_jet2Pt","presel_jet3Pt", "presel_jet4Pt"]
 	elif makePlotsFlavour:
@@ -1442,15 +1451,22 @@ if not "QCD_DD" in sample:
 		if 'phosel' in h_Info[1]:
 			if h_Info[0][:8]=="loosePho":
 				evtWeight = "%s*%s"%(evtWeight,loosePhoEff)
+				if options.verbose:
+					print "Variable Name:", h_Info[0]
+					print "Histogram Info:", h_Info
+					print 'Event weight string: "%s"'%evtWeight
 			elif h_Info[0][:3]=="pho":
-				evtWeight = "%s*%s"%(evtWeight,PhoEff)
+				evtWeight = "%s*%s[0]"%(evtWeight,PhoEff) # asked for only the first photon
+				if options.verbose:
+					print "Variable Name:", h_Info[0]
+					print "Histogram Info:", h_Info
+					print 'Event weight string: "%s"'%evtWeight
 			else:
 				evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
-
-                if options.verbose:
-                        print "Variable Name:", h_Info[0]
-                        print "Histogram Info:", h_Info
-                        print 'Event weight string: "%s"'%evtWeight
+				if options.verbose:
+					print "Variable Name:", h_Info[0]
+					print "Histogram Info:", h_Info
+					print 'Event weight string: "%s"'%evtWeight
 		tree.Draw("%s>>%s_%s"%(h_Info[0],h_Info[1],sample),evtWeight)
 
 

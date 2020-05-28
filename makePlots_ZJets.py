@@ -19,6 +19,8 @@ from colorama import Fore, Back, Style
 padRatio = 0.25
 padOverlap = 0.15
 
+
+
 padGap = 0.01
 parser = OptionParser()
 parser.add_option("-y", "--year", dest="Year", default="",type='str',
@@ -114,8 +116,8 @@ if finalState=='DiEle':
 #######
 ########
 
-#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
+#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]#,"fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics", systematics
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
 
@@ -124,6 +126,7 @@ print(Style.RESET_ALL)
 if level=='up': mylevel='Up'
 if level=='down': mylevel='Down'
 
+isSelectionDir = ""
 if tight:      #SR8 
 	isSelectionDir = "tight"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -133,27 +136,14 @@ if tight:      #SR8
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_tight/"%(selYear, channel,systematics,level)
 		plotDirectory = "ZJets_syst_tightplots_%s/"%(selYear)
+		plotDirectoryTemplate = "ZJets_syst_tightplots_%s/"%(selYear)		
 		regionText = "N_{j}#geq4, N_{b}#geq1"
 
 	else:
 		fileDir     = "histograms_%s/%s/Dilep_hists_tight/"%(selYear, channel)
 		plotDirectory = "ZJets_syst_tightplots_%s/"%(selYear)
+		plotDirectoryTemplate = "ZJets_syst_tightplots_%s/"%(selYear)		
 		regionText = "N_{j}#geq4, N_{b}#geq1"
-
-if looseCRge2ge0:  #AR
-	isSelectionDir = "looseCRge2ge0"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
-	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); 
-	fileDirQCD  = "histograms_%s/%s/Dilep_hists_looseCRge2ge0/"%(selYear, channel)
-	if systematics in allsystematics:
-		fileDir  = "histograms_%s/%s/Dilep_hists_%s_%s_looseCRge2ge0/"%(selYear, channel,systematics,level)
-		plotDirectory = "ZJets_syst_looseCRge2ge0plots_%s/"%(selYear)
-
-	else:
-		fileDir     = "histograms_%s/%s/Dilep_hists_looseCRge2ge0/"%(selYear, channel)
-		plotDirectory = "ZJets_syst_looseCRge2ge0plots_%s/"%(selYear)
-		regionText = "N_{j}#geq2, N_{b}#geq0"
 
 if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
 	isSelectionDir = "looseCRge2e0"
@@ -300,9 +290,13 @@ if looseCRe3ge2:  #CR7
 
 ###
 ####
+
+
+
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
-fileDir = eosFolder+fileDir
-fileDirQCD = eosFolder+fileDirQCD
+
+fileDir = eosFolder + fileDir
+fileDirQCD = eosFolder + fileDirQCD
 #print fileDir
 
 if not os.path.exists(plotDirectory):
@@ -315,11 +309,9 @@ gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
 from Style import *
 gROOT.ForceStyle()
-if selYear=='2016': myMisIDEle="MisIDEleSixteen"
-elif selYear=='2017': myMisIDEle="MisIDEleSeventeen"
-else: myMisIDEle="MisIDEleEighteen"
 
-sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+
+sampleList = ['TTGamma','TTbar','TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 
 template_category = {"myZJets":kGreen+1, "myBackground":kRed }
 template_category_name = {"myZJets":"ZJets", "myBackground":"background" }
@@ -344,6 +336,7 @@ else:
 	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
 
 print sampleList
+
 
 H = 600;
 W = 800;
@@ -406,7 +399,7 @@ for sample in sampleList:
 
 rebin = 2
 binning = numpy.arange(80,100.1,rebin)
-	
+#binning = numpy.array([80,88,92,100.1])
 
 rebinnedHist ={} 
 for ih in templateHist:
@@ -456,7 +449,7 @@ if template:
 	# create directory only if it does not exist
 	### ele channel
 	for iprocess in template_category.keys():
-
+		#print "my templates:", iprocess
 		myfile.cd()
 		mydir =  "%s/%s/"%(channel,iprocess) 
 		#print "%s/%s/"%(channel,iprocess) 
@@ -465,11 +458,14 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["PU","Q2","BTagSF_b"]:
+			if systematics in ["Q2","Pdf","isr","fsr"]:
 				myNominalHist = myfile.Get(mydir+"nominal")
 				valNominal = myNominalHist.Integral()
 				val = myhist.Integral()
-				print "nominal", valNominal, " ==> ", "syst",val
+				#print "control region:", isSelectionDir
+				#print "year:", selYear
+				#print "channel:", channel
+				print "nominal", valNominal, " ==> ", "syst %s %s"%(systematics,mylevel), val
 				myhist.Scale(valNominal/val)
 				print "normalized", myhist.Integral()
 		
@@ -489,7 +485,7 @@ if template:
 				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
 			myhist.Write()
 	print "rootbrowse %s%s.root"%(plotDirectoryTemplate,myfilename)
-
+	print "-------------------------------------------------------------"
 	myfile.Close()
 else:
 	rebinnedData.Scale(1.,"width")
@@ -498,18 +494,17 @@ else:
 		rebinnedHist[ih].Scale(1.,"width")
 
 	if postfitPlots:
-		rebinnedHist['ZJets'].Scale(ZJetSF)
+		rebinnedHist['myZJets'].Scale(ZJetSF)
 
 	stack = THStack()
 	stack.Add(rebinnedHist['myBackground'])
-	stack.Add(rebinnedHist['ZJets'])
+	stack.Add(rebinnedHist['myZJets'])
 
 	if postfitPlots:
 		rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
 		x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
 		chi2Text = "#chi^{2}/NDF=%.2f"%x
 
-		
 	canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
 	canvasRatio.SetFillColor(0)
 	canvasRatio.SetBorderMode(0)
@@ -577,9 +572,8 @@ else:
 
 	legend.AddEntry(rebinnedData,"Data", 'pe')
 	legend.AddEntry(errorband,"Uncertainty","f")
-
-	for ih in rebinnedHist:
-		legend.AddEntry(rebinnedHist[ih],template_categoryName[ih],'f')
+	legend.AddEntry(rebinnedHist["myZJets"],"ZJets",'f')
+	legend.AddEntry(rebinnedHist["myBackground"],"Background",'f')
 
 	pad1.cd()
 

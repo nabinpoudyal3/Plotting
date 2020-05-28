@@ -294,7 +294,7 @@ if looseCRe3ge2:  #CR7
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 fileDir = eosFolder+fileDir
 fileDirQCD = eosFolder+fileDirQCD
-#print fileDir
+print fileDir
 
 if not os.path.exists(plotDirectory):
 	os.mkdir(plotDirectory)
@@ -438,7 +438,7 @@ for sample in sampleList:
 if channel =='ele':
 	binning = numpy.array([0,80,84,88,92,96,100,180.])
 else:
-	binning = numpy.array([0,90,180.])
+	binning = numpy.array([0,80,100,180.])
 	
 
 rebinnedHist ={} 
@@ -470,7 +470,6 @@ if systematics=='':
 	rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)
 ## input to combine , open root file
 
-
 if template:
 
 	myfile = TFile("%s%s.root"%(plotDirectoryTemplate,myfilename),"update")
@@ -494,7 +493,8 @@ if template:
 	# create directory only if it does not exist
 	### ele channel
 	for iprocess in template_category.keys():
-
+		print "process:", iprocess
+		print "----------------"
 		myfile.cd()
 		mydir =  "%s/%s/"%(channel,iprocess) 
 		#print "%s/%s/"%(channel,iprocess) 
@@ -503,11 +503,11 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["PU","Q2","BTagSF_b"]:
+			if systematics in ["Q2","Pdf","isr","fsr"]:
 				myNominalHist = myfile.Get(mydir+"nominal")
 				valNominal = myNominalHist.Integral()
 				val = myhist.Integral()
-				print "nominal", valNominal, " ==> ", "syst",val
+				print "nominal", valNominal, " ==> ", "syst %s"%systematics,val
 				myhist.Scale(valNominal/val)
 				print "normalized", myhist.Integral()
 		
@@ -527,7 +527,7 @@ if template:
 				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
 			myhist.Write()
 	print "rootbrowse %s%s.root"%(plotDirectoryTemplate,myfilename)
-
+	print "---------------------------------------------------------------------------"
 	myfile.Close()
 else:
 	rebinnedData.Scale(1.,"width")

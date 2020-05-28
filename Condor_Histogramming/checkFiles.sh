@@ -7,7 +7,7 @@ do
 		#echo $dir/$dir1
 		for dir2 in `$eosls /store/user/npoudyal/$dir/$dir1`;do
 		echo $dir/$dir1/$dir2
-		$eosls -lh /store/user/npoudyal/$dir/$dir1/$dir2
+		$eosls -lth /store/user/npoudyal/$dir/$dir1/$dir2
 		done
 	done
 done

@@ -151,18 +151,26 @@ gROOT.ForceStyle()
 # else: 
 # 	myDir = {"ele/MisIDEleEighteen":"ele_MisIDEleEighteen","ele/WgammaBkgPhoton":"ele_WgammaBkgPhoton","ele/ZgammaBkgPhoton":"ele_ZgammaBkgPhoton","ele/OtherSampleBkgPhoton":"ele_OtherSampleBkgPhoton",
 #              "mu/MisIDEleEighteen":"mu_MisIDEleEighteen","mu/WgammaBkgPhoton":"mu_WgammaBkgPhoton","mu/ZgammaBkgPhoton":"mu_ZgammaBkgPhoton","mu/OtherSampleBkgPhoton":"mu_OtherSampleBkgPhoton"}
+if plotVariable=="M30photon":
 
-myDir= {"%s/nonPromptZGamma"%plotVariable:  "%s_nonPromptZGamma"%plotVariable,
- 		"%s/nonPromptTTGamma"%plotVariable: "%s_nonPromptTTGamma"%plotVariable,
- 		"%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
- 		"%s/nonPromptTTbar"%plotVariable:   "%s_nonPromptTTbar"%plotVariable,
- 		"%s/nonPromptOther"%plotVariable:   "%s_nonPromptOther"%plotVariable,
- 		"%s/nonPromptWGamma"%plotVariable:  "%s_nonPromptWGamma"%plotVariable,
- 		"%s/isolatedOther"%plotVariable:    "%s_isolatedOther"%plotVariable,
- 		"%s/isolatedZGamma"%plotVariable:   "%s_isolatedZGamma"%plotVariable,
- 		"%s/isolatedTTbar"%plotVariable:    "%s_isolatedTTbar"%plotVariable,
- 		"%s/isolatedWGamma"%plotVariable:   "%s_isolatedWGamma"%plotVariable,
-}
+	myDir= {"%s/ZGamma"%plotVariable:  "%s_ZGamma"%plotVariable,
+	 		"%s/TTGamma"%plotVariable: "%s_TTGamma"%plotVariable,
+	 		"%s/TTbar"%plotVariable:   "%s_TTbar"%plotVariable,
+	 		"%s/Other"%plotVariable:   "%s_Other"%plotVariable,
+	 		"%s/WGamma"%plotVariable:  "%s_WGamma"%plotVariable,
+	}
+else:
+	myDir= {"%s/nonPromptZGamma"%plotVariable:  "%s_nonPromptZGamma"%plotVariable,
+	 		"%s/nonPromptTTGamma"%plotVariable: "%s_nonPromptTTGamma"%plotVariable,
+	 		"%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
+	 		"%s/nonPromptTTbar"%plotVariable:   "%s_nonPromptTTbar"%plotVariable,
+	 		"%s/nonPromptOther"%plotVariable:   "%s_nonPromptOther"%plotVariable,
+	 		"%s/nonPromptWGamma"%plotVariable:  "%s_nonPromptWGamma"%plotVariable,
+	 		"%s/isolatedOther"%plotVariable:    "%s_isolatedOther"%plotVariable,
+	 		"%s/isolatedZGamma"%plotVariable:   "%s_isolatedZGamma"%plotVariable,
+	 		"%s/isolatedTTbar"%plotVariable:    "%s_isolatedTTbar"%plotVariable,
+	 		"%s/isolatedWGamma"%plotVariable:   "%s_isolatedWGamma"%plotVariable,
+	}
 
 
 import CMS_lumi
@@ -176,7 +184,8 @@ inputfilename = "ttgamma_tightplots_%s_%s/ttgamma_Prefit.root"%(channel,selYear)
 
 
 
-systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2"] # keep adding more systematics 
+#systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","misIDE","isr","fsr"] # keep adding more systematics 
+systematicList = ["Q2","isr","fsr"] # keep adding more systematics 
 myfile = ROOT.TFile(inputfilename,"READ")
 
 # # myfile.ls()
@@ -194,6 +203,7 @@ for idir in myDir.keys():
 		h_Down.SetLineColor(ROOT.kBlue);h_Down.SetFillColor(ROOT.kBlue);h_Down.SetLineWidth(2);h_Down.SetMarkerStyle(5);
 
 		print item, " :: ",h_nominal.Integral(),"==>", h_Up.Integral(),"==>", h_Down.Integral()
+		print item, " :: ",h_nominal.Integral(),"==>", h_Up.Integral(),"==>", h_Down.Integral()	
         # c = ROOT.TCanvas('c','',800,600)
         # legend = ROOT.TLegend(0.7,0.7,0.88,0.88)
         # legend.SetBorderSize(0)
@@ -399,7 +409,7 @@ for idir in myDir.keys():
 
 from PyPDF2 import PdfFileMerger, PdfFileReader
 
-pdflocation="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/src/TTGammaSemiLep_13TeV/Plotting_Nabin/Plotting/"+plotDirectory
+pdflocation="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/"+plotDirectory
 os.chdir(pdflocation)
 
 print plotDirectory
@@ -415,5 +425,5 @@ for filename in pdf2merge:
 
 merger.write(plotDirectory[:-1]+'_%s.pdf'%plotVariable)
 
-print plotDirectory[:-1]+'_%s.pdf'%plotVariable
+print plotDirectory[:-1]+'/'+plotDirectory[:-1]+'_%s.pdf'%plotVariable
 

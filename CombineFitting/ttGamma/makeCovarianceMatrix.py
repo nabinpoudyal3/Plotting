@@ -40,12 +40,14 @@ h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
 h_signal.GetZaxis().SetLabelSize(0.03)
 h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
 h_signal.Draw('colz, Y+, TEXT0')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
+print mypal
 mypal.SetX1NDC(0.02);
 mypal.SetX2NDC(0.06);
 mypal.SetY1NDC(0.1);
@@ -64,6 +66,7 @@ h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
 h_signal.GetZaxis().SetLabelSize(0.03)
 h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
@@ -90,6 +93,7 @@ h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
 h_signal.GetZaxis().SetLabelSize(0.03)
 h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
@@ -114,6 +118,7 @@ h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
 h_signal.GetZaxis().SetLabelSize(0.03)
 h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
@@ -140,6 +145,7 @@ h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
 h_signal.GetZaxis().SetLabelSize(0.03)
 h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
@@ -165,6 +171,7 @@ h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
 h_signal.GetZaxis().SetLabelSize(0.03)
 h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)

@@ -102,16 +102,34 @@ def GetHistogramInfo(extraCuts="(passPresel_Mu && nJet>=3 && nBJet>=1)*", extraP
     "phosel_LeadingPhotonEt_GenuinePhoton_barrel": ["phoEt[0]"      , "phosel_LeadingPhotonEt_GenuinePhoton_barrel" , [300,0,300], extraPhotonCuts%("nPhoBarrel>=1 && photonIsGenuine"), "", True],
     "phosel_LeadingPhotonEt_MisIDEle_barrel"     : ["phoEt[0]" , "phosel_LeadingPhotonEt_MisIDEle_barrel" ,           [300,0,300], extraPhotonCuts%("nPhoBarrel>=1 && photonIsMisIDEle"), "", True],
     ## nabin
-    "phosel_LeadingPhotonEt"               : ["phoEt[0]" , "phosel_LeadingPhotonEt"               , [300,0,300],   extraPhotonCuts%("nPho==1"), "", True],
-    "phosel_LeadingPhotonEt_GenuinePhoton" : ["phoEt[0]" , "phosel_LeadingPhotonEt_GenuinePhoton" , [300,0,300],   extraPhotonCuts%("nPho==1 && photonIsGenuine"),        "", True],
+    "phosel_LeadingPhotonEt"               : ["phoEt[0]" , "phosel_LeadingPhotonEt"               , [300,0,300], extraPhotonCuts%("nPho==1"), "", True],
+    "phosel_LeadingPhotonEt_GenuinePhoton" : ["phoEt[0]" , "phosel_LeadingPhotonEt_GenuinePhoton" , [300,0,300], extraPhotonCuts%("nPho==1 && photonIsGenuine"),        "", True],
     "phosel_LeadingPhotonEt_MisIDEle"      : ["phoEt[0]" , "phosel_LeadingPhotonEt_MisIDEle"      , [300,0,300], extraPhotonCuts%("nPho==1 && photonIsMisIDEle"),       "", True],
     "phosel_LeadingPhotonEt_HadronicPhoton": ["phoEt[0]" , "phosel_LeadingPhotonEt_HadronicPhoton", [300,0,300], extraPhotonCuts%("nPho==1 && photonIsHadronicPhoton"), "", True],
     "phosel_LeadingPhotonEt_HadronicFake"  : ["phoEt[0]" , "phosel_LeadingPhotonEt_HadronicFake"  , [300,0,300], extraPhotonCuts%("nPho==1 && photonIsHadronicFake"),   "", True], 
     ## nabin
+
+    ## nabin
+    "phosel_LeadingPhotonPhi"               : ["phoPhi[0]" , "phosel_LeadingPhotonPhi"               , [50,-4,4], extraPhotonCuts%("nPho==1"), "", True],
+    "phosel_LeadingPhotonPhi_GenuinePhoton" : ["phoPhi[0]" , "phosel_LeadingPhotonPhi_GenuinePhoton" , [50,-4,4], extraPhotonCuts%("nPho==1 && photonIsGenuine"),        "", True],
+    "phosel_LeadingPhotonPhi_MisIDEle"      : ["phoPhi[0]" , "phosel_LeadingPhotonPhi_MisIDEle"      , [50,-4,4], extraPhotonCuts%("nPho==1 && photonIsMisIDEle"),       "", True],
+    "phosel_LeadingPhotonPhi_HadronicPhoton": ["phoPhi[0]" , "phosel_LeadingPhotonPhi_HadronicPhoton", [50,-4,4], extraPhotonCuts%("nPho==1 && photonIsHadronicPhoton"), "", True],
+    "phosel_LeadingPhotonPhi_HadronicFake"  : ["phoPhi[0]" , "phosel_LeadingPhotonPhi_HadronicFake"  , [50,-4,4], extraPhotonCuts%("nPho==1 && photonIsHadronicFake"),   "", True], 
+    ## nabin
+
+    ## nabin
+    "phosel_LeadingPhotonEta"               : ["phoEta[0]" , "phosel_LeadingPhotonEta"               , [50,-2.5,2.5], extraPhotonCuts%("nPho==1"), "", True],
+    "phosel_LeadingPhotonEta_GenuinePhoton" : ["phoEta[0]" , "phosel_LeadingPhotonEta_GenuinePhoton" , [50,-2.5,2.5], extraPhotonCuts%("nPho==1 && photonIsGenuine"),        "", True],
+    "phosel_LeadingPhotonEta_MisIDEle"      : ["phoEta[0]" , "phosel_LeadingPhotonEta_MisIDEle"      , [50,-2.5,2.5], extraPhotonCuts%("nPho==1 && photonIsMisIDEle"),       "", True],
+    "phosel_LeadingPhotonEta_HadronicPhoton": ["phoEta[0]" , "phosel_LeadingPhotonEta_HadronicPhoton", [50,-2.5,2.5], extraPhotonCuts%("nPho==1 && photonIsHadronicPhoton"), "", True],
+    "phosel_LeadingPhotonEta_HadronicFake"  : ["phoEta[0]" , "phosel_LeadingPhotonEta_HadronicFake"  , [50,-2.5,2.5], extraPhotonCuts%("nPho==1 && photonIsHadronicFake"),   "", True], 
+    ## nabin
+	
+	
     "phosel_LeadingPhotonEt_Isolated"          : ["phoEt[0]" , "phosel_LeadingPhotonEt_Isolated_barrel" , [300,0,300], extraPhotonCuts%("nPhoBarrel>=1 && (photonIsGenuine||photonIsMisIDEle)"), "", True],
     "phosel_LeadingPhotonEt_NonPrompt_barrel"  : ["phoEt[0]" , "phosel_LeadingPhotonEt_NonPrompt_barrel", [300,0,300], extraPhotonCuts%("nPhoBarrel>=1 && (photonIsHadronicPhoton||photonIsHadronicFake)"), "", True],
     #"phosel_SecondLeadingPhotonEt"             : ["phoEt[1]"      , "phosel_SecondLeadingPhotonEt"         ,      [300,0,300], extraPhotonCuts%("nPho==1"), "", True],
-    "phosel_LeadingPhotonEta"               : ["phoEta[0]"     , "phosel_LeadingPhotonEta"              ,    [50,-2.5,2.5], extraPhotonCuts%("nPho==1"), "", True],
+    #"phosel_LeadingPhotonEta"               : ["phoEta[0]"     , "phosel_LeadingPhotonEta"              ,    [50,-2.5,2.5], extraPhotonCuts%("nPho==1"), "", True],
     "phosel_LeadingPhotonSCEta"             : ["phoSCEta[0]"   , "phosel_LeadingPhotonSCEta"            ,    [50,-2.5,2.5], extraPhotonCuts%("nPho==1"), "", True],
     "phosel_LeadingPhotonEta_barrel"        : ["phoEta[0]"     , "phosel_LeadingPhotonEta_barrel"       ,    [50,-2.5,2.5], extraPhotonCuts%("nPhoBarrel>=1"), "", True],
     "phosel_LeadingPhotonSCEta_barrel"      : ["phoSCEta[0]"   , "phosel_LeadingPhotonSCEta_barrel"     ,    [50,-2.5,2.5], extraPhotonCuts%("nPhoBarrel>=1"), "", True],

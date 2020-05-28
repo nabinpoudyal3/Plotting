@@ -95,6 +95,6 @@ with open("MisIDEleSFvalues.tex","w") as _file:
 
 # ## copy the file to plotting folder
 #get_ipython().system('cp MisIDEleSFvalues.tex ../AllTexFiles ')
-shutil.copy("MisIDEleSFvalues.py",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/AllTexFiles')
+shutil.copy("MisIDEleSFvalues.tex",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/AllTexFiles')
 
 
