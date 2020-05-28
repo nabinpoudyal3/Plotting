@@ -1,0 +1,40 @@
+imax 1  
+jmax *  
+kmax *  
+---------------------------------
+shapes *  *  ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
+---------------------------------
+bin			    M30btag  
+observation		-1       
+-------------------------------------
+bin			M30btag			M30btag			M30btag			M30btag			M30btag			M30btag				M30btag			M30btag			M30btag			
+process		isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	nonPromptZGamma	nonPromptOther	
+process		0	            1	            2	            3	            4	            0	                1	            3	            4	
+rate		-1	            -1	            -1	             -1	            -1	            -1	                -1	            -1	            -1
+--------------------------------------------------------------------------------------------
+lumi        lnN       1.03    1.03   1.03    1.03    1.03    1.03    1.03    1.03    1.03   
+------------------------------------------------------------------------------------------------------- 
+PU          shape     1       1      1       1       1       1       1       1       1       
+PhoEff      shape     1       1      1       1       1       1       1       1       1       
+MuEff       shape     1       1      1       1       1       1       1       1       1       
+Q2          shape     1       1      -       -       -       1       1       -       -       
+isr         shape     1       1      -       -       -       1       1       -       -       
+fsr         shape     1       1      -       -       -       1       1       -       -       
+misIDE      shape     1       1      1       1       1       -       -       -       -       
+------------------------------------------------------------------------------------------------
+nonPromptSF rateParam * nonPrompt*  1 
+---------------------------------------------------------------------------------------
+TTbarSF rateParam * *TTbar 1
+TTbarSF param  1.0   0.05
+WGSF rateParam * *WGamma 1
+WGSF param  1.0   0.1
+ZGSF rateParam * *ZGamma 1
+ZGSF param  1.0   0.1
+OtherSF rateParam * *Other 1
+OtherSF param  1.0   0.05
+------------------------------------------------------------------------------
+mySyst group = lumi PU PhoEff MuEff Q2 isr fsr misIDE
+additionalSyst group = TTbarSF WGSF ZGSF OtherSF
+-------------------------------------------------------------------------------
+* autoMCStats 0 1
+------------------------------------------------------------------------------
