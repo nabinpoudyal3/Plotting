@@ -9,15 +9,15 @@ observation		-1
 -------------------------------------
 bin			M30photon		M30photon	M30photon	M30photon	M30photon
 process		TTGamma			TTbar		WGamma		ZGamma		Other
-process		0	            1	        2 	        3	        4
-rate		-1	           -1	        -1	       -1	        -1
+process		0	            1	        2	        3	        4
+rate		-1	            -1	        -1	        -1	       -1
 --------------------------------------------------------------------------------------------
-lumi        lnN     1.025   1.025   1.025   1.025   1.025    
-------------------------------------------------------------------------------------------       
+lumi        lnN     1.025   1.025   1.025   1.025   1.025           
+--------------------------------------------------------------------------------------------
 BTagSF_b    shape   1       1       1       1       1                           
 BTagSF_l    shape   1       1       1       1       1        
 PU          shape   1       1       1       1       1        
-MuEff       shape   1       1       1       1       1        
+EleEff      shape   1       1       1       1       1        
 Q2          shape   1       1       -       -       -  
 isr         shape   1       1       -       -       -        
 fsr         shape   1       1       -       -       -              
@@ -31,7 +31,7 @@ ZGSF param  1.0   0.05
 OtherSF rateParam * *Other 1
 OtherSF param  1.0   0.05
 ------------------------------------------------------------------------------
-mySyst group = lumi BTagSF_b BTagSF_l PU MuEff Q2 isr fsr misIDE
+mySyst group = lumi BTagSF_b BTagSF_l PU MuEff Q2 isr fsr 
 additionalSyst group = TTbarSF WGSF ZGSF OtherSF
 -------------------------------------------------------------------------------
 * autoMCStats 0 1
