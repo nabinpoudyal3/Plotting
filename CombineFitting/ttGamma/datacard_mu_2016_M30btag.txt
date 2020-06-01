@@ -2,7 +2,7 @@ imax 1
 jmax *  
 kmax *  
 ---------------------------------
-shapes *  M30btag  ../../ttgamma_tightplots_mu_2016/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
+shapes *   M30btag ../../ttgamma_tightplots_mu_2016/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
 ---------------------------------
 bin			    M30btag  
 observation		-1       
@@ -16,7 +16,7 @@ lumi        lnN       1.025   1.025  1.025   1.025   1.025   1.025   1.025   1.0
 ------------------------------------------------------------------------------------------------------- 
 PU          shape     1       1      1       1       1       1       1       1       1       
 PhoEff      shape     1       1      1       1       1       1       1       1       1       
-MuEff       shape     1       1      1       1       1       1       1       1       1       
+MuEff      shape     1       1      1       1       1       1       1       1       1       
 Q2          shape     1       1      -       -       -       1       1       -       -       
 isr         shape     1       1      -       -       -       1       1       -       -       
 fsr         shape     1       1      -       -       -       1       1       -       -       
