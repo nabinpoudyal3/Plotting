@@ -18,7 +18,7 @@ BTagSF_b    shape     1       1      1       1       1       1       1       1  
 BTagSF_l    shape     1       1      1       1       1       1       1       1       1       
 PU          shape     1       1      1       1       1       1       1       1       1       
 PhoEff      shape     1       1      1       1       1       1       1       1       1       
-MuEff       shape     1       1      1       1       1       1       1       1       1       
+MuEff      shape     1       1      1       1       1       1       1       1       1       
 Q2          shape     1       1      -       -       -       1       1       -       -       
 isr         shape     1       1      -       -       -       1       1       -       -       
 fsr         shape     1       1      -       -       -       1       1       -       -       
