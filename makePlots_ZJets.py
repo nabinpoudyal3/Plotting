@@ -34,7 +34,10 @@ parser.add_option("--nBinss", dest="nBinss", default="",type='str',
 
 parser.add_option("--template", dest="template", default=False,action="store_true",
 					help="post fit plots" )
-	
+					
+parser.add_option("--prefitPlots", dest="prefitPlots", default=False,action="store_true",
+					help="pre fit plots" )
+					
 parser.add_option("--postfitPlots", dest="postfitPlots", default=False,action="store_true",
 					help="post fit plots" )
 
@@ -90,6 +93,8 @@ systematics = options.systematics
 level=options.level
 finalState = options.channel
 postfitPlots = options.postfitPlots
+prefitPlots   = options.prefitPlots
+
 tight = options.tight
 looseCRge2ge0=options.looseCRge2ge0
 looseCRge2e0 =options.looseCRge2e0
@@ -127,7 +132,9 @@ if level=='up': mylevel='Up'
 if level=='down': mylevel='Down'
 
 isSelectionDir = ""
+crName=""
 if tight:      #SR8 
+	crName="SR8"
 	isSelectionDir = "tight"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -146,6 +153,7 @@ if tight:      #SR8
 		regionText = "N_{j}#geq4, N_{b}#geq1"
 
 if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
+	crName="CR123"
 	isSelectionDir = "looseCRge2e0"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -163,6 +171,7 @@ if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
 
 ###
 if looseCRe2e0:  #CR1
+	crName="CR1"
 	isSelectionDir = "looseCRe2e0"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -181,6 +190,7 @@ if looseCRe2e0:  #CR1
 		regionText = "N_{j}=2, N_{b}=0"
 
 if looseCRe3e0:  #CR2
+	crName="CR2"
 	isSelectionDir = "looseCRe3e0"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -200,6 +210,7 @@ if looseCRe3e0:  #CR2
 
 if looseCRge4e0:  #CR3
 	isSelectionDir = "looseCRge4e0"
+	crName="CR3"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -217,6 +228,7 @@ if looseCRge4e0:  #CR3
 		regionText = "N_{j}#geq4, N_{b}=0"
 
 if looseCRe2e1:  #CR4
+	crName="CR4"
 	isSelectionDir = "looseCRe2e1"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -235,6 +247,7 @@ if looseCRe2e1:  #CR4
 		regionText = "N_{j}=2, N_{b}=1"
 	
 if looseCRe3e1:  #CR5
+	crName="CR5"
 	isSelectionDir = "looseCRe3e1"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -253,6 +266,7 @@ if looseCRe3e1:  #CR5
 		regionText = "N_{j}=3, N_{b}=1"
 
 if looseCRe2e2:  #CR6
+	crName="CR6"
 	isSelectionDir = "looseCRe2e2"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -271,6 +285,7 @@ if looseCRe2e2:  #CR6
 		regionText = "N_{j}=2, N_{b}=2"
 
 if looseCRe3ge2:  #CR7
+	crName="CR7"
 	isSelectionDir = "looseCRe3ge2"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); 
@@ -297,7 +312,8 @@ eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 
 fileDir = eosFolder + fileDir
 fileDirQCD = eosFolder + fileDirQCD
-#print fileDir
+print fileDir
+#print fileDirQCD
 
 if not os.path.exists(plotDirectory):
 	os.mkdir(plotDirectory)
@@ -397,9 +413,14 @@ for sample in sampleList:
 		else:
 			templateHist["myBackground"].Add(tempHist)
 
-rebin = 2
-binning = numpy.arange(80,100.1,rebin)
+#rebin = 4
+#binning = numpy.arange(80,100.1,1)
+binning = numpy.array([80,84,88,90,92,94,96,100.])
+binWidth = numpy.diff(binning)
+
+#print binning
 #binning = numpy.array([80,88,92,100.1])
+
 
 rebinnedHist ={} 
 for ih in templateHist:
@@ -458,7 +479,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["Q2","Pdf","isr","fsr"]:
+			if systematics in ["Q2","isr","fsr"]:
 				myNominalHist = myfile.Get(mydir+"nominal")
 				valNominal = myNominalHist.Integral()
 				val = myhist.Integral()
@@ -488,22 +509,45 @@ if template:
 	print "-------------------------------------------------------------"
 	myfile.Close()
 else:
-	rebinnedData.Scale(1.,"width")
+	if prefitPlots:
+		rebinnedData.Scale(1.,"width")
 
-	for ih in rebinnedHist:
-		rebinnedHist[ih].Scale(1.,"width")
+		for ih in rebinnedHist:
+			rebinnedHist[ih].Scale(1.,"width")
 
+		if postfitPlots:
+			rebinnedHist['myZJets'].Scale(ZJetSF)
+
+		stack = THStack()
+		stack.Add(rebinnedHist['myBackground'])
+		stack.Add(rebinnedHist['myZJets'])
+	
 	if postfitPlots:
-		rebinnedHist['myZJets'].Scale(ZJetSF)
+		rebinnedData.Scale(1.,"width")
+		filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ZJetsFittingAllYear/fitDiagnostics%s_%s.root"%(crName,selYear)
+		#if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ZJetsFittingAllYear/fitDiagnostics%s_%s.root"%(crName,selYear)
+		#if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ZJetsFittingAllYear/fitDiagnostics%s_%s.root"%(crName,selYear)
 
-	stack = THStack()
-	stack.Add(rebinnedHist['myBackground'])
-	stack.Add(rebinnedHist['myZJets'])
-
-	if postfitPlots:
-		rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
-		x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
-		chi2Text = "#chi^{2}/NDF=%.2f"%x
+		Postfile = TFile(filename,"read")
+		
+		templatePostHist = {}
+		# print len(binning),"==>",len(binWidth)
+		templatePostHist["myZJets"]      = TH1F("myZJets" ,"",len(binWidth),binning)
+		templatePostHist["myBackground"] = TH1F("myBackground"  ,"",len(binWidth),binning)
+ 
+		for process in template_category.keys():
+			tempHist = None
+			tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(channel,process))
+			for ibin in range(1,len(binning)):
+				myBinContent = tempHist.GetBinContent(ibin)/binWidth[ibin-1]
+				templatePostHist[process].SetBinContent(ibin,myBinContent)
+			templatePostHist[process].SetLineColor(template_category[process])
+			templatePostHist[process].SetFillColor(template_category[process])
+			
+			
+		stack = THStack()
+		stack.Add(templatePostHist['myBackground'])
+		stack.Add(templatePostHist['myZJets'])
 
 	canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
 	canvasRatio.SetFillColor(0)
@@ -585,13 +629,13 @@ else:
 	stack.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(1.-padRatio+padOverlap))
 	stack.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
 	stack.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap))
-	#stack.SetTitle(';;<Events/GeV>')# '%rebin)
-	stack.SetTitle(';;Events/%sGeV'%rebin)
+	stack.SetTitle(';;<Events/GeV>')# '%rebin)
+	#stack.SetTitle(';;Events/GeV')
 	#CMS_lumi.channelText = (channelText+"\\n"+regionText)
 	#if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
 
 	CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
-	if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
+	#if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
 
 	CMS_lumi.writeChannelText = True
 	CMS_lumi.writeExtraText = True
