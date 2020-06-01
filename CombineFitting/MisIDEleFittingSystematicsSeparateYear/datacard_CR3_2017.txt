@@ -25,8 +25,9 @@ fsr         shape   1     1     1     1         1     1     1     1
 -------------------------------------------------------------------------------------------------------
 ZGammaBkgPhotonSF rateParam * ZgammaBkgPhoton  1 [-5,5]
 WGammaBkgPhotonSF rateParam * WgammaBkgPhoton  1 [-5,5]
------------------------------------------------------------------------------------------------
-* autoMCStats 0 1
+OtherSampleBkgPhotonSF rateParam * OtherSampleBkgPhoton 1
+OtherSampleBkgPhotonSF param 1   0.05
 -------------------------------------------------------------------------------------------------
 mySyst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff Q2 isr fsr
-   
+-----------------------------------------------------------------------------------------------
+* autoMCStats 0 1
