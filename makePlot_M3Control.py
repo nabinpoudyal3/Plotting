@@ -342,7 +342,8 @@ templateHist["WGamma"].Scale(WGammaSF)
 templateHist["ZGamma"].Scale(ZGammaSF)
 print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
 
-binning = numpy.array([50,105,155,185,260,500.])
+#binning = numpy.array([50,105,155,185,260,500.])
+binning = numpy.array([50,500.])
 
 rebinnedHist ={} 
 
