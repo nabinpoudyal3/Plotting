@@ -36,6 +36,9 @@ parser.add_option("--template", dest="template", default=False,action="store_tru
 parser.add_option("--postfitPlots", dest="postfitPlots", default=False,action="store_true",
 					help="post fit plots" )
 
+parser.add_option("--prefitPlots", dest="prefitPlots", default=False,action="store_true",
+					help="pre fit plots" )
+
 parser.add_option("--syst", "--systematics", dest="systematics", default="",type='str',
 					help="Specify which systematic plots" )
 
@@ -87,7 +90,10 @@ if selYear=="":
 systematics = options.systematics
 level=options.level
 finalState = options.channel
+
 postfitPlots = options.postfitPlots
+prefitPlots   = options.prefitPlots
+
 tight = options.tight
 looseCRge2ge0=options.looseCRge2ge0
 looseCRge2e0 =options.looseCRge2e0
@@ -118,12 +124,14 @@ if finalState=='Mu':
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
 allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics", systematics
-else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
+else: print(Fore.RED + "systematics is not in the list. Add the systematic in the list, if you are running for systematics.")
 
 print(Style.RESET_ALL) 
 
 if level=='up': mylevel='Up'
 if level=='down': mylevel='Down'
+
+crName=""
 
 if tight:      #SR8 
 	isSelectionDir = "tight"
@@ -158,6 +166,7 @@ if looseCRge2ge0:  #AR
 
 if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
 	isSelectionDir = "looseCRge2e0"
+	crName="CR123"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
@@ -175,6 +184,7 @@ if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
 ###
 if looseCRe2e0:  #CR1
 	isSelectionDir = "looseCRe2e0"
+	crName="CR1"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);			
@@ -194,6 +204,7 @@ if looseCRe2e0:  #CR1
 
 if looseCRe3e0:  #CR2
 	isSelectionDir = "looseCRe3e0"
+	crName="CR2"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
@@ -213,6 +224,7 @@ if looseCRe3e0:  #CR2
 
 if looseCRge4e0:  #CR3
 	isSelectionDir = "looseCRge4e0"
+	crName="CR3"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
 	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelectionDir);
@@ -291,6 +303,7 @@ if looseCRe3ge2:  #CR7
 
 ###
 ####
+
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 fileDir = eosFolder+fileDir
 fileDirQCD = eosFolder+fileDirQCD
@@ -441,6 +454,8 @@ else:
 	binning = numpy.array([0,80,100,180.])
 	
 
+binWidth = numpy.diff(binning)
+
 rebinnedHist ={} 
 for ih in templateHist:
 	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
@@ -530,27 +545,56 @@ if template:
 	print "---------------------------------------------------------------------------"
 	myfile.Close()
 else:
-	rebinnedData.Scale(1.,"width")
+	if prefitPlots:
+		rebinnedData.Scale(1.,"width")
 
-	for ih in rebinnedHist:
-		rebinnedHist[ih].Scale(1.,"width")
+		for ih in rebinnedHist:
+			rebinnedHist[ih].Scale(1.,"width")
 
-	if postfitPlots:
-		rebinnedHist['WgammaBkgPhoton'].Scale(WGammaSF)
-		rebinnedHist['ZgammaBkgPhoton'].Scale(ZGammaSF)
-		rebinnedHist[myMisIDEle].Scale(MisIDEleSF)
-
-	stack = THStack()
-	stack.Add(rebinnedHist['OtherSampleBkgPhoton'])
-	stack.Add(rebinnedHist['WgammaBkgPhoton'])
-	stack.Add(rebinnedHist['ZgammaBkgPhoton'])
-	stack.Add(rebinnedHist[myMisIDEle])
+		stack = THStack()
+		stack.Add(rebinnedHist['OtherSampleBkgPhoton'])
+		stack.Add(rebinnedHist['WgammaBkgPhoton'])
+		stack.Add(rebinnedHist['ZgammaBkgPhoton'])
+		stack.Add(rebinnedHist[myMisIDEle])
 
 
 	if postfitPlots:
-		rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
-		x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
-		chi2Text = "#chi^{2}/NDF=%.2f"%x
+		rebinnedData.Scale(1.,"width")
+		if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/MisIDEleFittingSystematicsSeparateYear/fitDiagnostics%s_%s.root"%(crName,selYear)
+		if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/MisIDEleFittingSystematicsSeparateYear/fitDiagnostics%s_%s.root"%(crName,selYear)
+
+		Postfile = TFile(filename,"read")
+		
+		templatePostHist = {}
+		# print len(binning),"==>",len(binWidth)
+		templatePostHist["OtherSampleBkgPhoton"] = TH1F("OtherSampleBkgPhoton" ,"",len(binWidth),binning)
+		templatePostHist["WgammaBkgPhoton"]      = TH1F("WgammaBkgPhoton"      ,"",len(binWidth),binning)
+		templatePostHist["ZgammaBkgPhoton"]      = TH1F("ZgammaBkgPhoton"      ,"",len(binWidth),binning)   
+		templatePostHist[myMisIDEle]             = TH1F( myMisIDEle            ,"",len(binWidth),binning)  
+ 
+
+		for process in template_category.keys():
+			tempHist = None
+			tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(channel,process))
+			for ibin in range(1,len(binning)):
+				myBinContent = tempHist.GetBinContent(ibin)/binWidth[ibin-1]
+				#myBinError   = tempHist.GetBinError(ibin)/binWidth[ibin-1]
+				#print myBinError, "<===>", tempHist.GetBinError(ibin)
+				templatePostHist[process].SetBinContent(ibin,myBinContent)
+				#templatePostHist[process].SetBinError(ibin,myBinError)
+			templatePostHist[process].SetLineColor(template_category[process])
+			templatePostHist[process].SetFillColor(template_category[process])
+			
+			
+		stack = THStack()
+		stack.Add(templatePostHist['OtherSampleBkgPhoton'])
+		stack.Add(templatePostHist['WgammaBkgPhoton'])
+		stack.Add(templatePostHist['ZgammaBkgPhoton'])
+		stack.Add(templatePostHist[myMisIDEle])
+		
+		mytestHistogram = stack.GetStack().Last().Clone("mytestHistogram")
+		#x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
+		#chi2Text = "#chi^{2}/NDF=%.2f"%x
 
 		
 	canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
@@ -713,7 +757,7 @@ else:
 	#if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
 
 	CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
-	if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
+	#if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
 
 	CMS_lumi.writeChannelText = True
 	CMS_lumi.writeExtraText = True
