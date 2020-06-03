@@ -29,9 +29,9 @@ nonPromptSF rateParam * nonPrompt*  1
 TTbarSF rateParam * *TTbar 1
 TTbarSF param  1.0   0.05
 WGSF rateParam * *WGamma 1
-WGSF param  1.0   0.05
+WGSF param  1.0   0.19
 ZGSF rateParam * *ZGamma 1
-ZGSF param  1.0   0.05
+ZGSF param  1.0   0.21
 OtherSF rateParam * *Other 1
 OtherSF param  1.0   0.05
 ------------------------------------------------------------------------------
