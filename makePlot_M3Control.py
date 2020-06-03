@@ -32,6 +32,9 @@ parser.add_option("-c", "--channel", dest="channel", default="",type='str',
 
 parser.add_option("--postfitPlots", dest="postfitPlots", default=False,action="store_true",
 					help="post fit plots" )
+					
+parser.add_option("--prefitPlots", dest="prefitPlots", default=False,action="store_true",
+					help="pre fit plots" )
 
 parser.add_option("--template", dest="template", default=False,action="store_true",
 					help="post fit plots" )
@@ -98,6 +101,7 @@ if selYear=="":
 
 finalState    = options.channel
 postfitPlots  = options.postfitPlots
+prefitPlots   = options.prefitPlots
 
 systematics   = options.systematics
 level         = options.level
@@ -174,56 +178,6 @@ gStyle.SetOptStat(0)
 from Style import *
 
 gROOT.ForceStyle()
-
-if postfitPlots:
-	if selYear == '2016' and channel == 'ele':
-		TTGammaSF   = ttgammaSF_el_2016
-		nonPromptSF = nonPromptSF_el_2016
-		TTbarSF = TTbarSF_el_2016
-		WGSF    = WGSF_el_2016
-		ZGSF    = ZGSF_el_2016
-		OtherSF = OtherSF_el_2016
-		 
-	if selYear == '2016' and channel == 'mu':
-		TTGammaSF   = ttgammaSF_mu_2016
-		nonPromptSF = nonPromptSF_mu_2016
-		TTbarSF = TTbarSF_mu_2016
-		WGSF    = WGSF_mu_2016
-		ZGSF    = ZGSF_mu_2016
-		OtherSF = OtherSF_mu_2016
-		
-	if selYear == '2017' and channel == 'ele':
-		TTGammaSF   = ttgammaSF_el_2017
-		nonPromptSF = nonPromptSF_el_2017	
-		TTbarSF = TTbarSF_el_2017
-		WGSF    = WGSF_el_2017
-		ZGSF    = ZGSF_el_2017
-		OtherSF = OtherSF_el_2017
-			
-	if selYear == '2017' and channel == 'mu':
-		TTGammaSF   = ttgammaSF_mu_2017
-		nonPromptSF = nonPromptSF_mu_2017		
-		TTbarSF = TTbarSF_mu_2017
-		WGSF    = WGSF_mu_2017
-		ZGSF    = ZGSF_mu_2017
-		OtherSF = OtherSF_mu_2017
-		
-	if selYear == '2018' and channel == 'ele':
-		TTGammaSF   = ttgammaSF_el_2018
-		nonPromptSF = nonPromptSF_el_2018	
-		TTbarSF = TTbarSF_el_2018
-		WGSF    = WGSF_el_2018
-		ZGSF    = ZGSF_el_2018
-		OtherSF = OtherSF_el_2018	
-		
-	if selYear == '2018' and channel == 'mu':
-		TTGammaSF   = ttgammaSF_mu_2018
-		nonPromptSF = nonPromptSF_mu_2018		
-		TTbarSF = TTbarSF_mu_2018
-		WGSF    = WGSF_mu_2018
-		ZGSF    = ZGSF_mu_2018
-		OtherSF = OtherSF_mu_2018			
-		
 
 sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'TGJets':kGray,'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
@@ -345,6 +299,8 @@ print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF
 #binning = numpy.array([50,105,155,185,260,500.])
 binning = numpy.array([50,500.])
 
+binWidth = numpy.diff(binning)
+
 rebinnedHist ={} 
 
 for ih in templateHist:
@@ -436,40 +392,50 @@ if template:
 	sys.exit()
 
 else:
-	## purpose for plotting 
-	if postfitPlots:
-		#rebinnedHist["TTGamma"].Scale(TTGammaSF)
-		#rebinnedHist["TTGamma"].Scale(nonPromptSF)
-		rebinnedHist["TTbar"].Scale(TTbarSF) 
-		rebinnedHist["WGamma"].Scale(WGSF) 
-		rebinnedHist["ZGamma"].Scale(ZGSF) 
-		rebinnedHist["Other"].Scale(OtherSF) 	
-		
-		print "TTGammaSF and nonPromptSF ==>",TTGammaSF, nonPromptSF
-		print "TTbarSF, WGSF, ZGSF and OtherSF ==> ", TTbarSF, WGSF, ZGSF, OtherSF
-		
-	rebinnedData.Scale(1.,"width")
-	#rebinnedHist["TTGamma"].Scale(TTGammaSF), idk how to use sf in control M3 plots
-	stack = THStack()
-	for ih in rebinnedHist:
-		rebinnedHist[ih].Scale(1.,"width")
 
-	stack.Add(rebinnedHist["Other"  ])
-	stack.Add(rebinnedHist["ZGamma" ])   
-	stack.Add(rebinnedHist["WGamma" ])   
-	stack.Add(rebinnedHist["TTbar"  ]) 
-	stack.Add(rebinnedHist["TTGamma"])  
+if prefitPlots:
+		rebinnedData.Scale(1.,"width")
+		for ih in rebinnedHist:
+			rebinnedHist[ih].Scale(1.,"width")	
 
-
-	rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
-	print rebinnedMC.GetBinContent(8)
+		stack = THStack()
+		stack.Add(rebinnedHist["Other"  ])
+		stack.Add(rebinnedHist["ZGamma" ])   
+		stack.Add(rebinnedHist["WGamma" ])   
+		stack.Add(rebinnedHist["TTbar"  ]) 
+		stack.Add(rebinnedHist["TTGamma"])  
+		#rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
 
 	if postfitPlots:
-		rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
-		x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
-		chi2Text = "#chi^{2}/NDF=%.1f"%x
+		rebinnedData.Scale(1.,"width")
+		if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel[:-1],selYear)
+		if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel,selYear)
+		Postfile = TFile(filename,"read")
+		templatePostHist = {}
+		# print len(binning),"==>",len(binWidth)
+		templatePostHist["TTGamma" ] = TH1F("TTGamma" ,"",len(binWidth),binning)
+		templatePostHist["TTbar"   ] = TH1F("TTbar"   ,"",len(binWidth),binning)   
+		templatePostHist["WGamma"  ] = TH1F("WGamma"  ,"",len(binWidth),binning)   
+		templatePostHist["ZGamma"  ] = TH1F("ZGamma"  ,"",len(binWidth),binning)    
+		templatePostHist["Other"   ] = TH1F("Other"   ,"",len(binWidth),binning)    
 
-		
+		for process in template_category.keys():
+			tempHist = None
+			tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(mydistributionName,process))
+			for ibin in range(1,len(binning)):
+				myBinContent = tempHist.GetBinContent(ibin)
+				templatePostHist[process].SetBinContent(ibin,myBinContent)
+			templatePostHist[process].SetLineColor(template_category[process])
+			templatePostHist[process].SetFillColor(template_category[process])
+			templatePostHist[process].Scale(1.,"width")
+
+		stack = THStack()
+		stack.Add(templatePostHist["Other"   ])  
+		stack.Add(templatePostHist["ZGamma"  ])   
+		stack.Add(templatePostHist["WGamma"  ])  
+		stack.Add(templatePostHist["TTbar"   ]) 
+		stack.Add(templatePostHist["TTGamma" ]) 
+
 	canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
 	canvasRatio.SetFillColor(0)
 	canvasRatio.SetBorderMode(0)
