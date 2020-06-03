@@ -647,10 +647,11 @@ else:
 			tempHist = None
 			tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(mydistributionName,process))
 			for ibin in range(1,len(binning)):
-				myBinContent = tempHist.GetBinContent(ibin)/binWidth[ibin-1]
+				myBinContent = tempHist.GetBinContent(ibin)
 				templatePostHist[process].SetBinContent(ibin,myBinContent)
 			templatePostHist[process].SetLineColor(template_category[process])
 			templatePostHist[process].SetFillColor(template_category[process])
+			templatePostHist[process].Scale(1.,"width")
 
 		stack = THStack()
 		stack.Add(templatePostHist["nonPromptOther"  ])
@@ -817,7 +818,7 @@ else:
 	else:
 		ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-	ratio.GetYaxis().SetRangeUser(0.8,1.2)
+	ratio.GetYaxis().SetRangeUser(0.5,1.5)
 	ratio.GetYaxis().SetNdivisions(504)
 
 	ratio.GetXaxis().SetTitle('%s(GeV)'%mydistributionName)
