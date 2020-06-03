@@ -539,10 +539,11 @@ else:
 			tempHist = None
 			tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(channel,process))
 			for ibin in range(1,len(binning)):
-				myBinContent = tempHist.GetBinContent(ibin)/binWidth[ibin-1]
+				myBinContent = tempHist.GetBinContent(ibin)
 				templatePostHist[process].SetBinContent(ibin,myBinContent)
 			templatePostHist[process].SetLineColor(template_category[process])
 			templatePostHist[process].SetFillColor(template_category[process])
+			templatePostHist[process].Scale(1.,"width")
 			
 			
 		stack = THStack()
