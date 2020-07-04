@@ -4,13 +4,13 @@ kmax *
 ---------------------------------
 shapes *  *  ../../ttgamma_tightplots_mu_2017/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
 ---------------------------------
-bin			    M30btag  
+bin			    zerobtag  
 observation		-1       
 -------------------------------------
-bin			M30btag			M30btag			M30btag			M30btag			M30btag			M30btag				M30btag			M30btag			M30btag			
-process		isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	nonPromptZGamma	nonPromptOther	
-process		0	            1	            2	            3	            4	            0	                1	            3	            4	
-rate		-1	            -1	            -1	             -1	            -1	            -1	                -1	            -1	            -1
+bin			zerobtag		zerobtag		zerobtag		zerobtag		zerobtag		zerobtag			zerobtag		zerobtag         zerobtag			zerobtag			
+process		isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	nonPromptWGamma  nonPromptZGamma	nonPromptOther	
+process		0	            1	            2	            3	            4	            0	                1	            2				 3	                4	
+rate		-1	            -1	            -1	             -1	            -1	            -1	                -1	            -1	             -1                 -1
 --------------------------------------------------------------------------------------------
 lumi        lnN       1.03    1.03   1.03    1.03    1.03    1.03    1.03    1.03    1.03   
 ------------------------------------------------------------------------------------------------------- 
@@ -31,7 +31,7 @@ WGSF param  1.0   0.1
 ZGSF rateParam * *ZGamma 1
 ZGSF param  1.0   0.1
 OtherSF rateParam * *Other 1
-OtherSF param  1.0   0.05
+OtherSF param  1.0   0.3
 ------------------------------------------------------------------------------
 mySyst group =  lumi PU PhoEff MuEff Q2 isr fsr misIDE
 additionalSyst group =  TTbarSF WGSF ZGSF OtherSF
