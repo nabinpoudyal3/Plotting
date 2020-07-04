@@ -13,6 +13,7 @@ process   0                   1                   2                 3           
 rate      -1                  -1                  -1                -1                       -1                  -1                  -1                -1                                        
 --------------------------------------------------------------------------------------------
 lumi        lnN     1.03  1.03  1.03  1.03      1.03  1.03  1.03  1.03 
+---------------------------------------------------------------------------------------------
 BTagSF_b    shape   1     1     1     1         1     1     1     1    
 BTagSF_l    shape   1     1     1     1         1     1     1     1    
 PU          shape   1     1     1     1         1     1     1     1                          
@@ -22,13 +23,14 @@ EleEff      shape   1     1     1     1         -     -     -     -
 Q2          shape   1     1     1     1         1     1     1     1
 isr         shape   1     1     1     1         1     1     1     1
 fsr         shape   1     1     1     1         1     1     1     1
+prefireEcal shape   1     1     1     1         1     1     1     1
 -------------------------------------------------------------------------------------------------------
 ZGammaBkgPhotonSF rateParam * ZgammaBkgPhoton  1 [-5,5]
 WGammaBkgPhotonSF rateParam * WgammaBkgPhoton  1 [-5,5]
 OtherSampleBkgPhotonSF rateParam * OtherSampleBkgPhoton 1
-OtherSampleBkgPhotonSF param 1   0.05
+OtherSampleBkgPhotonSF param 1   0.1
 -------------------------------------------------------------------------------------------------
-mySyst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff Q2 isr fsr
+mySyst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff Q2 isr fsr prefireEcal
 -----------------------------------------------------------------------------------------------
 * autoMCStats 0 1
 
