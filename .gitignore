@@ -30,7 +30,13 @@ Condor_Histogramming/*.log
 Condor_Histogramming/*.tex
 
 
-
+Local_Histogramming/*.root
+Local_Histogramming/*.pdf
+Local_Histogramming/*.pyc
+Local_Histogramming/*.png
+Local_Histogramming/*.tgz
+Local_Histogramming/*.log
+Local_Histogramming/*.tex
 
 
 
