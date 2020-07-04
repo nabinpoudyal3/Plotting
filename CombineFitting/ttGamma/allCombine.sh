@@ -38,8 +38,63 @@
 
 
 echo "Ele channel 2016 3 bins"
-combineCards.py -S M3=datacard_ele_2016_M3.txt ChIso=datacard_ele_2016_ChIso.txt  M30btag=datacard_ele_2016_M30btag.txt >  datacard_ele_2016.txt
+combineCards.py -S M3=datacard_ele_2016_M3.txt ChIso=datacard_ele_2016_ChIso.txt  zerobtag=datacard_ele_2016_M30btag.txt >  datacard_ele_2016.txt
 echo "Mu channel 2016 3 bins"
-combineCards.py -S M3=datacard_mu_2016_M3.txt ChIso=datacard_mu_2016_ChIso.txt  M30btag=datacard_mu_2016_M30btag.txt >  datacard_mu_2016.txt
+combineCards.py -S M3=datacard_mu_2016_M3.txt ChIso=datacard_mu_2016_ChIso.txt  zerobtag=datacard_mu_2016_M30btag.txt >  datacard_mu_2016.txt
 echo "Both Channel 2016 3 bins"
 combineCards.py -S ele=datacard_ele_2016.txt  mu=datacard_mu_2016.txt > datacard_both_2016.txt
+
+#echo "Ele channel 2016 4 bins"
+#combineCards.py -S M3=datacard_ele_2016_M3.txt ChIso=datacard_ele_2016_ChIso.txt  zerobtag=datacard_ele_2016_M30btag.txt M30photon=datacard_ele_2016_M30photon.txt >  datacard_ele_2016.txt
+#echo "Mu channel 2016 4 bins"
+#combineCards.py -S M3=datacard_mu_2016_M3.txt ChIso=datacard_mu_2016_ChIso.txt zerobtag=datacard_mu_2016_M30btag.txt M30photon=datacard_mu_2016_M30photon.txt >  datacard_mu_2016.txt
+#echo "Both Channel 2016 4 bins"
+#combineCards.py -S ele=datacard_ele_2016.txt  mu=datacard_mu_2016.txt > datacard_both_2016.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
