@@ -371,6 +371,9 @@ if not inputFile is None:
 #                 regionText = ", N_{j}#geq4, N_{b}#geq1"
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+#localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
+
+
 _fileDir = eosFolder+_fileDir
 
 print _fileDir
@@ -751,7 +754,7 @@ if not HasCMSStyle:
 ROOT.gROOT.ForceStyle()
 
 isMC=999
-print "==> ",sampleList
+#print "==> ",sampleList
 
 if useQCDMC:
 	if channel=="mu":
@@ -767,6 +770,7 @@ else:
 	stackList.remove("GJets") 
 	samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
 
+print "==> ",sampleList
 
 stackList.reverse()
 
@@ -865,10 +869,10 @@ if useQCDCR:
 #	systematics = ["BTagSF_b"]
 
 if finalState=="Mu" or "DiMu":
-	ZJetsSF=1.22 # just for now, need to check again
+	ZJetsSF=1 # just for now, need to check again
 	# WJetsSF=1.21
 elif finalState=="Ele" or "DiEle":
-	ZJetsSF=1.22 # just for now, need to check again
+	ZJetsSF=1 # just for now, need to check again
 	# WJetsSF=1.21             
 else:
 	print "neither Ele,Mu,DiEle or DiMu!!!!!!!!!!"
@@ -949,7 +953,6 @@ if useQCDCR:
 for sample in legList:
 	#print "%s_%s"%(histName,sample)
 	hist =_file[sample].Get("%s_%s"%(histName,sample))
-	#print hist
 	hist.SetFillColor(samples[sample][1])
 	hist.SetLineColor(samples[sample][1])
 	legend.AddEntry(hist,samples[sample][2],'f')
