@@ -1,5 +1,6 @@
 import ROOT
 from array import array
+import sys
 
 ROOT.gROOT.SetBatch(True)
 
@@ -57,7 +58,7 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_ttgamma_ele_2016.pdf') #########################################################
+canvas.SaveAs('covariance_ttgamma_data_ele_2016.pdf') #########################################################
 f1 = ROOT.TFile.Open('fitDiagnosticsmu_2016.root','read')
 h_background = f1.Get('covariance_fit_b')
 h_signal = f1.Get('covariance_fit_s')
@@ -82,8 +83,205 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_ttgamma_mu_2016.pdf') #####################################################################
+canvas.SaveAs('covariance_ttgamma_data_mu_2016.pdf') #####################################################################
 
+
+f1 = ROOT.TFile.Open('fitDiagnosticsboth_2016.root','read')
+h_background = f1.Get('covariance_fit_b')
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+, TEXT0')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('covariance_ttgamma_data_both_2016.pdf') #####################################################################
+
+
+f1 = ROOT.TFile.Open('fitDiagnostics.TOY_ele_2016.root','read')
+h_background = f1.Get('covariance_fit_b')
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+, TEXT0')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+print mypal
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('covariance_ttgamma_toy_ele_2016.pdf') #########################################################
+f1 = ROOT.TFile.Open('fitDiagnostics.TOY_mu_2016.root','read')
+h_background = f1.Get('covariance_fit_b')
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+, TEXT0')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('covariance_ttgamma_toy_mu_2016.pdf') #####################################################################
+
+
+f1 = ROOT.TFile.Open('fitDiagnostics.TOY_both_2016.root','read')
+h_background = f1.Get('covariance_fit_b')
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+, TEXT0')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('covariance_ttgamma_toy_both_2016.pdf') #####################################################################
+
+
+############
+
+f1 = ROOT.TFile.Open('fitDiagnostics.Asimov_ele_2016.root','read')
+h_background = f1.Get('covariance_fit_b')
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+, TEXT0')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+print mypal
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('covariance_ttgamma_Asimov_ele_2016.pdf') #########################################################
+f1 = ROOT.TFile.Open('fitDiagnostics.Asimov_mu_2016.root','read')
+h_background = f1.Get('covariance_fit_b')
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+, TEXT0')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('covariance_ttgamma_Asimov_mu_2016.pdf') #####################################################################
+
+
+f1 = ROOT.TFile.Open('fitDiagnostics.Asimov_both_2016.root','read')
+h_background = f1.Get('covariance_fit_b')
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+, TEXT0')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('covariance_ttgamma_Asimov_both_2016.pdf') #####################################################################
+
+
+
+
+print "exiting after 2016 plots only."
+sys.exit()
+
+
+#################################################
    
 f1 = ROOT.TFile.Open('fitDiagnosticsel_2017.root','read')
 h_background = f1.Get('covariance_fit_b')
@@ -109,7 +307,7 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_ttgamma_ele_2017.pdf') #########################################################
+canvas.SaveAs('covariance_ttgamma_data_ele_2017.pdf') #########################################################
 f1 = ROOT.TFile.Open('fitDiagnosticsmu_2017.root','read')
 h_background = f1.Get('covariance_fit_b')
 h_signal = f1.Get('covariance_fit_s')
@@ -134,7 +332,7 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_ttgamma_mu_2017.pdf') #####################################################################
+canvas.SaveAs('covariance_ttgamma_data_mu_2017.pdf') #####################################################################
 
    
 f1 = ROOT.TFile.Open('fitDiagnosticsel_2018.root','read')
@@ -161,7 +359,7 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_ttgamma_ele_2018.pdf') #########################################################
+canvas.SaveAs('covariance_ttgamma_data_ele_2018.pdf') #########################################################
 
 f1 = ROOT.TFile.Open('fitDiagnosticsmu_2018.root','read')
 h_background = f1.Get('covariance_fit_b')
@@ -187,5 +385,5 @@ canvas.Update();
    
 #ROOT.gApplication.Run()
 
-canvas.SaveAs('covariance_ttgamma_mu_2018.pdf') #####################################################################
+canvas.SaveAs('covariance_ttgamma_data_mu_2018.pdf') #####################################################################
 
