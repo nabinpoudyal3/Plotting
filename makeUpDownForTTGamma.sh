@@ -14,6 +14,5 @@
 
 python makePlots_SystUpDownNominal_ttg.py -y 2016 -c Ele --tight --plotVariable M3 
 python makePlots_SystUpDownNominal_ttg.py -y 2016 -c Ele --tight --plotVariable ChIso 
-
-python makePlots_SystUpDownNominal_ttg.py -y 2016 -c Ele --tight --plotVariable M30btag
+python makePlots_SystUpDownNominal_ttg.py -y 2016 -c Ele --tight --plotVariable zerobtag
 python makePlots_SystUpDownNominal_ttg.py -y 2016 -c Ele --tight --plotVariable M30photon
