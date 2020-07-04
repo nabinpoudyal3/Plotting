@@ -152,7 +152,7 @@ gROOT.ForceStyle()
 # 	myDir = {"ele/MisIDEleEighteen":"ele_MisIDEleEighteen","ele/WgammaBkgPhoton":"ele_WgammaBkgPhoton","ele/ZgammaBkgPhoton":"ele_ZgammaBkgPhoton","ele/OtherSampleBkgPhoton":"ele_OtherSampleBkgPhoton",
 #              "mu/MisIDEleEighteen":"mu_MisIDEleEighteen","mu/WgammaBkgPhoton":"mu_WgammaBkgPhoton","mu/ZgammaBkgPhoton":"mu_ZgammaBkgPhoton","mu/OtherSampleBkgPhoton":"mu_OtherSampleBkgPhoton"}
 if plotVariable=="M30photon":
-
+	systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","isr","fsr"] # keep adding more systematics 
 	myDir= {"%s/ZGamma"%plotVariable:  "%s_ZGamma"%plotVariable,
 	 		"%s/TTGamma"%plotVariable: "%s_TTGamma"%plotVariable,
 	 		"%s/TTbar"%plotVariable:   "%s_TTbar"%plotVariable,
@@ -160,6 +160,7 @@ if plotVariable=="M30photon":
 	 		"%s/WGamma"%plotVariable:  "%s_WGamma"%plotVariable,
 	}
 else:
+	systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","misIDE","isr","fsr"] # keep adding more systematics 
 	myDir= {"%s/nonPromptZGamma"%plotVariable:  "%s_nonPromptZGamma"%plotVariable,
 	 		"%s/nonPromptTTGamma"%plotVariable: "%s_nonPromptTTGamma"%plotVariable,
 	 		"%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
@@ -179,13 +180,12 @@ if selYear == '2016':	CMS_lumi.lumi_13TeV = "[2016] 35.92 fb^{-1}"
 if selYear == '2017':	CMS_lumi.lumi_13TeV = "[2017] 41.53 fb^{-1}"
 if selYear == '2018':	CMS_lumi.lumi_13TeV = "[2018] 59.74 fb^{-1}"
 
-
 inputfilename = "ttgamma_tightplots_%s_%s/ttgamma_Prefit.root"%(channel,selYear)
 
-
-
 #systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","misIDE","isr","fsr"] # keep adding more systematics 
-systematicList = ["Q2","isr","fsr"] # keep adding more systematics 
+
+#systematicList = ["Q2","isr","fsr","PU"] # keep adding more systematics 
+#systematicList = ["Q2"] # keep adding more systematics 
 myfile = ROOT.TFile(inputfilename,"READ")
 
 # # myfile.ls()
@@ -371,7 +371,7 @@ for idir in myDir.keys():
 		else:
 			ratioUp.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-		ratioUp.GetYaxis().SetRangeUser(0.8,1.2)
+		ratioUp.GetYaxis().SetRangeUser(0.9,1.1)
 		ratioUp.GetYaxis().SetNdivisions(504)
 		#ratioUp.GetXaxis().SetTitle(inputfilename[:-12])
 		ratioUp.GetXaxis().SetTitle(plotVariable)
@@ -407,23 +407,23 @@ for idir in myDir.keys():
 
 
 
-from PyPDF2 import PdfFileMerger, PdfFileReader
+#from PyPDF2 import PdfFileMerger, PdfFileReader
 
-pdflocation="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/"+plotDirectory
-os.chdir(pdflocation)
+#pdflocation="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/"+plotDirectory
+#os.chdir(pdflocation)
 
-print plotDirectory
+#print plotDirectory
 
-pdf2merge =[]
-for filename in os.listdir('.'):
-	if filename.endswith('.pdf'):
-		pdf2merge.append(filename)
+#pdf2merge =[]
+#for filename in os.listdir('.'):
+#	if filename.endswith('.pdf'):
+#		pdf2merge.append(filename)
 
-merger = PdfFileMerger()
-for filename in pdf2merge:
-    merger.append(PdfFileReader(file(filename, 'rb')))
+#merger = PdfFileMerger()
+#for filename in pdf2merge:
+#    merger.append(PdfFileReader(file(filename, 'rb')))
 
-merger.write(plotDirectory[:-1]+'_%s.pdf'%plotVariable)
+#merger.write(plotDirectory[:-1]+'_%s.pdf'%plotVariable)
 
-print plotDirectory[:-1]+'/'+plotDirectory[:-1]+'_%s.pdf'%plotVariable
+#print plotDirectory[:-1]+'/'+plotDirectory[:-1]+'_%s.pdf'%plotVariable
 
