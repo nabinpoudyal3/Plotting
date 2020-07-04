@@ -8,7 +8,7 @@ declare -a YEAR=("2016" "2017" "2018")
 #declare -a YEAR=("2016")
 
 
-declare -a SYSTEMATICS=("BTagSF_b" "BTagSF_l" "PU" "MuEff" "EleEff" "PhoEff" "Q2" "isr" "fsr")
+declare -a SYSTEMATICS=("BTagSF_b" "BTagSF_l" "PU" "MuEff" "EleEff" "PhoEff" "Q2" "isr" "fsr" "prefireEcal")
 declare -a LEVEL=("up" "down")
 
 for controlregion in ${CONTROLREGION[@]}; do
