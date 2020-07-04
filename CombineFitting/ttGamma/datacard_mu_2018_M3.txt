@@ -33,7 +33,7 @@ WGSF param  1.0   0.1
 ZGSF rateParam * *ZGamma 1
 ZGSF param  1.0   0.1
 OtherSF rateParam * *Other 1
-OtherSF param  1.0   0.05
+OtherSF param  1.0   0.3
 ------------------------------------------------------------------------------
 mySyst group = lumi BTagSF_b BTagSF_l PU PhoEff EleEff Q2 isr fsr misIDE
 additionalSyst group = TTbarSF WGSF ZGSF OtherSF
