@@ -122,7 +122,7 @@ if finalState=='Mu':
 ########
 
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","fsr","isr","Pdf", "prefireEcal"]
 if systematics in allsystematics: print "running on systematics", systematics
 else: print(Fore.RED + "systematics is not in the list. Add the systematic in the list, if you are running for systematics.")
 
@@ -305,6 +305,8 @@ if looseCRe3ge2:  #CR7
 ####
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
+
 fileDir = eosFolder+fileDir
 fileDirQCD = eosFolder+fileDirQCD
 print fileDir
@@ -451,7 +453,7 @@ for sample in sampleList:
 if channel =='ele':
 	binning = numpy.array([0,80,84,88,92,96,100,180.])
 else:
-	binning = numpy.array([0,80,100,180.])
+	binning = numpy.array([0,91.,180.])
 	
 
 binWidth = numpy.diff(binning)
@@ -486,12 +488,8 @@ if systematics=='':
 ## input to combine , open root file
 
 if template:
-
 	myfile = TFile("%s%s.root"%(plotDirectoryTemplate,myfilename),"update")
 	# i have to get the nominal histogram from root file first and get the integration value
-
-
-
 	if systematics=='':
 		myDatahist = rebinnedData.Clone("nominal")
 		mydataDir  = "%s/data_obs/"%channel
@@ -797,7 +795,7 @@ else:
 	else:
 		ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-	ratio.GetYaxis().SetRangeUser(0.6,1.4)
+	ratio.GetYaxis().SetRangeUser(0.8,1.2)
 	ratio.GetYaxis().SetNdivisions(504)
 	if channel == 'ele': ratio.GetXaxis().SetTitle('m_{e,#gamma} GeV')
 	else: ratio.GetXaxis().SetTitle('m_{#mu,#gamma} GeV')
