@@ -121,7 +121,7 @@ if finalState=='DiEle':
 #######
 ########
 
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal"]
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]#,"fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics", systematics
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
@@ -309,6 +309,7 @@ if looseCRe3ge2:  #CR7
 
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
 
 fileDir = eosFolder + fileDir
 fileDirQCD = eosFolder + fileDirQCD
@@ -415,7 +416,7 @@ for sample in sampleList:
 
 #rebin = 4
 #binning = numpy.arange(80,100.1,1)
-binning = numpy.array([80,84,88,90,92,94,96,100.])
+binning = numpy.array([81,84,88,90,92,94,96,101.])
 binWidth = numpy.diff(binning)
 
 #print binning
@@ -678,7 +679,7 @@ else:
 	else:
 		ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-	ratio.GetYaxis().SetRangeUser(0.6,1.4)
+	ratio.GetYaxis().SetRangeUser(0.8,1.2)
 	ratio.GetYaxis().SetNdivisions(504)
 	if channel == 'ele': ratio.GetXaxis().SetTitle('m_{e,e} GeV')
 	else: ratio.GetXaxis().SetTitle('m_{#mu,#mu} GeV')
