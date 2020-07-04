@@ -130,7 +130,7 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal"]
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]#,"fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics"
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
@@ -164,6 +164,7 @@ if zeroPhoton:      #tight but 0 photon
 		
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
 
 fileDir = eosFolder + fileDir
 
@@ -214,7 +215,7 @@ else:
 	#sampleList[-1] = "QCD_DD"
 	#sampleList.remove("GJets") 
 	sampleList.remove("QCD") 
-	sampleList.remove("GJets") 
+	#sampleList.remove("GJets") 
 	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
 
 H = 600;
@@ -297,7 +298,8 @@ templateHist["ZGamma"].Scale(ZGammaSF)
 print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
 
 #binning = numpy.array([50,105,155,185,260,500.])
-binning = numpy.array([50,500.])
+#binning = numpy.array([50,500.])
+binning = numpy.array([50,105,155,185,260,500.])
 
 binWidth = numpy.diff(binning)
 
@@ -393,7 +395,7 @@ if template:
 
 else:
 
-if prefitPlots:
+	if prefitPlots:
 		rebinnedData.Scale(1.,"width")
 		for ih in rebinnedHist:
 			rebinnedHist[ih].Scale(1.,"width")	
@@ -536,7 +538,7 @@ if prefitPlots:
 	#if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
 
 	CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
-	if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
+	#if postfitPlots: CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText+";"+regionText,chi2Text)
 
 	CMS_lumi.writeChannelText = True
 	CMS_lumi.writeExtraText = True
