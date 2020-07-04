@@ -208,7 +208,7 @@ if not os.path.exists(plotDirectory):
 	
 
 filename = "misIDEle_syst_Prefit.root"
-systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2"] # keep adding more systematics 
+systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","isr", "fsr", "prefireEcal"] # keep adding more systematics 
 myfile = ROOT.TFile(plotDirectory+filename,"READ")
 
 # # myfile.ls()
