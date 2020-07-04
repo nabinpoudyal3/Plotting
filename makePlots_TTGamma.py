@@ -146,7 +146,7 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal"]
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]
 
 if systematics in allsystematics: print "running on systematics"
@@ -265,6 +265,7 @@ else:
 	print "wrong plot variable"		
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
+localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
 
 fileDir = eosFolder + fileDir
 print fileDir
@@ -320,7 +321,7 @@ else:
 	#sampleList[-1] = "QCD_DD"
 	#sampleList.remove("GJets") 
 	sampleList.remove("QCD") 
-	sampleList.remove("GJets") 
+	#sampleList.remove("GJets") 
 	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
 
 H = 600;
@@ -500,9 +501,10 @@ if mydistributionName == "M3":
 	#binning = numpy.array([50,100,125,150,175,200,250,300,500.])
 	#binning = numpy.array([50,100,120,140,160,180,200,220,240,260,280,300,340,400,500.])
 if mydistributionName == "M30btag":
-	myfilename = "M30btag"
+	myfilename = "zerobtag"
 	#binning = numpy.array([50,100,120,140,160,180,200,220,240,260,280,300,340,400,500.])
 	binning = numpy.array([50,500.])
+	#binning = numpy.array([50,105,155,185,260,500.])
 
 if mydistributionName == "ChIso":
 	myfilename = "ChIso"
@@ -572,7 +574,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
 			if systematics in ["Q2","isr","fsr"]:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
-			 	if myNominalHist != None:
+				if myNominalHist != None:
 			 		valNominal = myNominalHist.Integral()
 			 		val = myhist.Integral()
 			 		if valNominal != 0 and val != 0:
@@ -597,7 +599,7 @@ if template:
 			else:
 				gDirectory.Delete("%s%s;*"%(systematics,mylevel))
 			myhist.Write()
-	print "%s%s.root"%(plotDirectory,"ttgamma_Prefit")
+	#print "%s%s.root"%(plotDirectory,"ttgamma_Prefit")
 
 	myfile.Close()
 	sys.exit()
@@ -645,7 +647,9 @@ else:
 		for process in template_category.keys():
 			if process == "nonPromptWGamma": continue
 			tempHist = None
-			tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(mydistributionName,process))
+			print process, myfilename
+			if mydistributionName=="M30btag":tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(myfilename,process))
+			else:tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(mydistributionName,process))
 			for ibin in range(1,len(binning)):
 				myBinContent = tempHist.GetBinContent(ibin)
 				templatePostHist[process].SetBinContent(ibin,myBinContent)
@@ -818,10 +822,10 @@ else:
 	else:
 		ratio.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-	ratio.GetYaxis().SetRangeUser(0.5,1.5)
+	ratio.GetYaxis().SetRangeUser(0.8,1.2)
 	ratio.GetYaxis().SetNdivisions(504)
 
-	ratio.GetXaxis().SetTitle('%s(GeV)'%mydistributionName)
+	ratio.GetXaxis().SetTitle('%s(GeV)'%myfilename)
 
 	ratio.GetYaxis().SetTitle("Data/MC")
 	ratio.GetYaxis().SetTitleOffset(.4)
