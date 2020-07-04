@@ -75,7 +75,6 @@ parser.add_option("--verbose",dest="verbose",action="store_true",default=False,
 parser.add_option("--makePhotonSplitplots", dest="makePhotonSplitplots",action="store_true",default=False,
 					 help="" )
 					 				 
-
 ### nabin
 parser.add_option("--LooseCR2e1","--looseCR2e1", dest="isLooseCR2e1Selection",default=False,action="store_true",
 					 help="Use 2j exactly 1t control region selection" )
@@ -206,7 +205,7 @@ PhoEff= "phoEffWeight"
 loosePhoEff= "loosePhoEffWeight"
 evtWeight ="evtWeight"
 btagWeight="btagWeight_1a"
-
+prefire ="prefireSF"
 #btagWeightCategory = ["1","(1-btagWeight[0])","(btagWeight[2])","(btagWeight[1])"]
 							# >=1 b tags      exactly 2 btags == >=2    exactly 1 btags
 
@@ -242,6 +241,14 @@ if finalState=="Mu":
 			else:
 				Pileup = "PUweight_Do"
 			outputhistName = "histograms_%s/mu/%s_PU_%s"%(selYear,outputFileName,level)
+
+		elif syst=="prefireEcal":
+			print "is here" 
+			if level=="up":
+				prefire = "prefireSF_Up"
+			else:
+				prefire = "prefireSF_Do"
+			outputhistName = "histograms_%s/mu/%s_prefireEcal_%s"%(selYear,outputFileName,level)
 
 		elif 'Q2' in syst:
 			if level=="up":
@@ -326,12 +333,13 @@ if finalState=="Mu":
 		 #      outputhistName = "histograms_%s/mu/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			if  level=="up":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
-				outputhistName = "histograms_%s/mu/%s%s_up"%(selYear,outputFileName,syst)
-			if level=="down":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
-				outputhistName = "histograms_%s/mu/%s%s_down"%(selYear,outputFileName,syst)
+			print " Error...what is the systematic name??????????????"
+			#if  level=="up":
+			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
+			#	outputhistName = "histograms_%s/mu/%s%s_up"%(selYear,outputFileName,syst)
+			#if level=="down":
+			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
+			#	outputhistName = "histograms_%s/mu/%s%s_down"%(selYear,outputFileName,syst)
 
 	extraCuts                = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
 	extraPhotonCuts          = "(passPresel_Mu && nJet>=3 && nBJet>=1 && %s)*"
@@ -400,6 +408,15 @@ elif finalState=="Ele":
 				Pileup = "PUweight_Do"
 			outputhistName = "histograms_%s/ele/%s_PU_%s"%(selYear,outputFileName,level)
 
+		elif syst=="prefireEcal":
+			print "is here" 
+			if level=="up":
+				prefire = "prefireSF_Up"
+			else:
+				prefire = "prefireSF_Do"
+			outputhistName = "histograms_%s/ele/%s_prefireEcal_%s"%(selYear,outputFileName,level)
+			
+			
 		elif 'Q2' in syst:
 			if level=="up":
 				Q2="q2weight_Up"
@@ -485,12 +502,13 @@ elif finalState=="Ele":
 		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			if  level=="up":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
-				outputhistName = "histograms_%s/ele/%s%s_up"%(selYear,outputFileName,syst)
-			if level=="down":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
-				outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
+			print " Error...what is the systematic name??????????????"
+			#if  level=="up":
+			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
+			#	outputhistName = "histograms_%s/ele/%s%s_up"%(selYear,outputFileName,syst)
+			#if level=="down":
+			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
+			#	outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
 	extraCuts                = "(passPresel_Ele && nJet>=3 && nBJet>=1)*"
 	extraPhotonCuts          = "(passPresel_Ele && nJet>=3 && nBJet>=1 && %s)*"
@@ -563,6 +581,16 @@ elif finalState=="DiMu":
 				Pileup = "PUweight_Do"
 			outputhistName = "histograms_%s/mu/Dilep_%s_PU_%s"%(selYear,outputFileName,level)
 
+
+		elif syst=="prefireEcal":
+			print "is here" 
+			if level=="up":
+				prefire = "prefireSF_Up"
+			else:
+				prefire = "prefireSF_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_prefireEcal_%s"%(selYear,outputFileName,level)
+			
+			
 		elif 'Q2' in syst:
 			if level=="up":
 				Q2="q2weight_Up"
@@ -648,7 +676,7 @@ elif finalState=="DiMu":
 		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			print "what is the systematics?"
+			print " Error...what is the systematic name??????????????"
 			
 	extraCuts            = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
 	extraPhotonCuts      = "(passPresel_Mu && nJet>=3 && nBJet>=1 && %s)*"
@@ -719,6 +747,16 @@ elif finalState=="DiEle":
 				Pileup = "PUweight_Do"
 			outputhistName = "histograms_%s/ele/Dilep_%s_PU_%s"%(selYear,outputFileName,level)
 
+
+		elif syst=="prefireEcal":
+			print "is here" 
+			if level=="up":
+				prefire = "prefireSF_Up"
+			else:
+				prefire = "prefireSF_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_prefireEcal_%s"%(selYear,outputFileName,level)
+			
+			
 		elif 'Q2' in syst:
 			if level=="up":
 				Q2="q2weight_Up"
@@ -804,7 +842,7 @@ elif finalState=="DiEle":
 		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			print "what is the systematics?"
+			print " Error...what is the systematic name??????????????"
 			#if  level=="up":
 			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
 			#	outputhistName = "histograms_%s/ele/Dilep_%s%s_up"%(selYear,outputFileName,syst)
@@ -1220,7 +1258,7 @@ if "QCD" in finalState:
 	nBJets = 0
 	#btagWeight="btagWeight[0]"
 
-weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
+weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,prefire,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
 #weights = "%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,1,1,Q2,Pdf,btagWeight)
 print extraCuts
 print extraPhotonCuts
