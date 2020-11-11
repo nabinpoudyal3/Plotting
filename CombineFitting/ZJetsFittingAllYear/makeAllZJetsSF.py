@@ -1,5 +1,7 @@
 import uproot
 import shutil
+import sys
+import ROOT
  
  
 ListOfFiles2016 = ["fitDiagnosticsCR123_2016.root", "fitDiagnosticsCR1_2016.root",  "fitDiagnosticsCR2_2016.root", "fitDiagnosticsCR3_2016.root",
@@ -25,37 +27,38 @@ line = ""
 for ifile in ListOfFiles2016:
     print ifile
     itree = uproot.open(ifile)["tree_fit_sb"]
-    line += "ZJetSF_2016_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],itree.array("r"))
-
+    line += "ZJetSF_2016_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],itree.array("r"))
+	
 for ifile in ListOfFiles2017:
     print ifile
     itree = uproot.open(ifile)["tree_fit_sb"]
-    line += "ZJetSF_2017_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],itree.array("r"))
+    line += "ZJetSF_2017_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],itree.array("r"))
     
 for ifile in ListOfFiles2018:
     print ifile
     itree = uproot.open(ifile)["tree_fit_sb"]
-    line += "ZJetSF_2018_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],itree.array("r"))
+    line += "ZJetSF_2018_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],itree.array("r"))
     
 with open("ZJetSFvalues.py","w") as _file:
     _file.write(line)
 
 #get_ipython().system('cp ZJetSFvalues.py /uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting')
 shutil.copy("ZJetSFvalues.py",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting')
+shutil.copy("ZJetSFvalues.py",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Condor_PhysicObject/')
 
 line = ""
 
 for ifile in ListOfFiles2016:
     itree = uproot.open(ifile)["tree_fit_sb"]
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ -%.3f}}}\n"%(CRDict[ifile[14:-10]]+"Sixteen",itree.array("r"),itree.array("rHiErr"),itree.array("rLoErr"))
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(CRDict[ifile[14:-10]]+"Sixteen",itree.array("r"),itree.array("rHiErr"),itree.array("rLoErr"))
 
 for ifile in ListOfFiles2017:
     itree = uproot.open(ifile)["tree_fit_sb"]
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ -%.3f}}}\n"%(CRDict[ifile[14:-10]]+"Seventeen",itree.array("r"),itree.array("rHiErr"),itree.array("rLoErr"))
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(CRDict[ifile[14:-10]]+"Seventeen",itree.array("r"),itree.array("rHiErr"),itree.array("rLoErr"))
 
 for ifile in ListOfFiles2018:
     itree = uproot.open(ifile)["tree_fit_sb"]
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ -%.3f}}}\n"%(CRDict[ifile[14:-10]]+"Eighteen",itree.array("r"),itree.array("rHiErr"),itree.array("rLoErr"))
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(CRDict[ifile[14:-10]]+"Eighteen",itree.array("r"),itree.array("rHiErr"),itree.array("rLoErr"))
     
 with open("ZJetSFvalues.tex","w") as _file:
     _file.write(line)
