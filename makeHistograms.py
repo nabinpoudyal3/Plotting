@@ -1,6 +1,7 @@
 from ROOT import TH1F, TFile, TChain, TCanvas, gROOT
 import sys
 
+from myListOfHistograms import *
 from sampleInformation import sampleList
 import sampleInformation
 import os
@@ -73,6 +74,9 @@ parser.add_option("--verbose",dest="verbose",action="store_true",default=False,
 					 help="verbose mode (extra output printed)" )
 
 parser.add_option("--makePhotonSplitplots", dest="makePhotonSplitplots",action="store_true",default=False,
+					 help="" )
+
+parser.add_option("--makePlotsPhysicsObjects", dest="makePlotsPhysicsObjects",action="store_true",default=False,
 					 help="" )
 					 				 
 ### nabin
@@ -176,11 +180,12 @@ makeAllPlots = options.makeAllPlots
 makeSignalRegionPlots = options.makeSignalRegionPlots
 makeEGammaPlots = options.makeEGammaPlots
 makeJetsplots = options.makeJetsplots
+makePlotsPhysicsObjects = options.makePlotsPhysicsObjects
 
 makegenPlots=options.makegenPlots
 runQuiet = options.quiet
 
-if not runQuiet: print runsystematic
+#if not runQuiet: print "systematic==>",runsystematic
 #exit()
 
 dir2=""
@@ -194,8 +199,8 @@ if testoneplot:
 
 isQCD = False # what is it doing now?
 dir_=""
-Q2 = 1.  
-Pdf = 1. 
+Q2 = "q2weight_nominal"  
+Pdf = "pdfWeight"
 isr = 1.
 fsr = 1.
 Pileup ="PUweight"
@@ -258,17 +263,11 @@ if finalState=="Mu":
 			outputhistName = "histograms_%s/mu/%s_Q2_%s"%(selYear,outputFileName,level)
 
 		elif 'Pdf' in syst:
-			if syst=="Pdf":
-				if level=="up":
-					Pdf="pdfweight_Up"
-				else:
-					Pdf="pdfweight_Do"
-				outputhistName = "histograms_%s/mu/%s_Pdf_%s"%(selYear,outputFileName,level)
+			if level=="up":
+				Pdf="pdfweight_Up"
 			else:
-				if type(eval(syst[3:]))==type(int()):
-					pdfNumber = eval(syst[3:])
-					Pdf="pdfSystWeight[%i]/pdfWeight"%(pdfNumber-1)
-					outputhistName = "histograms_%s/mu/%s_Pdf/Pdf%i"%(selYear,outputFileName,pdfNumber)				
+				Pdf="pdfweight_Do"
+			outputhistName = "histograms_%s/mu/%s_Pdf_%s"%(selYear,outputFileName,level)
 
 		elif 'MuEff' in syst:
 			if level=="up":
@@ -324,6 +323,7 @@ if finalState=="Mu":
 			else:
 				isr = "ISRweight_Do"
 			outputhistName = "histograms_%s/mu/%s_isr_%s"%(selYear,outputFileName,level)
+			
 	#	elif syst=="isr" or syst=="fsr":
 	#		if level=="up":
 	#			analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_17/13TeV_AnalysisNtuples/muons/%s_up_"%(syst)
@@ -333,13 +333,13 @@ if finalState=="Mu":
 		 #      outputhistName = "histograms_%s/mu/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			print " Error...what is the systematic name??????????????"
-			#if  level=="up":
-			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
-			#	outputhistName = "histograms_%s/mu/%s%s_up"%(selYear,outputFileName,syst)
-			#if level=="down":
-			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
-			#	outputhistName = "histograms_%s/mu/%s%s_down"%(selYear,outputFileName,syst)
+			print "Running systematics ==>", syst
+			if  level=="up":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/mu/%s_%s_up"%(selYear,outputFileName,syst)
+			if level=="down":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/mu/%s_%s_down"%(selYear,outputFileName,syst)
 
 	extraCuts                = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
 	extraPhotonCuts          = "(passPresel_Mu && nJet>=3 && nBJet>=1 && %s)*"
@@ -425,17 +425,12 @@ elif finalState=="Ele":
 			outputhistName = "histograms_%s/ele/%s_Q2_%s"%(selYear,outputFileName,level)
 
 		elif 'Pdf' in syst:
-			if syst=="Pdf":
-				if level=="up":
-					Pdf="pdfweight_Up"
-				else:
-					Pdf="pdfweight_Do"
-				outputhistName = "histograms_%s/ele/%s_Pdf_%s"%(selYear,outputFileName,level)
+			if level=="up":
+				Pdf="pdfweight_Up"
 			else:
-				if type(eval(syst[3:]))==type(int()):
-					pdfNumber = eval(syst[3:])
-					Pdf="pdfSystWeight[%i]/pdfWeight"%(pdfNumber-1)
-					outputhistName = "histograms_%s/ele/%s_Pdf/Pdf%i"%(selYear,outputFileName,pdfNumber)				
+				Pdf="pdfweight_Do"
+			outputhistName = "histograms_%s/ele/%s_Pdf_%s"%(selYear,outputFileName,level)
+			
 
 		elif 'MuEff' in syst:
 			if level=="up":
@@ -502,13 +497,13 @@ elif finalState=="Ele":
 		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			print " Error...what is the systematic name??????????????"
-			#if  level=="up":
-			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
-			#	outputhistName = "histograms_%s/ele/%s%s_up"%(selYear,outputFileName,syst)
-			#if level=="down":
-			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
-			#	outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
+			print "Running systematics ==>", syst
+			if  level=="up":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/ele/%s_%s_up"%(selYear,outputFileName,syst)
+			if level=="down":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/ele/%s_%s_down"%(selYear,outputFileName,syst)
 
 	extraCuts                = "(passPresel_Ele && nJet>=3 && nBJet>=1)*"
 	extraPhotonCuts          = "(passPresel_Ele && nJet>=3 && nBJet>=1 && %s)*"
@@ -599,17 +594,12 @@ elif finalState=="DiMu":
 			outputhistName = "histograms_%s/mu/Dilep_%s_Q2_%s"%(selYear,outputFileName,level)
 
 		elif 'Pdf' in syst:
-			if syst=="Pdf":
-				if level=="up":
-					Pdf="pdfweight_Up"
-				else:
-					Pdf="pdfweight_Do"
-				outputhistName = "histograms_%s/mu/Dilep_%s_Pdf_%s"%(selYear,outputFileName,level)
+			if level=="up":
+				Pdf="pdfweight_Up"
 			else:
-				if type(eval(syst[3:]))==type(int()):
-					pdfNumber = eval(syst[3:])
-					Pdf="pdfSystWeight[%i]/pdfWeight"%(pdfNumber-1)
-					outputhistName = "histograms_%s/mu/Dilep_%s_Pdf/Pdf%i"%(selYear,outputFileName,pdfNumber)				
+				Pdf="pdfweight_Do"
+			outputhistName = "histograms_%s/mu/Dilep_%s_Pdf_%s"%(selYear,outputFileName,level)
+
 
 		elif 'MuEff' in syst:
 			if level=="up":
@@ -676,7 +666,13 @@ elif finalState=="DiMu":
 		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			print " Error...what is the systematic name??????????????"
+			print "Running systematics ==>", syst
+			if  level=="up":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Dilepton/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/mu/%s_%s_up"%(selYear,outputFileName,syst)
+			if level=="down":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Dilepton/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/mu/%s_%s_down"%(selYear,outputFileName,syst)
 			
 	extraCuts            = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
 	extraPhotonCuts      = "(passPresel_Mu && nJet>=3 && nBJet>=1 && %s)*"
@@ -765,17 +761,12 @@ elif finalState=="DiEle":
 			outputhistName = "histograms_%s/ele/Dilep_%s_Q2_%s"%(selYear,outputFileName,level)
 
 		elif 'Pdf' in syst:
-			if syst=="Pdf":
-				if level=="up":
-					Pdf="pdfweight_Up"
-				else:
-					Pdf="pdfweight_Do"
-				outputhistName = "histograms_%s/ele/Dilep_%s_Pdf_%s"%(selYear,outputFileName,level)
+			if level=="up":
+				Pdf="pdfweight_Up"
 			else:
-				if type(eval(syst[3:]))==type(int()):
-					pdfNumber = eval(syst[3:])
-					Pdf="pdfSystWeight[%i]/pdfWeight"%(pdfNumber-1)
-					outputhistName = "histograms_%s/ele/Dilep_%s_Pdf/Pdf%i"%(selYear,outputFileName,pdfNumber)				
+				Pdf="pdfweight_Do"
+			outputhistName = "histograms_%s/ele/Dilep_%s_Pdf_%s"%(selYear,outputFileName,level)
+		
 
 		elif 'MuEff' in syst:
 			if level=="up":
@@ -842,13 +833,13 @@ elif finalState=="DiEle":
 		 #      outputhistName = "histograms_%s/ele/%s%s_down"%(selYear,outputFileName,syst)
 
 		else:
-			print " Error...what is the systematic name??????????????"
-			#if  level=="up":
-			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_up_"%(selYear,syst) # more than one 
-			#	outputhistName = "histograms_%s/ele/Dilep_%s%s_up"%(selYear,outputFileName,syst)
-			#if level=="down":
-			#	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/aldas/NanoAOD/TTGamma_%s/13TeV_AnalysisNtuples/systematics_muons/%s_down_"%(selYear,syst)
-			#	outputhistName = "histograms_%s/ele/Dilep_%s%s_down"%(selYear,outputFileName,syst)
+			print "Running systematics ==>", syst
+			if  level=="up":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Dilepton/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/ele/%s_%s_up"%(selYear,outputFileName,syst)
+			if level=="down":
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples/Dilepton/Systematics/%s/"%selYear 
+				outputhistName = "histograms_%s/ele/%s_%s_down"%(selYear,outputFileName,syst)
 
 
 	extraCuts            = "(passPresel_Ele && nJet>=3 && nBJet>=1)*"
@@ -1273,9 +1264,12 @@ multiPlotList = options.multiPlotList
 
 plotList = options.plotList
 if plotList is None:
-	if makeAllPlots:
-		plotList = histogramInfo.keys()
-		if not runQuiet: print "Making full list of plots"
+	if makeAllPlots and finalState == 'Ele':
+		plotList = [x for x in myListOfHistograms if "mu" not in x]
+		if not runQuiet: print "Making full list of plots for Ele channel"
+	elif makeAllPlots and finalState == 'Mu':
+		plotList = [x for x in myListOfHistograms if "ele" not in x]
+		if not runQuiet: print "Making full list of plots for Mu Channel"
 	elif makePhotonSplitplots:
 		plotList = ["phosel_LeadingPhotonEt", "phosel_LeadingPhotonEt_GenuinePhoton",  "phosel_LeadingPhotonEt_MisIDEle",  "phosel_LeadingPhotonEt_HadronicPhoton",  "phosel_LeadingPhotonEt_HadronicFake",
 			        "phosel_LeadingPhotonEta","phosel_LeadingPhotonEta_GenuinePhoton", "phosel_LeadingPhotonEta_MisIDEle", "phosel_LeadingPhotonEta_HadronicPhoton", "phosel_LeadingPhotonEta_HadronicFake",
@@ -1287,7 +1281,8 @@ if plotList is None:
 	elif makePlotsMEG:
 		plotList =["phosel_MassEGamma", "phosel_MassEGamma_GenuinePhoton", "phosel_MassEGamma_MisIDEle", "phosel_MassEGamma_HadronicPhoton", "phosel_MassEGamma_HadronicFake"] 	
 	elif makePlotsForSF:
-		plotList =["presel_Njet","presel_WtransMass", "phosel_MassEGamma", "phosel_MassEGamma_GenuinePhoton",  
+		plotList =["phosel_AntiSIEIE_ChIso", "phosel_AntiSIEIE_ChIso_GenuinePhoton","phosel_AntiSIEIE_ChIso_MisIDEle","phosel_AntiSIEIE_ChIso_HadronicPhoton","phosel_AntiSIEIE_ChIso_HadronicFake",
+	   "presel_Njet","presel_WtransMass", "phosel_MassEGamma", "phosel_MassEGamma_GenuinePhoton",  
 	   "phosel_MassEGamma_MisIDEle", "phosel_MassEGamma_HadronicPhoton", "phosel_MassEGamma_HadronicFake",
 	   "phosel_Njet","phosel_WtransMass","presel_jet1Pt","phosel_jet1Pt",
 	   "phosel_WtransMass_GenuinePhoton","phosel_WtransMass_MisIDEle","phosel_WtransMass_HadronicPhoton",
@@ -1314,6 +1309,40 @@ if plotList is None:
 	elif Dilepmass:
 		plotList = ["presel_DilepMass"]
 		if not runQuiet: print "Making only plots for ZJetsSF fits"
+	elif makePlotsPhysicsObjects and finalState == 'Mu':
+		plotList = [
+		"presel_muPt", "phosel_muPt", 
+		"presel_muEta","phosel_muEta",
+        "presel_muPhi","phosel_muPhi",
+		"presel_MET", "phosel_MET", 
+		"presel_nVtx", "phosel_nVtx", 
+        "presel_Njet", "phosel_Njet", 
+        "presel_Nbjet", "phosel_Nbjet", 
+        "presel_jet1Pt", "phosel_jet1Pt", 
+        "presel_jet2Pt", "phosel_jet2Pt", 
+        "presel_jet3Pt", "phosel_jet3Pt", 
+        "phosel_LeadingPhotonEt",
+        "phosel_LeadingPhotonPhi",
+        "phosel_LeadingPhotonEta",
+		]
+
+	elif makePlotsPhysicsObjects and finalState == 'Ele':
+		plotList = [
+		"presel_elePt",  "phosel_elePt", 
+		"presel_eleSCEta", "phosel_eleSCEta", 
+		"presel_elePhi", "phosel_elePhi", 
+		"presel_MET", "phosel_MET", 
+		"presel_nVtx", "phosel_nVtx", 
+        "presel_Njet", "phosel_Njet", 
+        "presel_Nbjet", "phosel_Nbjet", 
+        "presel_jet1Pt", "phosel_jet1Pt", 
+        "presel_jet2Pt", "phosel_jet2Pt", 
+        "presel_jet3Pt", "phosel_jet3Pt", 
+        "phosel_LeadingPhotonEt",
+        "phosel_LeadingPhotonPhi",
+        "phosel_LeadingPhotonEta",
+		]
+
 	elif not multiPlotList is None:
 		plotList = []
 		for plotNameTemplate in multiPlotList:
@@ -1422,8 +1451,20 @@ if not "QCD_DD" in sample:
 	if finalState=="DiMu" or finalState=="DiEle":
 		fileListTemp = samples[sample][0]
 		fileList1 = ["{}{}".format("Dilep_",i) for i in fileListTemp]
+	elif (syst=="JECTotal" or syst =="JER") and level=="up":
+		print "==>",syst,level
+		fileListTemp = samples[sample][0]
+		fileList1 = ["{}{}".format("%s_up_"%syst,i) for i in fileListTemp]
+		
+	elif  (syst=="JECTotal" or syst =="JER") and level=="down":
+		print "==>",syst,level
+		fileListTemp = samples[sample][0]
+		fileList1 = ["{}{}".format("%s_down_"%syst,i) for i in fileListTemp]
 	else:
 		fileList1 = samples[sample][0]
+	
+	print fileList1
+	
 	elementsToRemove = ["Dilep_Data_SingleEle_a_2016_AnalysisNtuple.root", "Dilep_Data_SingleEle_a_2016_AnalysisNtuple_1of5.root", "Dilep_Data_SingleEle_a_2016_AnalysisNtuple_2of5.root", "Dilep_Data_SingleEle_a_2016_AnalysisNtuple_3of5.root", "Dilep_Data_SingleEle_a_2016_AnalysisNtuple_4of5.root", "Dilep_Data_SingleEle_a_2016_AnalysisNtuple_5of5.root", 
 						"Dilep_Data_SingleMu_a_2016_AnalysisNtuple.root",  "Dilep_Data_SingleMu_a_2016_AnalysisNtuple_1of5.root",  "Dilep_Data_SingleMu_a_2016_AnalysisNtuple_2of5.root",  "Dilep_Data_SingleMu_a_2016_AnalysisNtuple_3of5.root",  "Dilep_Data_SingleMu_a_2016_AnalysisNtuple_4of5.root",  "Dilep_Data_SingleMu_a_2016_AnalysisNtuple_5of5.root",  
 						"Dilep_Data_SingleEle_a_2017_AnalysisNtuple.root", "Dilep_Data_SingleEle_a_2017_AnalysisNtuple_1of5.root", "Dilep_Data_SingleEle_a_2017_AnalysisNtuple_2of5.root", "Dilep_Data_SingleEle_a_2017_AnalysisNtuple_3of5.root", "Dilep_Data_SingleEle_a_2017_AnalysisNtuple_4of5.root", "Dilep_Data_SingleEle_a_2017_AnalysisNtuple_5of5.root",  
@@ -1461,7 +1502,9 @@ if not "QCD_DD" in sample:
 	fileList = [x for x in fileList1 if not any(y in x for y in elementsToRemove)] 
 	
         if options.verbose:
+                print "Sample list:",sampleList
                 print 'Loading Files'
+                
 	for fileName in fileList:
                 if options.verbose:
                         print "==> ","%s%s"%(analysisNtupleLocation,fileName)
@@ -1507,23 +1550,22 @@ if not "QCD_DD" in sample:
 					print 'Event weight string: "%s"'%evtWeight
 		tree.Draw("%s>>%s_%s"%(h_Info[0],h_Info[1],sample),evtWeight)
 
-
-
 ## histogramtodraw, cuts(passPresel_Mu && nJet>=4 && nBJet>=1 && nPho==1) weight*evtWeight*PUweight*muEffWeight*eleEffWeight*1.0*1.0*btagWeight_1a
 
 if not os.path.exists(outputhistName):
 	os.makedirs(outputhistName)
 
-eosdir = "root://cmseos.fnal.gov//store/user/npoudyal/"
-localdir = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/"
-#if options.condor:
-#	stdout, stderr = subprocess.Popen("BASH COMMAND", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate() # copy from eos to local dir
-	#command = ["xrdcp","-f",eosdir+outputhistName+"/"+sample+".root", localdir+outputhistName+"/"]
-	#Popen(command)
+eosdir = "root://cmseos.fnal.gov//store/user/npoudyal/PhysicsObjects/"
+localdir = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Condor_PhysicObject/"
+
+import subprocess
+
+if options.condor:
+	stdout, stderr = subprocess.Popen("BASH COMMAND", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate() # copy from eos to local dir
+	command = ["xrdcp","-f",eosdir+outputhistName+"/"+sample+".root", localdir+outputhistName+"/"]
+	Popen(command)
 	
-
 outputFile = TFile("%s/%s.root"%(outputhistName,sample),"update")
-
 #print "%s/%s.root"%(outputhistName,sample)
 
 for h in histograms:
