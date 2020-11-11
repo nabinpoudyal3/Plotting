@@ -89,6 +89,7 @@ phiPlot = options.phiPlot
 
 gROOT.SetBatch(True)
 
+
 if finalState=='Mu':
 	channel = 'mu'
 	channelText = "#mu+jets"
@@ -225,7 +226,10 @@ if etPlot:
 	histNameData= "phosel_LeadingPhotonEt_%s" 
 	mydistributionName = histNameData[14:-3]
 	print mydistributionName
-	
+	#
+	#
+	#
+	#
 elif etaPlot:
 	histName    = "phosel_LeadingPhotonEta_%s_%s"
 	histNameData= "phosel_LeadingPhotonEta_%s" 
@@ -237,7 +241,15 @@ elif phiPlot:
 
 else:
 	print " check line around 221!!"
+	histName  	= "phosel_mediumID_ChIso_%s_%s"
+	histNameData= "phosel_mediumID_ChIso_%s" 
+	mydistributionName = histNameData[16:-3]
+
+	#histName  	= "phosel_M3_%s_%s"
+	#histNameData= "phosel_M3_%s" 
+	#mydistributionName = histNameData[7:-3]	
 	
+	print mydistributionName
 # histName    = "phosel_LeadingPhotonEt_%s_%s"
 # histNameData= "phosel_LeadingPhotonEt_%s"
 
@@ -245,7 +257,7 @@ else:
 # histNameData= "phosel_noCut_SIEIE_%s"
 
 
-rebin = 2
+rebin = 5
 
 if finalState=='Ele':
 	sample = "DataEle"
@@ -271,20 +283,25 @@ summedHist ={}
 
 for item in category.keys():
 	summedHist[item] = None
+	print item
 	for sample in sampleList:
 		if finalState == 'Ele' and sample == 'QCD': sample = 'QCDEle'
 		if finalState == 'Mu'  and sample == 'QCD': sample = 'QCDMu'
 		_file[sample] = TFile('%s%s.root'%(fileDir,sample),'read')
 		tempHist = _file[sample].Get(histName%(item,sample))
+		if tempHist is None: continue
+		print item, sample
 		if summedHist[item] is None:
 			summedHist[item] = tempHist.Clone(item)
 			summedHist[item].SetDirectory(0)
 		else:
 			summedHist[item].Add(tempHist)
-if postfit:
-	summedHist['MisIDEle'].Scale(MisIDEleSF)
+#if postfit:
+#	summedHist['MisIDEle'].Scale(MisIDEleSF)
+
 
 for ih in summedHist:
+	print summedHist[ih]
 	summedHist[ih].Rebin(rebin)
 	summedHist[ih].SetLineColor(category[ih])
 	summedHist[ih].SetFillColor(category[ih])
@@ -382,6 +399,8 @@ stack.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
 stack.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap))
 #stack.SetTitle(';;<Events/GeV>')# '%rebin)
 stack.SetTitle(';;Events/%sGeV'%rebin)
+stack.GetXaxis().SetRangeUser(0,100)
+
 #CMS_lumi.channelText = (channelText+"\\n"+regionText)
 #if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
 
@@ -434,6 +453,7 @@ ratio.GetYaxis().SetTitle("Data/MC")
 ratio.GetYaxis().SetTitleOffset(.4)
 ratio.GetYaxis().SetTitleSize(.09)
 ratio.GetYaxis().SetNdivisions(2)
+ratio.GetXaxis().SetRangeUser(0,100)
 
 CMS_lumi.CMS_lumi(pad2, 4, 11)
 pad2.cd()
