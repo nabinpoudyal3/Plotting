@@ -7,6 +7,19 @@ for year in ${YEAR[@]}; do
 	python makePlots.py -y $year -c Ele --tight            --useQCDMC --makePlotsForSF      
 	python makePlots.py -y $year -c Mu  --tight            --useQCDMC --makePlotsForSF
 
+	python makePlots.py -y $year -c Ele --looseCRge4e0     --useQCDMC --makePlotsForSF
+	python makePlots.py -y $year -c Mu  --looseCRge4e0     --useQCDMC --makePlotsForSF
+
+done
+echo ""
+exit 1
+
+
+for year in ${YEAR[@]}; do
+
+	python makePlots.py -y $year -c Ele --tight            --useQCDMC --makePlotsForSF      
+	python makePlots.py -y $year -c Mu  --tight            --useQCDMC --makePlotsForSF
+
 	python makePlots.py -y $year -c Ele --looseCRge2e0     --useQCDMC --makePlotsForSF
 	python makePlots.py -y $year -c Mu  --looseCRge2e0     --useQCDMC --makePlotsForSF
 
