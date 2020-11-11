@@ -12,8 +12,8 @@ for ifile in mylist:
     hist1 = ROOT.gDirectory.Get('hist1')
     mytree.Draw("nonPromptSF>>hist2")
     hist2 = ROOT.gDirectory.Get('hist2')
-    line +=   "ttgammaSF_%s = %.3f \n"%(ifile[17:24],hist1.GetMean())
-    line += "nonPromptSF_%s = %.3f \n"%(ifile[17:24],hist2.GetMean())
+    line +=   "ttgammaSF_%s = %.2f \n"%(ifile[17:24],hist1.GetMean())
+    line += "nonPromptSF_%s = %.2f \n"%(ifile[17:24],hist2.GetMean())
 
 with open("TTGamma_nonPrompt_values_all.py","w") as _file:
     _file.write(line)
@@ -27,8 +27,8 @@ for ifile in mylist:
     hist1 = ROOT.gDirectory.Get('hist1')
     mytree.Draw("nonPromptSF>>hist2")
     hist2 = ROOT.gDirectory.Get('hist2')
-    line +=   "\\newcommand{\\ttgammaSF} {\ensuremath{%.3f \\substack{+%.3f \\\\ -%.3f}}}\n"%(hist1.GetMean(),hist1.GetRMS(), hist1.GetRMS())
-    line +=   "\\newcommand{\\nonPromptSF} {\ensuremath{%.3f \\substack{+%.3f \\\\ -%.3f}}}\n"%(hist2.GetMean(),hist2.GetRMS(), hist2.GetRMS())
+    line +=   "\\newcommand{\\ttgammaSF} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(hist1.GetMean(),hist1.GetRMS(), hist1.GetRMS())
+    line +=   "\\newcommand{\\nonPromptSF} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(hist2.GetMean(),hist2.GetRMS(), hist2.GetRMS())
 
 with open("TTGamma_nonPrompt_values_all.tex","w") as _file:
     _file.write(line)
