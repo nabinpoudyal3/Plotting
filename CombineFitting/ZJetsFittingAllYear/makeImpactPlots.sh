@@ -29,8 +29,6 @@ combineTool.py -M Impacts -d datacard_CR123_2016.root -m 125  --robustFit 1 --do
 combineTool.py -M Impacts -d datacard_CR123_2016.root -m 125  -o impacts_data_2016.json  --rMin=0 --rMax=5
 plotImpacts.py -i impacts_data_2016.json -o impacts_data_2016
 
-
-
 text2workspace.py  datacard_CR123_2017.txt 
 combineTool.py -M Impacts -d datacard_CR123_2017.root -m 125  --doInitialFit --robustFit 1  --rMin=0 --rMax=5
 combineTool.py -M Impacts -d datacard_CR123_2017.root -m 125  --robustFit 1 --doFits  --rMin=0 --rMax=5
