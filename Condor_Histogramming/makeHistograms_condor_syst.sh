@@ -34,20 +34,25 @@ else
 
 fi
 
-outputdir="root://cmseos.fnal.gov//store/user/npoudyal"
+outputdir="root://cmseos.fnal.gov//store/user/npoudyal/TEST"
 
 echo "Running python makeHistograms "
-declare -a    SampleList=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
-declare -a SampleListEle=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
-declare -a  SampleListMu=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
 
-#declare -a SampleList=("GJets" "Diboson")
-#declare -a SampleListEle=("GJets" "Diboson")
-#declare -a SampleListMu=("GJets" "Diboson")
+if [ $systX == "JECTotal" ] || [ $systX == "JER" ]; then
+	declare -a    SampleList=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" )
+	declare -a SampleListEle=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" )
+	declare -a  SampleListMu=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" )
+else 
+	declare -a    SampleList=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
+	declare -a SampleListEle=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
+	declare -a  SampleListMu=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
+
+fi
+
 
 for mysample in ${SampleList[@]}; do
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --makePlotsMEG
-	python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --makePlotsForSF
+	python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --allPlots
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --plot phosel_MET
 done
 wait
