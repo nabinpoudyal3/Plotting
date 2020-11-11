@@ -83,6 +83,9 @@ parser.add_option("--useQCDMC","--qcdMC",dest="useQCDMC", default=False, action=
 parser.add_option("--useQCDCR",dest="useQCDCR", default=False, action="store_true",
                      help="to make plots in QCDCR region")
 
+parser.add_option("--noQCD",dest="noQCD", default=False, action="store_true",
+		help="")
+		
 (options, args) = parser.parse_args()
 selYear = options.Year
 if selYear=="":
@@ -107,6 +110,7 @@ looseCRe2e2  =options.looseCRe2e2
 looseCRe3ge2 =options.looseCRe3ge2
 useQCDMC = options.useQCDMC
 useQCDCR = options.useQCDCR
+noQCD = options.noQCD
 
 nBinss = options.nBinss
 
@@ -121,7 +125,7 @@ if finalState=='DiEle':
 #######
 ########
 
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal","JER", "JECTotal"]
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]#,"fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics", systematics
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
@@ -309,7 +313,7 @@ if looseCRe3ge2:  #CR7
 
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
-localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
+#localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
 
 fileDir = eosFolder + fileDir
 fileDirQCD = eosFolder + fileDirQCD
@@ -328,7 +332,7 @@ from Style import *
 gROOT.ForceStyle()
 
 
-sampleList = ['TTGamma','TTbar','TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+sampleList = ['TTGamma','TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 
 template_category = {"myZJets":kGreen+1, "myBackground":kRed }
 template_category_name = {"myZJets":"ZJets", "myBackground":"background" }
@@ -344,8 +348,8 @@ if selYear == '2018':	CMS_lumi.lumi_13TeV = "59.74 fb^{-1}"
 if useQCDMC:
 	if channel=="mu":	sampleList[-1] = "QCDMu"
 	if channel=="ele":	sampleList[-1] = "QCDEle"
-elif useQCDCR:
-	sampleList[-1] = "QCD_DD"
+elif noQCD:
+	sampleList.remove("QCD")
 	sampleList.remove("GJets") 
 else:
 	sampleList[-1] = "QCD_DD"
@@ -408,26 +412,32 @@ for sample in sampleList:
 			templateHist["myZJets"].Add(tempHist)
 	else:
 		tempHist = _file[sample].Get(histName%(sample))
+		#print sample
+		#tempHist.Print("All")
 		if templateHist["myBackground"] is None:
-			templateHist["myBackground"] = tempHist.Clone(sample)
+			templateHist["myBackground"] = tempHist.Clone("myBackground")
 			templateHist["myBackground"].SetDirectory(0)
 		else:
 			templateHist["myBackground"].Add(tempHist)
+			
 
 #rebin = 4
-#binning = numpy.arange(80,100.1,1)
-binning = numpy.array([81,84,88,90,92,94,96,101.])
+binning = numpy.array([88.,94.]) # Z mass pm Z width
+#binning = numpy.array([81,84,86,88,90,92,94,96,102.])
+#binning = numpy.array([82,88,92,98,102.])
+#binning = numpy.array([82,102.])
 binWidth = numpy.diff(binning)
 
 #print binning
 #binning = numpy.array([80,88,92,100.1])
 
-
 rebinnedHist ={} 
 for ih in templateHist:
+	print ih, binning
 	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
 	rebinnedHist[ih].SetLineColor(template_category[ih])
 	rebinnedHist[ih].SetFillColor(template_category[ih])
+
 
 if systematics=='':
 	if finalState=='DiEle':
