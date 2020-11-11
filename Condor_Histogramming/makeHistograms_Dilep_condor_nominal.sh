@@ -34,12 +34,13 @@ fi
 outputdir="root://cmseos.fnal.gov//store/user/npoudyal"
 
 echo "Running python makeHistograms "
-declare -a    SampleList=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
-declare -a SampleListEle=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
-declare -a  SampleListMu=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
-#declare -a SampleList=("TTbar")
-#declare -a SampleListEle=("TTbar")
-#declare -a SampleListMu=("TTbar")
+declare -a    SampleList=("TTGamma" "TTbar"  "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
+declare -a SampleListEle=("TTGamma" "TTbar"  "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
+declare -a  SampleListMu=("TTGamma" "TTbar"  "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
+
+#declare -a    SampleList=("SingleTop" "TTV" "Diboson" "ZGamma")
+#declare -a    SampleListEle=("SingleTop" "TTV" "Diboson" "ZGamma")
+#declare -a    SampleListMu=("SingleTop" "TTV" "Diboson" "ZGamma")
 
 for mysample in ${SampleList[@]}; do
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --makePlotsMEG
