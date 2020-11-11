@@ -14,8 +14,8 @@ for ifile in mylist:
     hist1 = ROOT.gDirectory.Get('hist1')
     mytree.Draw("nonPromptSF>>hist2")
     hist2 = ROOT.gDirectory.Get('hist2')
-    line +=   "ttgammaSF_%s = %.3f \n"%(ifile[17:21],hist1.GetMean())
-    line += "nonPromptSF_%s = %.3f \n"%(ifile[17:21],hist2.GetMean())
+    line +=   "ttgammaSF_%s = %.2f \n"%(ifile[17:21],hist1.GetMean())
+    line += "nonPromptSF_%s = %.2f \n"%(ifile[17:21],hist2.GetMean())
 
 with open("TTGamma_nonPrompt_values_bothChannelSeparateYear.py","w") as _file:
     _file.write(line)
@@ -33,8 +33,8 @@ for ifile in mylist:
     if ifile[17:21]=='2016': year='sixteen'
     elif ifile[17:21]=='2017': year='seventeen'
     elif ifile[17:21]=='2018': year='eightteen'
-    line +=   "\\newcommand{\\ttgammaSF%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ -%.3f}}}\n"%(year,hist1.GetMean(),hist1.GetRMS(), hist1.GetRMS())
-    line +=   "\\newcommand{\\nonPromptSF%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ -%.3f}}}\n"%(year,hist2.GetMean(),hist2.GetRMS(), hist2.GetRMS())
+    line +=   "\\newcommand{\\ttgammaSF%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(year,hist1.GetMean(),hist1.GetRMS(), hist1.GetRMS())
+    line +=   "\\newcommand{\\nonPromptSF%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(year,hist2.GetMean(),hist2.GetRMS(), hist2.GetRMS())
 
 with open("TTGamma_nonPrompt_values_bothChannelSeparateYear.tex","w") as _file:
     _file.write(line)
