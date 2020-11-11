@@ -1,7 +1,13 @@
-Usage: combine datacard [options]
-Main options:
-  -d [ --datacard ] arg                 Datacard file (can also be specified 
-                                        directly without the -d or --datacard)
+important notes from higgCombine.
+
+1. Indeed you can have one-sided impacts when your POI (r) is close to a boundary. This is not necessarily a problem: if a negative signal strength is unphysical then anything pulling r<0 will be truncated and your impacts will be in one direction only.
+2. Performing a likelihood scan with the multidimfit algo grid might help in visualise where the lower bound could be. 
+3. We checked the link above in the warning and it suggests to set --cminDefaultMinimizerStrategy 0.
+4. I think you have a bug in your implementation of the jes uncertainties on the wlnu process. I looked at the normalisation effect and it's extremely asymmetric - the "up" yields of the order 2% and the down yields of order 20% - this creates an NLL function with a rather odd shape and a non-pos-def covariance matrix at the minimum. Hopefully if you fix this it will be determined accurately again.
+
+
+
+  -d [ --datacard ] arg                 Datacard file (can also be specified directly without the -d or --datacard)
   -M [ --method ] arg (=AsymptoticLimits)
                                         Method to extract upper limit. 
                                         Supported methods are: 
@@ -209,108 +215,6 @@ Common miscellaneous options:
                                         to 1. Can specify multiple times
   --X-fpeMask arg                       Set FPE mask: 1=NaN, 2=Div0, 4=Overfl, 
                                         8=Underf, 16=Inexact; 7=default
-AsymptoticLimits specific options:
-  --rAbsAcc arg (=0.00050000000000000001)
-                                        Absolute accuracy on r to reach to 
-                                        terminate the scan
-  --rRelAcc arg (=0.0050000000000000001)
-                                        Relative accuracy on r to reach to 
-                                        terminate the scan
-  --run arg (=both)                     What to run: both (default), observed, 
-                                        expected, blind.
-  --singlePoint arg                     Just compute CLs for the given value of
-                                        r
-  --qtilde arg (=1)                     Allow only non-negative signal 
-                                        strengths (default is true).
-  --rule arg (=CLs)                     Rule to use: CLs, CLsplusb
-  --picky                               Abort on fit failures
-  --noFitAsimov                         Use the pre-fit asimov dataset
-  --getLimitFromGrid arg                calculates the limit from a grid of 
-                                        r,cls values
-  --newExpected arg (=1)                Use the new formula for expected limits
-                                        (default is true)
-  --minosAlgo arg (=stepping)           Algorithm to use to get the median 
-                                        expected limit: 'minos' (fastest), 
-                                        'bisection', 'stepping' (default, most 
-                                        robust)
-  --strictBounds                        Take --rMax as a strict upper bound
-
-BayesianSimple specific options:
-  --maxDim arg (=4)     Maximum number of dimensions to try doing the 
-                        integration
-
-BayesianToyMC specific options:
-  --integrationType arg (=toymc) Integration algorithm to use
-  --tries arg (=1)               Number of times to run the ToyMC on the same 
-                                 data
-  -i [ --numIters ] arg (=1000)  Number of iterations or calls used within 
-                                 iteration (0=ROOT Default)
-  --hintSafetyFactor arg (=5)    set range of integration equal to this number 
-                                 of times the hinted limit
-  --twoPoints arg                Compute BF comparing two points in parameter 
-                                 space
-
-ChannelCompatibilityCheck specific options:
-  --preFitValue arg (=1)                Value of signal strength pre-fit, also 
-                                        used for pre-fit plots, normalisations 
-                                        and uncertainty calculations (note this
-                                        overrides --expectSignal for these 
-                                        features)
-  --do95 arg (=0)                       Compute also 2-sigma interval from 
-                                        delta(nll) = 1.92 instead of 0.5
-  --robustFit arg (=0)                  Search manually for 1 and 2 sigma bands
-                                        instead of using Minos
-  --maxFailedSteps arg (=5)             How many failed steps to retry before 
-                                        giving up
-  --stepSize arg (=0.100000001)         Step size for robust fits (multiplier 
-                                        of the range)
-  --setRobustFitAlgo arg                Choice of minimizer (Minuit vs Minuit2)
-                                        for profiling in robust fits
-  --setRobustFitStrategy arg (=0)       Stragegy for minimizer for profiling in
-                                        robust fits
-  --setRobustFitTolerance arg (=0.100000001)
-                                        Tolerance for minimizer for profiling 
-                                        in robust fits
-  --setCrossingTolerance arg (=9.99999975e-05)
-                                        Tolerance for finding the NLL crossing 
-                                        in robust fits
-  --profilingMode arg (=all)            What to profile when computing 
-                                        uncertainties: all, none (at least for 
-                                        now).
-  --saveNLL                             Save the negative log-likelihood at the
-                                        minimum in the output tree (note: value
-                                        is relative to the pre-fit state)
-  --keepFailures                        Save the results even if the fit is 
-                                        declared as failed (for NLL studies)
-  --protectUnbinnedChannels             Protect PDF from going negative in 
-                                        unbinned channels
-  --autoBoundsPOIs arg                  Adjust bounds for the POIs if they end 
-                                        up close to the boundary. Can be a list
-                                        of POIs, or "*" to get all
-  --autoMaxPOIs arg                     Adjust maxima for the POIs if they end 
-                                        up close to the boundary. Can be a list
-                                        of POIs, or "*" to get all
-  --forceRecreateNLL                    Always recreate NLL when running on 
-                                        multiple toys rather than re-using nll 
-                                        with new dataset
-  --fixedSignalStrength arg (=0)        Compute the compatibility for a fixed 
-                                        signal strength. If not specified, it's
-                                        left floating
-  --saveFitResult                       Save fit results in output file
-  -g [ --group ] arg                    Group together channels that contain a 
-                                        given name. Can be used multiple times.
-  --runMinos arg (=1)                   Compute also uncertainties using 
-                                        profile likeilhood (MINOS or robust 
-                                        variants of it)
-
-FeldmanCousins specific options:
-  --rAbsAcc arg (=0.100000001)  Absolute accuracy on r to reach to terminate 
-                                the scan
-  --rRelAcc arg (=0.0199999996) Relative accuracy on r to reach to terminate 
-                                the scan
-  --toysFactor arg (=1)         Increase the toys per point by this factor 
-                                w.r.t. the minimum from adaptive sampling
-
 FitDiagnostics specific options:
   --preFitValue arg (=1)                Value of signal strength pre-fit, also 
                                         used for pre-fit plots, normalisations 
@@ -408,196 +312,6 @@ FitDiagnostics specific options:
   --ignoreCovWarning                    Override the default behaviour of 
                                         saveWithUncertainties being ignored if 
                                         the covariance matrix is not accurate.
-
-GenerateOnly specific options: none:
-
-GoodnessOfFit specific options:
-  --algorithm arg                Goodness of fit algorithm. Supported 
-                                 algorithms are 'saturated', 'KS' and 'AD'.
-  --setParametersForFit arg      Set parameters values for the saturated model 
-                                 fitting step
-  --setParametersForEval arg     Set parameter values for the saturated model 
-                                 NLL eval step
-  --fixedSignalStrength arg (=0) Compute the goodness of fit for a fixed signal
-                                 strength. If not specified, it's left floating
-  --plots                        Make plots containing information of the 
-                                 computation of the Anderson-Darling or 
-                                 Kolmogorov-Smirnov test statistic
-
-HybridNew specific options:
-  --rule arg (=CLs)                     Rule to use: CLs, CLsplusb
-  --testStat arg (=LEP)                 Test statistics: LEP, TEV, LHC 
-                                        (previously known as Atlas), Profile.
-  --singlePoint arg (=1.0)              Just compute CLs for the given value of
-                                        the parameter of interest. In case of 
-                                        multiple parameters, use a syntax 
-                                        'name=value,name2=value2,...'
-  --onlyTestStat                        Just compute test statistic for the 
-                                        data (or toy if using -t N), i.e don't 
-                                        throw toys to calculate actual p-values
-                                        (works only with --singlePoint)
-  --generateNuisances arg (=1)          Generate nuisance parameters for each 
-                                        toy
-  --generateExternalMeasurements arg (=0)
-                                        Generate external measurements for each
-                                        toy, taken from the GlobalObservables 
-                                        of the ModelConfig
-  --fitNuisances arg (=0)               Fit the nuisances first, before 
-                                        generating the toy data. Set this 
-                                        option to false to acheive the same 
-                                        results as with --bypassFrequentistFit.
-                                        When not generating toys, eg as in when
-                                        running with --readHybridresult, this 
-                                        has no effect
-  --searchAlgo arg (=logSecant)         Algorithm to use to search for the 
-                                        limit (bisection, logSecant)
-  -T [ --toysH ] arg (=500)             Number of Toy MC extractions to compute
-                                        CLs+b, CLb and CLs
-  --clsAcc arg (=0.0050000000000000001) Absolute accuracy on CLs to reach to 
-                                        terminate the scan
-  --rAbsAcc arg (=0.10000000000000001)  Absolute accuracy on r to reach to 
-                                        terminate the scan
-  --rRelAcc arg (=0.050000000000000003) Relative accuracy on r to reach to 
-                                        terminate the scan
-  --interpAcc arg (=0.20000000000000001)
-                                        Minimum uncertainty from interpolation 
-                                        delta(x)/(max(x)-min(x))
-  -i [ --iterations ] arg (=1)          Number of times to throw 'toysH' toys 
-                                        to compute the p-values (for 
-                                        --singlePoint if clsAcc is set to zero 
-                                        disabling adaptive generation)
-  --fork arg (=0)                       Fork to N processes before running the 
-                                        toys (0 by default == no forking)
-  --nCPU arg (=0)                       Use N CPUs with PROOF Lite 
-                                        (experimental!)
-  --saveHybridResult                    Save result in the output file
-  --readHybridResults                   Read and merge results from file 
-                                        (requires 'toysFile' or 'grid')
-  --grid arg                            Use the specified file containing a 
-                                        grid of SamplingDistributions for the 
-                                        limit (implies readHybridResults).
-                                         For --singlePoint or --signif use 
-                                        --toysFile=x.root --readHybridResult 
-                                        instead of this.
-  --expectedFromGrid arg (=0.5)         Use the grid to compute the expected 
-                                        limit for this quantile
-  --signalForSignificance arg (=1)      Use this value of the parameter of 
-                                        interest when generating signal toys 
-                                        for expected significance (same syntax 
-                                        as --singlePoint)
-  --clsQuantiles arg (=1)               Compute correct quantiles of CLs or 
-                                        CLsplusb instead of assuming they're 
-                                        the same as CLb ones
-  --optimizeTestStatistics arg (=1)     Use optimized test statistics if the 
-                                        likelihood is not extended (works for 
-                                        LEP and TEV test statistics).
-  --optimizeProductPdf arg (=1)         Optimize the code factorizing pdfs
-  --plot arg                            Save a plot of the result (test 
-                                        statistics distributions or limit scan)
-  --frequentist                         Shortcut to switch to Frequentist mode 
-                                        (--generateNuisances=0 
-                                        --generateExternalMeasurements=1 
-                                        --fitNuisances=1)
-  --newToyMCSampler arg (=1)            Use new ToyMC sampler with support for 
-                                        mixed binned-unbinned generation. On by
-                                        default, you can turn it off if it 
-                                        doesn't work for your workspace.
-  --fullGrid                            Evaluate p-values at all grid points, 
-                                        without optimitations
-  --saveGrid                            Save CLs or (or FC p-value) at all grid
-                                        points in the output tree. The value of
-                                        'r' is saved in the 'limit' branch, 
-                                        while the CLs or p-value in the 
-                                        'quantileExpected' branch and the 
-                                        uncertainty on 'limitErr' (since 
-                                        there's no quantileExpectedErr)
-  --noUpdateGrid                        Do not update test statistics at grid 
-                                        points
-  --fullBToys                           Run as many B toys as S ones (default 
-                                        is to run 1/4 of b-only toys)
-  --pvalue                              Report p-value instead of significance 
-                                        (when running with --significance)
-  --adaptiveToys arg (=-1)              Throw less toys far from interesting 
-                                        contours , --toysH scaled by scale when
-                                        prob is far from any of CL_i = 
-                                        {importanceContours} 
-  --importantContours arg (=0.68,0.95)  Throw less toys far from interesting 
-                                        contours , format : CL_1,CL_2,..CL_N 
-                                        (--toysH scaled down when prob is far 
-                                        from any of CL_i) 
-  --maxProbability arg (=0.999000013)   when point is >  maxProbability 
-                                        countour, don't bother throwing toys
-  --confidenceTolerance arg (=0.200000003)
-                                        Determine what 'far' means for 
-                                        adatptiveToys. (relative in terms of 
-                                        (1-cl))
-  --LHCmode arg                         Shortcuts for LHC style running modes. 
-                                        --LHCmode LHC-significance: 
-                                        --generateNuisances=0 
-                                        --generateExternalMeasurements=1 
-                                        --fitNuisances=1 --testStat=LHC (Q_LHC,
-                                        modified for discovery) --significance,
-                                        --LHCmode LHC-limits: 
-                                        --generateNuisances=0 
-                                        --generateExternalMeasurements=1 
-                                        --fitNuisances=1 --testStat=LHC (Q_LHC,
-                                        modified for upper limits) --rule CLs, 
-                                        --LHCmode LHC-feldman-cousins: 
-                                        --generateNuisances=0 
-                                        --generateExternalMeasurements=1 
-                                        --fitNuisances=1 --testStat=PL 
-                                        (Q_Profile, includes boundaries) --rule
-                                        CLsplusb
-
-Markov Chain MC specific options:
-  -i [ --iteration ] arg (=10000)       Number of iterations
-  --tries arg (=10)                     Number of times to run the MCMC on the 
-                                        same data
-  -b [ --burnInSteps ] arg (=200)       Burn in steps (absolute number)
-  --burnInFraction arg (=0.25)          Burn in steps (fraction of total 
-                                        accepted steps)
-  --adaptiveBurnIn arg (=0)             Adaptively determine burn in steps 
-                                        (experimental!).
-  --proposal arg (=ortho)               Proposal function to use: 'fit', 
-                                        'uniform', 'gaus', 'ortho' (also known 
-                                        as 'test')
-  --runMinos                            Run MINOS when fitting the data
-  --noReset                             Don't reset variable state after fit
-  --updateHint                          Update hint with the results
-  --updateProposalParams arg (=0)       Control ProposalHelper::SetUpdatePropos
-                                        alParameters
-  --propHelperWidthRangeDivisor arg (=5)
-                                        Sets the fractional size of the 
-                                        gaussians in the proposal
-  --alwaysStepPOI arg (=1)              When using 'ortho' proposal, always 
-                                        step also the parameter of interest. On
-                                        by default, as it improves convergence,
-                                        but you can turn it off (e.g. if you 
-                                        turn off --optimizeSimPdf)
-  --propHelperUniformFraction arg (=0)  Add a fraction of uniform proposals to 
-                                        the algorithm
-  --debugProposal arg (=0)              Printout the first N proposals
-  --cropNSigmas arg (=0)                crop range of all parameters to N times
-                                        their uncertainty
-  --truncatedMeanFraction arg (=0)      Discard this fraction of the results 
-                                        before computing the mean and rms
-  --adaptiveTruncation arg (=1)         When averaging multiple runs, ignore 
-                                        results that are more far away from the
-                                        median than the inter-quartile range
-  --hintSafetyFactor arg (=5)           set range of integration equal to this 
-                                        number of times the hinted limit
-  --saveChain                           Save MarkovChain to output file
-  --noSlimChain                         Include also nuisance parameters in the
-                                        chain that is saved to file
-  --mergeChains                         Merge MarkovChains instead of averaging
-                                        limits
-  --readChains                          Just read MarkovChains from toysFile 
-                                        instead of running MCMC directly
-  --discreteModelPoints arg             Define multiple points in a subset of 
-                                        the POI space among which to step 
-                                        discretely (works only with ortho and 
-                                        test proposals)
-
 MultiDimFit specific options:
   --preFitValue arg (=1)                Value of signal strength pre-fit, also 
                                         used for pre-fit plots, normalisations 
@@ -687,53 +401,75 @@ MultiDimFit specific options:
   --robustHesseLoad arg                 Load the pre-calculated Hessian
   --robustHesseSave arg                 Save the calculated Hessian
 
-Significance specific options:
-  --tries arg (=1)                      Compute PL limit N times, to check for 
-                                        numerical instabilities
-  --maxTries arg (=1)                   Stop trying after N attempts per point
-  --maxRelDeviation arg (=0.25)         Max absolute deviation of the results 
-                                        from the median
-  --maxOutlierFraction arg (=0.25)      Ignore up to this fraction of results 
-                                        if they're too far from the median
-  --signalForSignificance arg (=0)      Signal strength used when computing 
-                                        significances (default is zero, just 
-                                        background)
-  --maxOutliers arg (=3)                Stop trying after finding N outliers
-  --plot arg                            Save a plot of the negative log of the 
-                                        profiled likelihood into the specified 
-                                        file
-  --pvalue                              Report p-value instead of significance
-  --uncapped arg (=0)                   Report uncapped significances or 
-                                        p-value (i.e. negative in case of 
-                                        deficits)
-  --preFit                              Attept a fit before running the 
-                                        ProfileLikelihoodCalculator
-  --usePLC                              Compute PL limit using the 
-                                        ProfileLikelihoodCalculator (not 
-                                        default)
-  --useMinos                            Compute PL limit using Minos directly, 
-                                        bypassing the ProfileLikelihoodCalculat
-                                        or (default)
-  --bruteForce                          Compute PL limit by brute force, 
-                                        bypassing the ProfileLikelihoodCalculat
-                                        or and Minos
-  --setBruteForceAlgo arg (=scale)      NLL scan algorithm used for 
-                                        --bruteForce. Supported values are 
-                                        'scale' (default), 'stepUp[Twice]', 
-                                        'stepDown[Twice]'
-  --scanPoints arg (=20)                Points for the scan
-  --setBruteForceTypeAndAlgo arg (=Minuit2,simplex)
-                                        Choice of minimizer for brute-force 
-                                        search (default is Minuit2,simplex)
-  --setBruteForceTolerance arg (=9.99999975e-05)
-                                        Tolerance for minimizer when doing 
-                                        brute-force search
+GoodnessOfFit specific options:
+  --algorithm arg                Goodness of fit algorithm. Supported 
+                                 algorithms are 'saturated', 'KS' and 'AD'.
+  --setParametersForFit arg      Set parameters values for the saturated model 
+                                 fitting step
+  --setParametersForEval arg     Set parameter values for the saturated model 
+                                 NLL eval step
+  --fixedSignalStrength arg (=0) Compute the goodness of fit for a fixed signal
+                                 strength. If not specified, it's left floating
+  --plots                        Make plots containing information of the 
+                                 computation of the Anderson-Darling or 
+                                 Kolmogorov-Smirnov test statistic
 
 
 
-###########################################################################################
-###########################################################################################
-###########################################################################################
+ChannelCompatibilityCheck specific options:
+  --preFitValue arg (=1)                Value of signal strength pre-fit, also 
+                                        used for pre-fit plots, normalisations 
+                                        and uncertainty calculations (note this
+                                        overrides --expectSignal for these 
+                                        features)
+  --do95 arg (=0)                       Compute also 2-sigma interval from 
+                                        delta(nll) = 1.92 instead of 0.5
+  --robustFit arg (=0)                  Search manually for 1 and 2 sigma bands
+                                        instead of using Minos
+  --maxFailedSteps arg (=5)             How many failed steps to retry before 
+                                        giving up
+  --stepSize arg (=0.100000001)         Step size for robust fits (multiplier 
+                                        of the range)
+  --setRobustFitAlgo arg                Choice of minimizer (Minuit vs Minuit2)
+                                        for profiling in robust fits
+  --setRobustFitStrategy arg (=0)       Stragegy for minimizer for profiling in
+                                        robust fits
+  --setRobustFitTolerance arg (=0.100000001)
+                                        Tolerance for minimizer for profiling 
+                                        in robust fits
+  --setCrossingTolerance arg (=9.99999975e-05)
+                                        Tolerance for finding the NLL crossing 
+                                        in robust fits
+  --profilingMode arg (=all)            What to profile when computing 
+                                        uncertainties: all, none (at least for 
+                                        now).
+  --saveNLL                             Save the negative log-likelihood at the
+                                        minimum in the output tree (note: value
+                                        is relative to the pre-fit state)
+  --keepFailures                        Save the results even if the fit is 
+                                        declared as failed (for NLL studies)
+  --protectUnbinnedChannels             Protect PDF from going negative in 
+                                        unbinned channels
+  --autoBoundsPOIs arg                  Adjust bounds for the POIs if they end 
+                                        up close to the boundary. Can be a list
+                                        of POIs, or "*" to get all
+  --autoMaxPOIs arg                     Adjust maxima for the POIs if they end 
+                                        up close to the boundary. Can be a list
+                                        of POIs, or "*" to get all
+  --forceRecreateNLL                    Always recreate NLL when running on 
+                                        multiple toys rather than re-using nll 
+                                        with new dataset
+  --fixedSignalStrength arg (=0)        Compute the compatibility for a fixed 
+                                        signal strength. If not specified, it's
+                                        left floating
+  --saveFitResult                       Save fit results in output file
+  -g [ --group ] arg                    Group together channels that contain a 
+                                        given name. Can be used multiple times.
+  --runMinos arg (=1)                   Compute also uncertainties using 
+                                        profile likeilhood (MINOS or robust 
+                                        variants of it)
+
+
 usage: combineTool.py [-M METHOD]
                       [--job-mode {interactive,script,lxbatch,SGE,condor,crab3}]
                       [--prefix-file PREFIX_FILE] [--task-name TASK_NAME]
@@ -838,4 +574,55 @@ combine options:
   --setParameterRanges SETPARAMETERRANGES
                         Some other options will modify or add to the list of
                         parameter ranges
+
+
+Impacts options:
+  options specific to this method
+
+  --named PARAM1,PARAM2,...
+                        By default the list of nuisance parameters will be
+                        loaded from the input workspace. Use this option to
+                        specify a different list
+  --exclude PARAM1,PARAM2,...
+                        Skip these nuisances. Also accepts regexp with syntax
+                        'rgx{<my regexp>}'
+  --doInitialFit        Find the crossings of all the POIs. Must have the
+                        output from this before running with --doFits
+  --splitInitial        In the initial fits generate separate jobs for each
+                        POI
+  --doFits              Actually run the fits for the nuisance parameter
+                        impacts, otherwise just looks for the results
+  --allPars             Run the impacts for all free parameters of the model,
+                        not just those listed as nuisance parameters
+  --output OUTPUT, -o OUTPUT
+                        write output json to a file
+  --approx {hesse,robust}
+                        Calculate impacts using the covariance matrix instead
+
+
+CovMatrix options:
+  options specific to this method
+
+  -i INPUT [INPUT ...], --input INPUT [INPUT ...]
+                        The input file containing the MultiDimFit singles mode
+                        output
+  -o OUTPUT, --output OUTPUT
+                        The output name in the format file:prefix
+  -P POIS, --POIs POIS  The params that were scanned (in scan order)
+  --POIs-from-set POIS_FROM_SET
+                        Extract from file:workspace:set instead
+  --compare COMPARE     Compare to RooFitResult
+
+FastScan options:
+  options specific to this method
+
+  -w WORKSPACE, --workspace WORKSPACE
+  -d DATA, --data DATA
+  -f FITRES, --fitres FITRES
+  --match MATCH
+  --no-match NO_MATCH
+  -o OUTPUT, --output OUTPUT
+  -p POINTS, --points POINTS
+
+
 
