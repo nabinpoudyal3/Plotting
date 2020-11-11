@@ -6,7 +6,6 @@ controlRegion=$3
 systX=$4
 levelX=$5
 
-
 if [ $channel == "DiEle" ]; then
 	mychannel="ele"
 else
@@ -36,13 +35,18 @@ fi
 outputdir="root://cmseos.fnal.gov//store/user/npoudyal"
 
 echo "Running python makeHistograms "
-declare -a    SampleList=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
-declare -a SampleListEle=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
-declare -a  SampleListMu=("TTGamma" "TTbar" "TGJets" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
+if [ $systX == "JECTotal" ] || [ $systX == "JER" ]; then
+	declare -a    SampleList=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" )
+	declare -a SampleListEle=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" )
+	declare -a  SampleListMu=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" )
+else 
+	declare -a    SampleList=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
+	declare -a SampleListEle=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
+	declare -a  SampleListMu=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
 
-#declare -a SampleList=("GJets" "Diboson")
-#declare -a SampleListEle=("GJets" "Diboson")
-#declare -a SampleListMu=("GJets" "Diboson")
+fi
+
+
 
 for mysample in ${SampleList[@]}; do
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --makePlotsMEG
