@@ -86,6 +86,10 @@ parser.add_option("--useQCDMC","--qcdMC",dest="useQCDMC", default=False, action=
 
 parser.add_option("--useQCDCR",dest="useQCDCR", default=False, action="store_true",
                      help="to make plots in QCDCR region")
+
+parser.add_option("--noQCD",dest="noQCD", default=False, action="store_true",
+		help="")
+		
 ############
 #parser=argparse.ArgumentParser(
 #    description='''How to run this script? ''',
@@ -118,7 +122,7 @@ looseCRe2e2   = options.looseCRe2e2
 looseCRe3ge2  = options.looseCRe3ge2
 useQCDMC      = options.useQCDMC
 useQCDCR      = options.useQCDCR
-
+noQCD = options.noQCD
 zeroPhoton    = options.zeroPhoton
 
 template        = options.template
@@ -130,7 +134,7 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal"]
+allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal", "JER", "JEC"]
 #allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]#,"fsr","isr","Pdf"]
 if systematics in allsystematics: print "running on systematics"
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
@@ -150,7 +154,7 @@ if zeroPhoton:      #tight but 0 photon
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	else :                ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-
+	fileDirQCD = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
 		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
@@ -166,6 +170,9 @@ if zeroPhoton:      #tight but 0 photon
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
 
+fileDirQCD = eosFolder + fileDirQCD
+print fileDirQCD
+
 fileDir = eosFolder + fileDir
 
 print fileDir
@@ -180,8 +187,8 @@ from Style import *
 
 gROOT.ForceStyle()
 
-sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
-sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'TGJets':kGray,'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
+sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
 
 #sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV']
 #sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'TGJets':kGray,'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7}
@@ -192,11 +199,11 @@ template_category = {"TTGamma":kOrange,
 					 "WGamma": kBlue-4, 
 					 "ZGamma": kBlue-2,   
 					 "Other":  kGreen+3}
-template_categoryName = {"TTGamma":"TT#gamma",  
-					     "TTbar":  "T#barT",    
+template_categoryName = {"TTGamma":"t#bart#gamma",  
+					     "TTbar":  "t#bart",    
 					     "WGamma": "W#gamma", 
 					     "ZGamma": "Z#gamma",   
-					     "Other":  "Other"}
+					     "Other":  "Other_0#gamma"}
 _file = {}
 
 import CMS_lumi
@@ -208,15 +215,15 @@ if selYear == '2018':	CMS_lumi.lumi_13TeV = "59.74 fb^{-1}"
 if useQCDMC:
 	if channel=="mu":	sampleList[-1] = "QCDMu"
 	if channel=="ele":	sampleList[-1] = "QCDEle"
-elif useQCDCR:
-	sampleList[-1] = "QCD_DD"
+elif noQCD:
+	sampleList.remove("QCD")
 	sampleList.remove("GJets") 
 else:
-	#sampleList[-1] = "QCD_DD"
-	#sampleList.remove("GJets") 
-	sampleList.remove("QCD") 
-	#sampleList.remove("GJets") 
+	sampleList[-1] = "QCD_DD"
+	sampleList.remove("GJets") 
 	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
+
+print sampleList
 
 H = 600;
 W = 800;
@@ -259,6 +266,8 @@ for sample in sampleList:
 	if sample=="QCD_DD": 
 		#print "==>",sample, fileDirQCD
 		_file[sample] = TFile.Open('%s%s.root'%(fileDirQCD,sample),'read')
+		qcdhistName = histNameData.replace("mediumID_","noCut_")
+		qcdHist = _file[sample].Get(qcdhistName%(sample))
 	else:
 		#print sample, fileDir
 		_file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
@@ -273,34 +282,50 @@ templateHist["Other"   ] = None
 
 print sampleList
 
+mystack = THStack()
 for sample in sampleList:
+	if sample=='QCD_DD': continue 
 	tempHist = _file[sample].Get(histName%(sample))
+	#print tempHist
+	
 	if sample=='ZJets': 
 		tempHist.Scale(ZJetSF)
-		print "ZJetSF", ZJetSF
+		#print "ZJetSF", ZJetSF
+    # addd WJetsSF here. IMP
+	print sample, "==>", tempHist.Integral()	
+
 	if   sample=='TTGamma': templateHist["TTGamma"]= tempHist.Clone("TTGamma")
 	elif sample=='TTbar'  : templateHist["TTbar"]  = tempHist.Clone("TTbar")
 	elif sample=='WGamma' :	templateHist["WGamma"] = tempHist.Clone("WGamma")
 	elif sample=='ZGamma' : templateHist["ZGamma"] = tempHist.Clone("ZGamma")
+
 	else:
+
+
 		if  templateHist["Other"] is None:
 			templateHist["Other"] = tempHist.Clone("Other")
 			templateHist["Other"].SetDirectory(0)
 		else:
 			templateHist["Other"].Add(tempHist)
-	
+		
+
+		
+#templateHist["Other"].Add(qcdHist)
 #gApplication.Run()
 #print "exited"
 #sys.exit()
 # apply SF before plotting or feeding into combine
 templateHist["WGamma"].Scale(WGammaSF)
 templateHist["ZGamma"].Scale(ZGammaSF)
-print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
+
+#print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
 
 #binning = numpy.array([50,105,155,185,260,500.])
 #binning = numpy.array([50,500.])
-binning = numpy.array([50,105,155,185,260,500.])
+#binning = numpy.array([50,105,155,185,260,500.])
 
+binning = numpy.array([50,100,125,150,175,200,250,300,500.])
+print binning
 binWidth = numpy.diff(binning)
 
 rebinnedHist ={} 
@@ -309,7 +334,10 @@ for ih in templateHist:
 	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
 	rebinnedHist[ih].SetLineColor(template_category[ih])
 	rebinnedHist[ih].SetFillColor(template_category[ih])
-	
+
+rebinnedqcdHist = qcdHist.Rebin(len(binning)-1,"",binning)
+rebinnedHist["Other"].Add(rebinnedqcdHist)
+
 if systematics=='':	
 	if finalState=='Ele':
 	    sample = "DataEle"
@@ -356,7 +384,7 @@ if template:
 
 		myfile.cd()
 		mydir =  "%s/%s/"%(myfilename,iprocess) 
-		print "%s/%s/"%(myfilename,iprocess) 
+		#print "%s/%s/"%(myfilename,iprocess) 
 
 		if systematics=='':
 			myhist = rebinnedHist[iprocess].Clone("nominal")
@@ -368,9 +396,9 @@ if template:
 					valNominal = myNominalHist.Integral()
 			 		val = myhist.Integral()
 			 		if valNominal != 0 and val != 0:
-			 			print "nominal", valNominal, " ==> ", "syst %s"%systematics,val
+			 			#print "nominal", valNominal, " ==> ", "syst %s"%systematics,val
 			 			myhist.Scale(valNominal/val)
-			 			print "normalized", myhist.Integral()
+			 			#print "normalized", myhist.Integral()
 			 	else:
 			 		print "either nominal histogram is empty, systematics histogram is empty."
 		if myfile.GetDirectory(mydir):
@@ -410,6 +438,8 @@ else:
 
 	if postfitPlots:
 		rebinnedData.Scale(1.,"width")
+		#if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
+		#if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 		if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel[:-1],selYear)
 		if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel,selYear)
 		Postfile = TFile(filename,"read")
@@ -422,7 +452,7 @@ else:
 		templatePostHist["Other"   ] = TH1F("Other"   ,"",len(binWidth),binning)    
 
 		for process in template_category.keys():
-			tempHist = None
+			#tempHist = None
 			tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(mydistributionName,process))
 			for ibin in range(1,len(binning)):
 				myBinContent = tempHist.GetBinContent(ibin)
@@ -493,7 +523,7 @@ else:
 
 	minVal = 0
 	if mydistributionName == "ChIso": minVal = 1
-	print minVal
+	#print minVal
 	# minVal = max(stack.GetStack()[0].GetMinimum(),1)
 	stack.SetMaximum(1.5*maxVal)
 	if mydistributionName == "ChIso": stack.SetMaximum(20*maxVal)
