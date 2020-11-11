@@ -15,15 +15,15 @@ rate      -1            -1             -1        -1
 --------------------------------------------------------------------------------------------
 lumi        lnN     1.025 1.025 1.025 1.025
 ----------------------------------------------------
-PU          shape   1      1      1      1  
-MuEff       shape   -      -      1      1   
-EleEff      shape   1      1      -      -   
-prefireEcal shape   1      1      1      1
+BTagSF_b    shape	1	1	1	1    
+BTagSF_l    shape	1	1	1	1   
+PU          shape	1	1	1	1         
+MuEff       shape	-	-	1	1       
+EleEff      shape	1	1	-	-     
+PhoEff      shape	1	1	1	1                 
+prefireEcal shape	1	1	1	1        
 -----------------------------------------------------------------
-bkg_norm rateParam * myBackground 1 
-bkg_norm param 1.0 0.4
--------------------------------------------------------------------------
-mySyst group = lumi PU MuEff  EleEff  prefireEcal  
+mySyst group = lumi BTagSF_b BTagSF_l PU MuEff EleEff PhoEff prefireEcal 
 --------------------------------------------------------------------------
 * autoMCStats 0 1
 --------------------------------------------------------------------------
