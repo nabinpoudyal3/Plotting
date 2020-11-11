@@ -27,9 +27,9 @@ for ifile in ListOfFiles2016:
         print ifile[14:-10], ": Fit failed."
         continue
     fit_s = myfile.Get("fit_s")
-    line += "MisIDEleSF_2016_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("r").getVal())
-    line +=   "ZGammaSF_2016_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal())
-    line +=   "WGammaSF_2016_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal())
+    line += "MisIDEleSF_2016_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("r").getVal())
+    line +=   "ZGammaSF_2016_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal())
+    line +=   "WGammaSF_2016_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal())
 
 for ifile in ListOfFiles2017:
     myfile = ROOT.TFile(ifile,"read")
@@ -37,9 +37,9 @@ for ifile in ListOfFiles2017:
         print ifile[14:-10], ": Fit failed."
         continue
     fit_s = myfile.Get("fit_s")
-    line += "MisIDEleSF_2017_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("r").getVal())
-    line +=   "ZGammaSF_2017_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal())
-    line +=   "WGammaSF_2017_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal())
+    line += "MisIDEleSF_2017_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("r").getVal())
+    line +=   "ZGammaSF_2017_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal())
+    line +=   "WGammaSF_2017_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal())
 
 for ifile in ListOfFiles2018:
     myfile = ROOT.TFile(ifile,"read")
@@ -47,15 +47,16 @@ for ifile in ListOfFiles2018:
         print ifile[14:-10], ": Fit failed."
         continue
     fit_s = myfile.Get("fit_s")
-    line += "MisIDEleSF_2018_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("r").getVal())
-    line +=   "ZGammaSF_2018_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal())
-    line +=   "WGammaSF_2018_%s = %.3f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal())
+    line += "MisIDEleSF_2018_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("r").getVal())
+    line +=   "ZGammaSF_2018_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal())
+    line +=   "WGammaSF_2018_%s = %.2f \n"%(controlRegionDict[ifile[14:-10]],fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal())
 
 with open("MisIDEleSFvalues.py","w") as _file:
     _file.write(line)
 
 # ## copy the file to plotting folder
 shutil.copy("MisIDEleSFvalues.py",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting')
+shutil.copy("MisIDEleSFvalues.py",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Condor_PhysicObject')
 
 
 line = ""
@@ -65,9 +66,9 @@ for ifile in ListOfFiles2016:
         print ifile[14:-10], ": Fit failed."
         continue
     fit_s = myfile.Get("fit_s")
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictMisID[ifile[14:-10]]+"Sixteen",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictZGamma[ifile[14:-10]]+"Sixteen",fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorLo())
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictWGamma[ifile[14:-10]]+"Sixteen",fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictMisID[ifile[14:-10]]+"Sixteen",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictZGamma[ifile[14:-10]]+"Sixteen",fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictWGamma[ifile[14:-10]]+"Sixteen",fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorLo())
 
 for ifile in ListOfFiles2017:
     myfile = ROOT.TFile(ifile,"read")
@@ -75,9 +76,9 @@ for ifile in ListOfFiles2017:
         print ifile[14:-10], ": Fit failed."
         continue
     fit_s = myfile.Get("fit_s")
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictMisID[ifile[14:-10]]+"Seventeen",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictZGamma[ifile[14:-10]]+"Seventeen",fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorLo())
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictWGamma[ifile[14:-10]]+"Seventeen",fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictMisID[ifile[14:-10]]+"Seventeen",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictZGamma[ifile[14:-10]]+"Seventeen",fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictWGamma[ifile[14:-10]]+"Seventeen",fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorLo())
 
 for ifile in ListOfFiles2018:
     myfile = ROOT.TFile(ifile,"read")
@@ -85,9 +86,9 @@ for ifile in ListOfFiles2018:
         print ifile[14:-10], ": Fit failed."
         continue
     fit_s = myfile.Get("fit_s")
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictMisID[ifile[14:-10]]+"Eighteen",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictZGamma[ifile[14:-10]]+"Eighteen",fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorLo())
-    line += "\\newcommand{\\%s} {\ensuremath{%.3f \\substack{+%.3f \\\\ %.3f}}}\n"%(CRDictWGamma[ifile[14:-10]]+"Eighteen",fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictMisID[ifile[14:-10]]+"Eighteen",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictZGamma[ifile[14:-10]]+"Eighteen",fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%(CRDictWGamma[ifile[14:-10]]+"Eighteen",fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorLo())
 
 
 with open("MisIDEleSFvalues.tex","w") as _file:
