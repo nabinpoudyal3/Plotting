@@ -1,6 +1,9 @@
 
 
+python makeHistograms.py -y 2016 -c Ele --looseCRge2e0  -s TTGamma   --allPlots
+python makeHistograms.py -y 2016 -c Mu  --looseCRge2e0  -s TTGamma   --allPlots
 
+exit 1
 
 #!/bin/bash
 if [ $# -eq 0 ]
