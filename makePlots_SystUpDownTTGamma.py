@@ -152,7 +152,8 @@ gROOT.ForceStyle()
 # 	myDir = {"ele/MisIDEleEighteen":"ele_MisIDEleEighteen","ele/WgammaBkgPhoton":"ele_WgammaBkgPhoton","ele/ZgammaBkgPhoton":"ele_ZgammaBkgPhoton","ele/OtherSampleBkgPhoton":"ele_OtherSampleBkgPhoton",
 #              "mu/MisIDEleEighteen":"mu_MisIDEleEighteen","mu/WgammaBkgPhoton":"mu_WgammaBkgPhoton","mu/ZgammaBkgPhoton":"mu_ZgammaBkgPhoton","mu/OtherSampleBkgPhoton":"mu_OtherSampleBkgPhoton"}
 if plotVariable=="M30photon":
-	systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","isr","fsr"] # keep adding more systematics 
+	# systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","prefireEcal","JER"] # keep adding more systematics 
+	systematicList = ["JECTotal"]
 	myDir= {"%s/ZGamma"%plotVariable:  "%s_ZGamma"%plotVariable,
 	 		"%s/TTGamma"%plotVariable: "%s_TTGamma"%plotVariable,
 	 		"%s/TTbar"%plotVariable:   "%s_TTbar"%plotVariable,
@@ -160,7 +161,8 @@ if plotVariable=="M30photon":
 	 		"%s/WGamma"%plotVariable:  "%s_WGamma"%plotVariable,
 	}
 else:
-	systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","misIDE","isr","fsr"] # keep adding more systematics 
+	# systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","misIDE","prefireEcal","JER"] # keep adding more systematics 
+	systematicList = ["JECTotal"] # keep adding more systematics 
 	myDir= {"%s/nonPromptZGamma"%plotVariable:  "%s_nonPromptZGamma"%plotVariable,
 	 		"%s/nonPromptTTGamma"%plotVariable: "%s_nonPromptTTGamma"%plotVariable,
 	 		"%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
@@ -180,16 +182,19 @@ if selYear == '2016':	CMS_lumi.lumi_13TeV = "[2016] 35.92 fb^{-1}"
 if selYear == '2017':	CMS_lumi.lumi_13TeV = "[2017] 41.53 fb^{-1}"
 if selYear == '2018':	CMS_lumi.lumi_13TeV = "[2018] 59.74 fb^{-1}"
 
+
+if not os.path.exists("upDownTemplateTTGamma/"+plotDirectory):
+	os.mkdir("upDownTemplateTTGamma/"+plotDirectory)
+	
+	
 inputfilename = "ttgamma_tightplots_%s_%s/ttgamma_Prefit.root"%(channel,selYear)
 
-#systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","Q2","misIDE","isr","fsr"] # keep adding more systematics 
-
-#systematicList = ["Q2","isr","fsr","PU"] # keep adding more systematics 
-#systematicList = ["Q2"] # keep adding more systematics 
 myfile = ROOT.TFile(inputfilename,"READ")
 
 # # myfile.ls()
 # #Note: PhoEff doesn't seem to be normalized.
+line = ""
+eline = ""
 for idir in myDir.keys():
 	myfile.cd(idir)
 	for item in systematicList:
@@ -202,8 +207,13 @@ for idir in myDir.keys():
 		h_Down = myfile.Get(idir+"/%sDown"%item);h_Down.SetTitle("")
 		h_Down.SetLineColor(ROOT.kBlue);h_Down.SetFillColor(ROOT.kBlue);h_Down.SetLineWidth(2);h_Down.SetMarkerStyle(5);
 
-		print item, " :: ",h_nominal.Integral(),"==>", h_Up.Integral(),"==>", h_Down.Integral()
-		print item, " :: ",h_nominal.Integral(),"==>", h_Up.Integral(),"==>", h_Down.Integral()	
+		# print item, " :: ",h_nominal.Integral(),"==>", h_Up.Integral(),"==>", h_Down.Integral()
+		# print item, " :: ",h_nominal.Integral(-1,-1),"==>", h_Up.Integral(-1,-1),"==>", h_Down.Integral(-1,-1)	
+        
+		line += " %s --> %s :: nominal ==> %.3f Up-nominal ==>  %.3f  Dn-nominal ==> %.3f \n"%(idir,item, h_nominal.Integral(),      h_Up.Integral()-h_nominal.Integral(),           h_Down.Integral()-h_nominal.Integral())
+		line += " %s --> %s :: nominal ==> %.3f Up-nominal ==>  %.3f  Dn-nominal ==> %.3f \n"%(idir,item, h_nominal.Integral(-1,-1), h_Up.Integral(-1,-1)-h_nominal.Integral(-1,-1), h_Down.Integral(-1,-1)-h_nominal.Integral(-1,-1))
+      
+		if h_nominal.Integral() <= 0: eline += " %s --> %s :: nominal ==> %.3f \n"%(idir,item,h_nominal.Integral())
         # c = ROOT.TCanvas('c','',800,600)
         # legend = ROOT.TLegend(0.7,0.7,0.88,0.88)
         # legend.SetBorderSize(0)
@@ -319,7 +329,8 @@ for idir in myDir.keys():
 		maxVal = max(h_nominal.GetMaximum(),h_Up.GetMaximum(),h_Down.GetMaximum())
 		#minVal = 1
 		minVal = min(h_nominal.GetMinimum(),h_Up.GetMinimum(),h_Down.GetMinimum())
-		minVal = min(0,minVal)*2
+		# minVal = min(0,minVal)*2
+		minVal = -5
 		h_nominal.SetMaximum(1.1*maxVal)
 		h_nominal.SetMinimum(minVal)
 		
@@ -352,8 +363,8 @@ for idir in myDir.keys():
 		ratioUp.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
 		ratioUp.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap-padGap))
 
-		maxRatio = ratioUp.GetMaximum()
-		minRatio = ratioDown.GetMinimum()
+		maxRatio = 1.8 #ratioUp.GetMaximum()
+		minRatio = 0.2 #ratioDown.GetMinimum()
 
 		for i_bin in range(1,ratioUp.GetNbinsX()):
 			if ratioUp.GetBinError(i_bin)<1:
@@ -371,10 +382,10 @@ for idir in myDir.keys():
 		else:
 			ratioUp.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-		ratioUp.GetYaxis().SetRangeUser(0.9,1.1)
+		ratioUp.GetYaxis().SetRangeUser(0.2,1.8)
 		ratioUp.GetYaxis().SetNdivisions(504)
 		#ratioUp.GetXaxis().SetTitle(inputfilename[:-12])
-		ratioUp.GetXaxis().SetTitle(plotVariable)
+		ratioUp.GetXaxis().SetTitle(plotVariable+" "+item)
 		ratioUp.GetYaxis().SetTitle("Data/MC")
 		ratioUp.GetYaxis().SetTitleOffset(.4)
 		ratioUp.GetYaxis().SetTitleSize(.09)
@@ -401,10 +412,15 @@ for idir in myDir.keys():
 		c.Update()
 		c.RedrawAxis()
 
-		c.Print("%s%s_%s.pdf"%(plotDirectory,myDir[idir],item))
+		c.Print("upDownTemplateTTGamma/%s%s_%s.pdf"%(plotDirectory,myDir[idir],item))
 		c.Close()
 
 
+with open("oneSigmaVariation/oneSigmaVariation_%s_%s_%s.py"%(plotVariable,channel,selYear),"w") as _file:
+    _file.write(line)
+
+with open("oneSigmaVariation/emptyTemplate_%s_%s_%s.py"%(plotVariable,channel,selYear),"w") as _file1:
+    _file1.write(eline)
 
 
 #from PyPDF2 import PdfFileMerger, PdfFileReader

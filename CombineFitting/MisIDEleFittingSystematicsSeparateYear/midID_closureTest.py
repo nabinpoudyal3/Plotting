@@ -21,6 +21,8 @@ ListOfFiles = [
                "higgsCombinedatacard_CR123_2016_2.6.MultiDimFit.mH120.1234260.root",                                            
               ]
 c1 = ROOT.TCanvas( 'c1', 'Toy Data vs expected signal strength', 800,800 )
+c1.SetFixedAspectRatio()
+c1.Draw()
 c1.SetGrid()
 
 xData = list(numpy.arange(0.4,2.8,0.2))
@@ -44,21 +46,32 @@ y = array.array( 'f', yData )
 errMinus = array.array( 'f', errMinusData )
 errPlus  = array.array( 'f', errPlusData )
 zeros = array.array('f',zerosData)
-oneLine = ROOT.TF1("oneline","x",0,3)
+# oneLine = ROOT.TF1("oneline","x",0,3)
 
 gr = ROOT.TGraphAsymmErrors( n, x, y, zeros,zeros,errMinus, errPlus)
-gr.SetTitle('Toy fitting for misIDEle SF ')
-gr.GetXaxis().SetTitle("Expected misIDEle SF");
-gr.GetYaxis().SetTitle("Toy Data misIDEle SF");
+gr.SetTitle('Closure test for signal strength modifier 2016')
+gr.GetXaxis().SetTitle("Expected misIDE values");
+gr.GetYaxis().SetTitle("Measured misIDE values");
 gr.SetMarkerColor(2)
 gr.SetMarkerStyle(7)
 gr.GetXaxis().SetRangeUser(0,3)
 gr.GetYaxis().SetRangeUser(0,3)
 # gr.SetMarkerSize(3)
-gr.Draw('AP')
-oneLine.Draw('same')
+gr.Draw()
+gr.Fit("pol1")
+slope     = gr.GetFunction("pol1").GetParameter(1)
+offset    = gr.GetFunction("pol1").GetParameter(0)
+slopeErr  = gr.GetFunction("pol1").GetParError(1)
+offsetErr = gr.GetFunction("pol1").GetParError(0)
 
-c1.Draw()
+myText = ROOT.TPaveText(0.3,0.7,0.5,0.8,"NDC")
+myText.AddText("slope  = %.2f #pm %.2f"%(slope,slopeErr) )
+myText.AddText("offset = %.2f #pm %.2f"%(offset,offsetErr) )
+myText.SetTextColor(ROOT.kBlack)
+myText.SetFillColor(ROOT.kWhite)
+myText.SetTextSize(0.038)
+myText.SetTextFont(42)
+myText.Draw("same")
 c1.Print("misID_closure_2016.pdf")
 
 
@@ -78,7 +91,10 @@ ListOfFiles = [
                "higgsCombinedatacard_CR123_2017_2.6.MultiDimFit.mH120.1234260.root",                                            
               ]
 c1 = ROOT.TCanvas( 'c1', 'Toy Data vs expected signal strength', 800, 800 )
+c1.SetFixedAspectRatio()
+c1.Draw()
 c1.SetGrid()
+
 
 xData = list(numpy.arange(0.4,2.8,0.2))
 yData = []
@@ -101,21 +117,32 @@ y = array.array( 'f', yData )
 errMinus = array.array( 'f', errMinusData )
 errPlus  = array.array( 'f', errPlusData )
 zeros = array.array('f',zerosData)
-oneLine = ROOT.TF1("oneline","x",0,3)
+# oneLine = ROOT.TF1("oneline","x",0,3)
 
 gr = ROOT.TGraphAsymmErrors( n, x, y, zeros,zeros,errMinus, errPlus)
-gr.SetTitle('Toy fitting for misIDEle SF ')
-gr.GetXaxis().SetTitle("Expected misIDEle SF");
-gr.GetYaxis().SetTitle("Toy misIDEle SF");
+gr.SetTitle('Closure test for signal strength modifier 2017')
+gr.GetXaxis().SetTitle("Expected misIDE values");
+gr.GetYaxis().SetTitle("Measured misIDE values");
 gr.SetMarkerColor(2)
 gr.SetMarkerStyle(7)
 gr.GetXaxis().SetRangeUser(0,3)
 gr.GetYaxis().SetRangeUser(0,3)
 # gr.SetMarkerSize(3)
-gr.Draw('AP')
-oneLine.Draw('same')
+gr.Draw()
+gr.Fit("pol1")
+slope     = gr.GetFunction("pol1").GetParameter(1)
+offset    = gr.GetFunction("pol1").GetParameter(0)
+slopeErr  = gr.GetFunction("pol1").GetParError(1)
+offsetErr = gr.GetFunction("pol1").GetParError(0)
 
-c1.Draw()
+myText = ROOT.TPaveText(0.3,0.7,0.5,0.8,"NDC")
+myText.AddText("slope  = %.2f #pm %.2f"%(slope,slopeErr) )
+myText.AddText("offset = %.2f #pm %.2f"%(offset,offsetErr) )
+myText.SetTextColor(ROOT.kBlack)
+myText.SetFillColor(ROOT.kWhite)
+myText.SetTextSize(0.038)
+myText.SetTextFont(42)
+myText.Draw("same")
 c1.Print("misID_closure_2017.pdf")
 
 ListOfFiles = [
@@ -133,7 +160,10 @@ ListOfFiles = [
                "higgsCombinedatacard_CR123_2018_2.6.MultiDimFit.mH120.1234260.root",                                            
               ]
 c1 = ROOT.TCanvas( 'c1', 'Toy Data vs expected signal strength', 800, 800 )
+c1.SetFixedAspectRatio()
+c1.Draw()
 c1.SetGrid()
+
 
 xData = list(numpy.arange(0.4,2.8,0.2))
 yData = []
@@ -156,21 +186,33 @@ y = array.array( 'f', yData )
 errMinus = array.array( 'f', errMinusData )
 errPlus  = array.array( 'f', errPlusData )
 zeros = array.array('f',zerosData)
-oneLine = ROOT.TF1("oneline","x",0,3)
+# oneLine = ROOT.TF1("oneline","x",0,3)
 
 gr = ROOT.TGraphAsymmErrors( n, x, y, zeros,zeros,errMinus, errPlus)
-gr.SetTitle('Toy fitting for misIDEle SF ')
-gr.GetXaxis().SetTitle("Expected misIDEle SF");
-gr.GetYaxis().SetTitle("Toy Data misIDEle SF");
+gr.SetTitle('Closure test for signal strength modifier 2018')
+gr.GetXaxis().SetTitle("Expected misIDE values");
+gr.GetYaxis().SetTitle("Measured misIDE values");
 gr.SetMarkerColor(2)
 gr.SetMarkerStyle(7)
 gr.GetXaxis().SetRangeUser(0,3)
 gr.GetYaxis().SetRangeUser(0,3)
 # gr.SetMarkerSize(3)
-gr.Draw('AP')
-oneLine.Draw('same')
+gr.Draw()
+gr.Fit("pol1")
+slope     = gr.GetFunction("pol1").GetParameter(1)
+offset    = gr.GetFunction("pol1").GetParameter(0)
+slopeErr  = gr.GetFunction("pol1").GetParError(1)
+offsetErr = gr.GetFunction("pol1").GetParError(0)
 
-c1.Draw()
+myText = ROOT.TPaveText(0.3,0.7,0.5,0.8,"NDC")
+myText.AddText("slope  = %.2f #pm %.2f"%(slope,slopeErr) )
+myText.AddText("offset = %.2f #pm %.2f"%(offset,offsetErr) )
+myText.SetTextColor(ROOT.kBlack)
+myText.SetFillColor(ROOT.kWhite)
+myText.SetTextSize(0.038)
+myText.SetTextFont(42)
+myText.Draw("same")
 c1.Print("misID_closure_2018.pdf")
+
 
 

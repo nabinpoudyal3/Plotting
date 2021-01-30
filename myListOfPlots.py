@@ -16,7 +16,7 @@ myPlotList  = [
     "presel_elePhi"                              ,
     "presel_M3"                                  ,
     "presel_MET"                                 ,
-    "presel_METPhi"                              ,
+    "presel_METPhi"                              , 
     "presel_nVtx"                                ,
     "presel_WtransMass"                          ,
     # "presel_WtransMass_METless30"                ,
@@ -26,7 +26,7 @@ myPlotList  = [
     # "phosel_WtransMass_METless30"                ,
     # "phosel_WtransMass_METgreat30"               ,
     "presel_HT"                                  ,
-    "phosel_nVtx"                                ,
+    #"phosel_nVtx"                                , # right now it is not splited into pho category
     # "presel_nVtxup"                              ,
     # "presel_nVtxdo"                              ,
     # "presel_nVtxNoPU"                            ,
@@ -37,7 +37,7 @@ myPlotList  = [
     # "phosel_jet1Pt_HadronicFake"                 ,
     # "phosel_fwdjet1Pt"                           ,
     # "phosel_NFwdjet"                             ,
-    "phosel_Nphotons"                            ,
+    #"phosel_Nphotons"                            , 
     # "phosel_Nphotons_GenuinePhoton"              ,
     # "phosel_Nphotons_MisIDEle"                   ,
     # "phosel_Nphotons_NonPrompt"                  ,
@@ -46,7 +46,7 @@ myPlotList  = [
     # "phosel_LeadingPhotonEt_MisIDEle"            ,
     # "phosel_LeadingPhotonEt_HadronicPhoton"      ,
     # "phosel_LeadingPhotonEt_HadronicFake"        ,
-    "phosel_LeadingPhotonPhi"                    ,
+    # "phosel_LeadingPhotonPhi"                    ,
     # "phosel_LeadingPhotonPhi_GenuinePhoton"      ,
     # "phosel_LeadingPhotonPhi_MisIDEle"           ,
     # "phosel_LeadingPhotonPhi_HadronicPhoton"     ,
@@ -75,7 +75,7 @@ myPlotList  = [
     # "phosel_WtransMass_MisIDEle"                 ,
     # "phosel_WtransMass_HadronicPhoton"           ,
     # "phosel_WtransMass_HadronicFake"             ,
-    "phosel_HT"                                  ,
+    # "phosel_HT"                                  , # I don't have pho category yet
     # "phosel_HT_GenuinePhoton"                    ,
     # "phosel_HT_MisIDEle"                         ,
     # "phosel_HT_NonPrompt"                        ,
@@ -86,38 +86,38 @@ myPlotList  = [
     # "phosel_M3_HadronicFake"                     ,
     # "phosel_M3_NonPrompt"                        ,
     # "phosel_M3_gamma"                            ,
-    "phosel_MET"                                 ,
-    "phosel_elePt"                               ,
+    #"phosel_MET"                                 , # I don't have pho category yet
+    #"phosel_elePt"                               ,
     # "phosel_elePt_GenuinePhoton"                 ,
     # "phosel_elePt_MisIDEle"                      ,
     # "phosel_elePt_NonPrompt"                     ,
-    "phosel_eleSCEta"                            ,
+    #"phosel_eleSCEta"                            ,  # I don't have pho category yet
     # "phosel_eleSCEta_GenuinePhoton"              ,
     # "phosel_eleSCEta_MisIDEle"                   ,
     # "phosel_eleSCEta_NonPrompt"                  ,
-    "phosel_muPt"                                ,
+    #"phosel_muPt"                                ,  # I don't have pho category yet
     # "phosel_muPt_GenuinePhoton"                  ,
     # "phosel_muPt_MisIDEle"                       ,
     # "phosel_muPt_NonPrompt"                      ,
-    "phosel_muEta"                               ,
+    #"phosel_muEta"                               ,  # I don't have pho category yet
     # "phosel_muEta_GenuinePhoton"                 ,
     # "phosel_muEta_MisIDEle"                      ,
     # "phosel_muEta_NonPrompt"                     ,
-    "phosel_Njet"                                ,
+    #"phosel_Njet"                                ,  # I don't have pho category yet
     # "phosel_Njet_GenuinePhoton"                  ,
     # "phosel_Njet_MisIDEle"                       ,
     # "phosel_Njet_HadronicPhoton"                 ,
     # "phosel_Njet_HadronicFake"                   ,
     # "phosel_Njet_NonPrompt"                      ,
     # "phosel_NfwdJet"                             ,
-    "phosel_Nbjet"                               ,
+    #"phosel_Nbjet"                               ,  # I don't have pho category yet
     # "phosel_HoverE"                              ,
     # "phosel_noCut_HoverE"                        ,
-    "phosel_SIEIE"                               ,
+    #"phosel_SIEIE"                               ,  # I don't have pho category yet
     # "phosel_SIEIE_GenuinePhoton"                 ,
     # "phosel_SIEIE_MisIDEle"                      ,
     # "phosel_SIEIE_NonPrompt"                     ,
-    "phosel_ChIso"                               ,
+    #"phosel_ChIso"                               ,  # I don't have pho category yet
     # "phosel_ChIso_GenuinePhoton"                 ,
     # "phosel_ChIso_MisIDEle"                      ,
     # "phosel_ChIso_NonPrompt"                     ,
@@ -127,6 +127,7 @@ myPlotList  = [
     # "phosel_noCut_SIEIE_noChIso_HadronicPhoton"  ,
     # "phosel_noCut_SIEIE_noChIso_HadronicFake"    ,
     # "phosel_noCut_SIEIE_noChIso_NonPrompt"       ,
+    
     "phosel_noCut_SIEIE"                         ,
     # "phosel_noCut_SIEIE_GenuinePhoton"           ,
     # "phosel_noCut_SIEIE_MisIDEle"                ,
@@ -138,7 +139,7 @@ myPlotList  = [
     # "phosel_mediumID_ChIso_MisIDEle"             ,
     # "phosel_mediumID_ChIso_HadronicPhoton"       ,
     # "phosel_mediumID_ChIso_HadronicFake"         ,
-    "phosel_noCut_ChIso"                         ,
+    #"phosel_noCut_ChIso"                         , # this is same as phosel_mediumID_ChIso
     # "phosel_noCut_ChIso_PUdown"                  ,
     # "phosel_noCut_ChIso_PUup"                    ,
     # "phosel_noCut_ChIso_0nVtx15"                 ,
@@ -151,7 +152,7 @@ myPlotList  = [
     # "phosel_noCut_ChIso_MisIDEle"                ,
     # "phosel_noCut_ChIso_HadronicPhoton"          ,
     # "phosel_noCut_ChIso_HadronicFake"            ,
-    "phosel_AntiSIEIE_ChIso"                     ,
+    #"phosel_AntiSIEIE_ChIso"                     ,
     # "phosel_AntiSIEIE_ChIso_GenuinePhoton"       ,
     # "phosel_AntiSIEIE_ChIso_MisIDEle"            ,
     # "phosel_AntiSIEIE_ChIso_HadronicPhoton"      ,
@@ -166,7 +167,7 @@ myPlotList  = [
     # "phosel_AntiSIEIE_SB2_ChIso_MisIDEle"        ,
     # "phosel_AntiSIEIE_SB2_ChIso_HadronicPhoton"  ,
     # "phosel_AntiSIEIE_SB2_ChIso_HadronicFake"    ,
-    "phosel_R9"                                  ,
+    #"phosel_R9"                                  ,
     # "phosel_NGenuinePhoton"                      ,
     # "phosel_NMisIDEle"                           ,
     # "phosel_NHadronicPhoton"                     ,
@@ -179,10 +180,62 @@ myPlotList  = [
     # "phosel_MassEGamma_HadronicPhoton"           ,
     # "phosel_MassEGamma_HadronicFake"             ,
     # "phosel_MassEGamma_NonPrompt"                ,
-    "phosel_MassCuts"                            ,
+    #"phosel_MassCuts"                            ,
     # "phosel_noCutSIEIEChIso_GenuinePhoton"       ,
     # "phosel_noCutSIEIEChIso_MisIDEle"            ,
     # "phosel_noCutSIEIEChIso_HadronicPhoton"      ,
     # "phosel_noCutSIEIEChIso_HadronicFake"        ,
-    "phosel_noCutSIEIEChIso"                     
+    #"phosel_noCutSIEIEChIso"                     
 ]
+
+
+myPlotList   =[
+    "presel_jet1Pt"                              ,
+    "presel_Njet"                                ,
+    "presel_Nbjet"                               ,
+    "presel_muPt"                                ,
+    "presel_muEta"                               ,
+    "presel_muPhi"                               ,
+    "presel_elePt"                               ,
+    "presel_eleSCEta"                            ,
+    "presel_elePhi"                              ,
+    "presel_nVtx"                                ,
+    # "phosel_nVtx"                                , # Aloke forgot to create it
+    "phosel_jet1Pt"                              ,
+    "phosel_Nphotons"                            ,
+    "phosel_LeadingPhotonEt"                     ,
+    "phosel_LeadingPhotonPhi"                    ,
+    "phosel_LeadingPhotonEta"                    ,
+    "phosel_elePt"                               ,
+    "phosel_eleSCEta"                            ,
+    "phosel_muPt"                                ,
+    "phosel_muEta"                               ,
+    "phosel_Njet"                                ,
+    # "phosel_Nbjet"                               , # Aloke forgot to creat it
+    # "phosel_PhotonCategory"                      ,
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

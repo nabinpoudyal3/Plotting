@@ -25,7 +25,7 @@ EleEff      shape   1     1     1     1         -     -     -     -
 #fsr         shape   1     1     1     1         1     1     1     1
 prefireEcal shape   1     1     1     1         1     1     1     1
 JER         shape   1     1     1     1         1     1     1     1
-#JECTotal			shape   1     1     1     1         1     1     1     1
+#JECTotal	shape   1     1     1     1         1     1     1     1
 -------------------------------------------------------------------------------------------------------
 ZGammaBkgPhotonSF rateParam * ZgammaBkgPhoton  1 
 WGammaBkgPhotonSF rateParam * WgammaBkgPhoton  1 

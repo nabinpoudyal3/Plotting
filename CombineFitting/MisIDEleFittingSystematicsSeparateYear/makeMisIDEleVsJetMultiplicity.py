@@ -26,7 +26,7 @@ CRDictWGamma ={"SR8":"wGammasfSReight", "CR123":"wGammasfCRall", "CR7":"wGammasf
 # x = [2, 3, 4, 5,]
 # myCR = ["N>=2,NB=0", "N=2,NB=0", "N=3,NB=0", "N>=4,NB=0", "N=2,NB=1"]
 x = [2, 3, 4, 5]
-myCR = ["N>=2,NB=0", "N=2,NB=0", "N=3,NB=0", "N>=4,NB=0"]
+myCR = ["NJ>=2\nNB=0", "NJ=2\nNB=0", "NJ=3\nNB=0", "NJ>=4\nNB=0"]
 y =[]
 yerrUp = []
 yerrDo = []
@@ -43,22 +43,24 @@ for ifile in ListOfFiles2016:
 #     print fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorLo(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorHi()
 #     print fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorLo(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorHi()
 fig = plt.figure()
-plt.errorbar(x, y, yerr=yerrUp, fmt='o')
+plt.errorbar(x, y, yerr=yerrUp, fmt='o',elinewidth=3, capsize=5,capthick=3)
 plt.xticks(x, myCR)
-plt.tick_params(axis='x', which='major', labelsize=10)
+plt.tick_params(axis='y', which='major', labelsize=20)
+plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 plt.xlim(1,6)
-plt.ylim(1,6)
+plt.ylim(0.5,4)
 plt.tight_layout()
 plt.grid()
-plt.ylabel('MisIDEle sf for 2016')
-plt.xlabel('Jet multipicity')
+plt.ylabel('misIDE SF',fontsize=30)
+# plt.xlabel('Jet multipicity',fontsize=30)
 plt.title('')
+plt.text(2.2, 3.1, 'misIDE SF for 2016',fontsize=30)
 
 fig.savefig('M16.pdf', bbox_inches="tight", dpi=1200)
 
 
 x = [2, 3, 4, 5]
-myCR = ["N>=2,NB=0", "N=2,NB=0", "N=3,NB=0", "N>=4,NB=0"]
+myCR = ["NJ>=2\nNB=0", "NJ=2\nNB=0", "NJ=3\nNB=0", "NJ>=4\nNB=0"]
 
 y =[]
 yerrUp = []
@@ -76,22 +78,24 @@ for ifile in ListOfFiles2017:
 #     print fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorLo(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorHi()
 #     print fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorLo(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorHi()
 fig = plt.figure()
-plt.errorbar(x, y, yerr=yerrUp, fmt='o')
+plt.errorbar(x, y, yerr=yerrUp, fmt='o',elinewidth=3, capsize=5,capthick=3)
 plt.xticks(x, myCR)
-plt.tick_params(axis='x', which='major', labelsize=10)
+plt.tick_params(axis='y', which='major', labelsize=20)
+plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 plt.xlim(1,6)
-plt.ylim(1,6)
+plt.ylim(0.5,4)
 plt.tight_layout()
 plt.grid()
-plt.ylabel('MisIDEle sf for 2017')
-plt.xlabel('Jet multipicity')
+plt.ylabel('misIDE SF',fontsize=30)
+# plt.xlabel('Jet multipicity',fontsize=30)
 plt.title('')
+plt.text(2.2, 3.1, 'misIDE SF for 2017',fontsize=30)
 
 fig.savefig('M17.pdf', bbox_inches="tight", dpi=1200)
 
 
 x = [2, 3, 4, 5]
-myCR = ["N>=2,NB=0", "N=2,NB=0", "N=3,NB=0", "N>=4,NB=0"]
+myCR = ["NJ>=2\nNB=0", "NJ=2\nNB=0", "NJ=3\nNB=0", "NJ>=4\nNB=0"]
 y =[]
 yerrUp = []
 yerrDo = []
@@ -108,16 +112,18 @@ for ifile in ListOfFiles2018:
 #     print fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorLo(),fit_s.floatParsFinal().find("ZGammaBkgPhotonSF").getErrorHi()
 #     print fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getVal(),fit_s.floatParsFinal().find("r").getErrorLo(),fit_s.floatParsFinal().find("WGammaBkgPhotonSF").getErrorHi()
 fig = plt.figure()
-plt.errorbar(x, y, yerr=yerrUp, fmt='o')
+plt.errorbar(x, y, yerr=yerrUp, fmt='o',elinewidth=3, capsize=5,capthick=3)
 plt.xticks(x, myCR)
-plt.tick_params(axis='x', which='major', labelsize=10)
+plt.tick_params(axis='y', which='major', labelsize=20)
+plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 plt.xlim(1,6)
-plt.ylim(1,6)
+plt.ylim(0.5,4)
 plt.tight_layout()
 plt.grid()
-plt.ylabel('MisIDEle sf for 2018')
-plt.xlabel('Jet multipicity')
+plt.ylabel('misIDE SF',fontsize=30)
+# plt.xlabel('Jet multipicity',fontsize=30)
 plt.title('')
+plt.text(2.2, 3.1, 'misIDE SF for 2018',fontsize=30)
 
 fig.savefig('M18.pdf', bbox_inches="tight", dpi=1200)
 

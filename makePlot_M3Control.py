@@ -1,4 +1,4 @@
-from ROOT import TFile, TLegend, TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
+from ROOT import TFile, TLegend, Double,TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
 #from ROOT import *
 import os
 
@@ -8,16 +8,17 @@ import argparse
 from optparse import OptionParser
 from sampleInformation import sampleList
 import sampleInformation
-from numpy import log10
+from numpy import log10,sqrt
 from array import array
 
 #from getFullYearMisIDEleSF import getFullYearMisIDEleSF
 from getMisIDEleSF import getMisIDEleSF
 from getZJetsSF import getZJetsSF
+from getWJetsSF import getWJetsSF
 
 from colorama import Fore, Back, Style 
 
-from TTGamma_nonPrompt_2016 import *
+# from TTGamma_nonPrompt_2016 import *
 
 padRatio = 0.25
 padOverlap = 0.15
@@ -89,7 +90,12 @@ parser.add_option("--useQCDCR",dest="useQCDCR", default=False, action="store_tru
 
 parser.add_option("--noQCD",dest="noQCD", default=False, action="store_true",
 		help="")
-		
+
+parser.add_option("--noData",dest="noData", default=False, action="store_true",
+		help="")
+parser.add_option("--ratioPlot",dest="ratioPlot", default=False, action="store_true",
+		help="")
+
 ############
 #parser=argparse.ArgumentParser(
 #    description='''How to run this script? ''',
@@ -107,6 +113,8 @@ finalState    = options.channel
 postfitPlots  = options.postfitPlots
 prefitPlots   = options.prefitPlots
 
+ratioPlot     = options.ratioPlot
+
 systematics   = options.systematics
 level         = options.level
 
@@ -122,7 +130,8 @@ looseCRe2e2   = options.looseCRe2e2
 looseCRe3ge2  = options.looseCRe3ge2
 useQCDMC      = options.useQCDMC
 useQCDCR      = options.useQCDCR
-noQCD = options.noQCD
+noQCD         = options.noQCD
+noData        = options.noData
 zeroPhoton    = options.zeroPhoton
 
 template        = options.template
@@ -150,10 +159,11 @@ if level=='down': mylevel='Down'
 ########
 
 if zeroPhoton:      #tight but 0 photon
+	crName = "zeroPhoton"
 	isSelection = "looseCRge2e0"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = getZJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	fileDirQCD = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
@@ -268,6 +278,10 @@ for sample in sampleList:
 		_file[sample] = TFile.Open('%s%s.root'%(fileDirQCD,sample),'read')
 		qcdhistName = histNameData.replace("mediumID_","noCut_")
 		qcdHist = _file[sample].Get(qcdhistName%(sample))
+		print "qcdHist data driven ==>",qcdHist.Integral(-1,-1)
+		errorQCD = Double(0.)
+		nQCDEvents = qcdHist.IntegralAndError(1,qcdHist.GetNbinsX(),errorQCD,"width")
+
 	else:
 		#print sample, fileDir
 		_file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
@@ -288,8 +302,8 @@ for sample in sampleList:
 	tempHist = _file[sample].Get(histName%(sample))
 	#print tempHist
 	
-	if sample=='ZJets': 
-		tempHist.Scale(ZJetSF)
+	if sample=='ZJets': tempHist.Scale(ZJetSF)
+	if sample=='WJets': tempHist.Scale(WJetSF)
 		#print "ZJetSF", ZJetSF
     # addd WJetsSF here. IMP
 	print sample, "==>", tempHist.Integral()	
@@ -317,6 +331,7 @@ for sample in sampleList:
 # apply SF before plotting or feeding into combine
 templateHist["WGamma"].Scale(WGammaSF)
 templateHist["ZGamma"].Scale(ZGammaSF)
+# templateHist["WJets"].Scale(WJetSF) already applied above
 
 #print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
 
@@ -357,8 +372,63 @@ if systematics=='':
 		sys.exit()		
 
 	data_obs = dataHist.Clone("data_obs")
+	dataError = Double(0.)
+	nEventData = data_obs.IntegralAndError(1,data_obs.GetNbinsX(),dataError,"width")
+	print "nEventsData ==>", nEventData
 	rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)	
-	
+
+
+lastbin = 0
+totalMC = 0
+totalMCerror = 0
+line = ""
+line += "\\begin{table} \n"
+line += "\\caption{} \n"
+line += "\\label{tab:} \n"
+line += "\\centering \n"
+line += "\\begin{tabular} {|l|l|l|} \n"
+line += "\\hline \n"
+line += "Processes & Total Events & Percent \\\\ \n"
+line += "\\hline \n"
+
+if prefitPlots:
+	newtemplateHist = ["TTGamma","TTbar","ZGamma","WGamma","Other"]
+	latex_categoryName = {"TTGamma": "\\ttgamma ",        
+					      "TTbar":   "\\ttbar ",          
+					      "WGamma":  "\\Wgamma ",         
+					      "ZGamma":  "\\Zgamma ",         
+					      "Other":   "other"
+					    }
+	totalMCEvents = 0
+	fullPercent = 0
+	for ih in newtemplateHist:
+		nEvents1 = templateHist[ih].Integral(1,templateHist[ih].GetNbinsX(),"width")
+		# print nEvents
+		totalMCEvents += nEvents1
+	print "just a check: totol number of MC events:",totalMCEvents
+
+	for ih in newtemplateHist:
+		error = Double(0.)
+		nEvents = templateHist[ih].IntegralAndError(1,templateHist[ih].GetNbinsX(),error,"width")
+		# print nEvents
+		totalMC += nEvents
+		totalMCerror += error*error
+		percent = nEvents/(totalMCEvents+nQCDEvents)*100
+		fullPercent += percent
+		line += "%s & $%.1f \\pm %.1f$ & %.2f \\\\ \n"%(latex_categoryName[ih], nEvents, error, percent) 
+		line += "\\hline \n"
+
+	#print "prefit==>",nEventData, totalMC, sqrt(totalMCerror)
+	# IMP: comment the line below when you have no QCD
+	line += "%s & $%.1f \\pm %.1f$ & %.2f \\\\ \n"%("QCD\\_DD", nQCDEvents, errorQCD, nQCDEvents/(totalMCEvents+nQCDEvents)*100) 
+	line += "\\hline \n"
+	line += "Data = $%.1f $ & MC = $%.1f \\pm %.1f$  & %.2f \\\\ \n"%(nEventData, totalMC+nQCDEvents, sqrt(totalMCerror),fullPercent+nQCDEvents/(totalMCEvents+nQCDEvents)*100 ) 
+	# line += "Data = $%.2f \\pm %.2f$ & MC = $%.2f \\pm %.2f$  \\\\ \n"%(nEventData, dataError, totalMC, sqrt(totalMCerror)) 
+	line += "\\hline \n"
+	line += "\\end{tabular} \n"
+	line += "\\end{table} \n"
+	#print line
+
 if template:	
 	myfile = TFile("%s%s.root"%(plotDirectory,"ttgamma_Prefit"),"update")
 		# i have to get the nominal histogram from root file first and get the integration value
@@ -438,10 +508,17 @@ else:
 
 	if postfitPlots:
 		rebinnedData.Scale(1.,"width")
-		#if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
-		#if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
-		if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel[:-1],selYear)
-		if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel,selYear)
+
+		if ratioPlot == True:
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
+			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
+		else:
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
+			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
+		
+		print filename
+		# if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel[:-1],selYear)
+		# if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel,selYear)
 		Postfile = TFile(filename,"read")
 		templatePostHist = {}
 		# print len(binning),"==>",len(binWidth)
@@ -510,7 +587,7 @@ else:
 	pad1.Draw()
 	pad2.Draw()
 
-	noData = False
+	# noData = False
 
 	oneLine = TF1("oneline","1",-9e9,9e9)
 	oneLine.SetLineColor(kBlack)
@@ -637,8 +714,13 @@ else:
 	canvasRatio.RedrawAxis()
 
 	if postfitPlots:
-		canvasRatio.SaveAs("%s%s_%s_postfit.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
-		canvasRatio.Print("%s%s_%s_postfit.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+		if ratioPlot == True:
+			canvasRatio.SaveAs("%s%s_%s_postfit_ratioPlot.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+			canvasRatio.Print("%s%s_%s_postfit_ratioPlot.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+		else:
+			canvasRatio.SaveAs("%s%s_%s_postfit.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+			canvasRatio.Print("%s%s_%s_postfit.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+
 	else:
 
 		canvasRatio.SaveAs("%s%s_%s.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
@@ -646,6 +728,11 @@ else:
 		#myfile.Close()
 	canvasRatio.Close()
 
+	print "EventYieldTables/EventsYield_%s_%s_%s_%s.tex"%(crName,channel,selYear,mydistributionName)
+  	with open("EventYieldTables/EventsYield_%s_%s_%s_%s.tex"%(crName,channel,selYear,mydistributionName),"w") as _file:
+	   		_file.write(line)
+	_file.close()  
+	
 
 #
 #if postfitPlots:

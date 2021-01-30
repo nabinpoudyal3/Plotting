@@ -1,10 +1,28 @@
 
 
-python makeHistograms.py -y 2016 -c Ele --looseCRge2e0  -s TTGamma   --allPlots
-python makeHistograms.py -y 2016 -c Mu  --looseCRge2e0  -s TTGamma   --allPlots
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst BTagSF_b    --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst BTagSF_l    --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst EleEff      --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst MuEff       --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst JECTotal    --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst prefireEcal --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst isr         --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst fsr         --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst Q2          --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst PhoEff      --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst Pdf         --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst PU          --level down --verbose --plot phosel_elePt
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst JER         --level down --verbose --plot phosel_elePt
 
 exit 1
 
+
+
+python makeHistograms.py -y 2016 -c Ele --looseCRge2e0  -s TTGamma   --allPlots
+python makeHistograms.py -y 2016 -c Mu  --looseCRge2e0  -s TTGamma   --allPlots
+exit 1
+python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --plot presel_elePt
+exit 1
 #!/bin/bash
 if [ $# -eq 0 ]
   then

@@ -1,3 +1,4 @@
+
 cd /uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/ZJets_syst_tightplots_2016
 rm ele.root mu.root both.root
 rootmkdir ele.root:both

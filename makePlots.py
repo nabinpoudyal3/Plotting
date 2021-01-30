@@ -11,6 +11,12 @@ from array import array
 
 from myListOfPlots import *
 
+from termcolor import colored
+
+from getMisIDEleSF import getMisIDEleSF
+from getZJetsSF import getZJetsSF
+from getWJetsSF import getWJetsSF
+
 padRatio = 0.25
 padOverlap = 0.15
 
@@ -21,6 +27,9 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("--Tight","--tight", dest="isTightSelection", default=False,action="store_true",
 		help="Use 4j1t selection" )
+
+parser.add_option("--removeData", dest="removeData", default=False,action="store_true",
+		help="" )
 
 parser.add_option("--testdir", dest="testdir", default=False,action="store_true",
 		help="Use test histograms for plotting" )
@@ -70,8 +79,11 @@ parser.add_option("--useQCDCR",dest="useQCDCR", default=False, action="store_tru
 parser.add_option("--dilepmassPlots","--dilepmassPlots", dest="Dilepmass",action="store_true",default=False,
 		help="Make only plots for ZJetsSF fits" )
 
-parser.add_option("--postfitplot",dest="postfitplot", default=False, action="store_true",
-		help="make post fit plots")
+parser.add_option("--postfitPlots", dest="postfitPlots", default=False,action="store_true",
+					help="post fit plots" )
+
+parser.add_option("--prefitPlots", dest="prefitPlots", default=False,action="store_true",
+					help="pre fit plots" )
 
 parser.add_option("--makePlotsForSF","--makePlotsForSF", dest="makePlotsForSF",action="store_true",default=False,
 		help="Extra jets" )
@@ -129,7 +141,9 @@ isTight0bSelection = options.isTight0bSelection
 # nabin added sth
 makeNabinPlots = options.makeNabinPlots
 ##
-postfitplot = options.postfitplot
+postfitPlots  = options.postfitPlots
+prefitPlots   = options.prefitPlots
+
 isLooseCRge2ge0Selection = options.isLooseCRge2ge0Selection
 isLooseCRge2e0Selection  = options.isLooseCRge2e0Selection
 ##
@@ -165,6 +179,7 @@ makeAllPlots = options.makeAllPlots
 
 finalState = options.channel
 
+removeData = options.removeData
 
 testdir =  options.testdir
 
@@ -378,9 +393,13 @@ NoLog=False
 #  [x-min,x-max], -1 means keep as is
 #  Extra text about region
 #  log plot]print regionText
-
-histograms_dilep = {"presel_DilepMass"   : ["m_(lepton,lepton) (GeV)", "<Events/GeV>",2 , [70,130], regionText, NoLog, " "],
-					"phosel_DilepMass"   : ["m_(lepton,lepton) (GeV)", "<Events/GeV>", [20., 30., 40., 50., 60., 70., 85., 95., 110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270.], [-1,-1], regionText, NoLog, " "]
+if channel=="ele":
+	histograms_dilep = {"presel_DilepMass"   : ["m_(e^{+},e^{-}) (GeV)", "<Events/GeV>",2 , [79,103], regionText, NoLog, " "],
+					"phosel_DilepMass"   : ["m_(e^{-},e^{-}) (GeV)", "<Events/GeV>", [20., 30., 40., 50., 60., 70., 85., 95., 110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270.], [-1,-1], regionText, NoLog, " "]
+		}
+elif channel=="mu":
+	histograms_dilep = {"presel_DilepMass"   : ["m_(#mu,#mu) (GeV)", "<Events/GeV>",2 , [79,103], regionText, NoLog, " "],
+					"phosel_DilepMass"   : ["m_(#mu,#mu) (GeV)", "<Events/GeV>", [20., 30., 40., 50., 60., 70., 85., 95., 110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270.], [-1,-1], regionText, NoLog, " "]
 		}
 
 histograms = {
@@ -402,23 +421,25 @@ histograms = {
 		#"presel_M3"          : ["M_{3} (GeV)"      , "<Events/GeV>", [60., 80., 100, 110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 420., 440., 460., 480., 500.], [-1,-1], regionText,  NoLog, " "],
 		#"presel_M3_control"  : ["Events"           , "Events", 550 ,[-1,-1],  regionText,  NoLog, " "],
 		"presel_MET"         : ["MET (GeV)"                , "Events/10 GeV", 10, [-1,-1], regionText,  NoLog, " "],
+		"presel_METPhi"      : ["MET #phi"                 , "Events", 5, [-3.2,3.2], regionText,  NoLog, " "],	
 		"presel_WtransMass"  : ["W transverse mass (GeV)"  , "Events/5 GeV", 5, [-1,-1], regionText,  NoLog, " "],
 		"presel_HT"          : ["H_{T} (GeV)"              , "Events", 5, [180,1000], regionText,  NoLog, " "],
+		"phosel_HT"          : ["H_{T} (GeV)"              , "Events", 5, [180,1000], regionText,  NoLog, " "],
 		"presel_nVtx"        : ["N Vtx nominal"            , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		"presel_nVtxup"      : ["N Vtx up"                 , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		"presel_nVtxdo"      : ["N Vtx down"               , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		"presel_nVtxNoPU"    : ["N Vtx noPU"               , "Events", 1, [-1,-1], regionText,  NoLog, " "],
-		"phosel_LeadingPhotonEt"                : ["Photon Et (GeV)"                  , "Events", 5, [0,100], regionText,  NoLog, " "],     
-		"phosel_LeadingPhotonEt_GenuinePhoton"  : ["GenuinePhoton Et (GeV)"           , "Events", 5, [0,100], regionText,  NoLog, " "],   
-		"phosel_LeadingPhotonEt_MisIDEle"       : ["MisIDElePhoton Et (GeV)"          , "Events", 5, [0,100], regionText,  NoLog, " "],   
-		"phosel_LeadingPhotonEt_HadronicPhoton" : ["HadronicPhoton Et (GeV)"          , "Events", 5, [0,100], regionText,  NoLog, " "],   
-		"phosel_LeadingPhotonEt_HadronicFake"   : ["HadronicFakePhoton Et (GeV)"      , "Events", 5, [0,100], regionText,  NoLog, " "], 
+		"phosel_LeadingPhotonEt"                : ["Photon Et (GeV)"                  , "Events/5GeV", 5, [15,100], regionText, YesLog, " "],     
+		"phosel_LeadingPhotonEt_GenuinePhoton"  : ["GenuinePhoton Et (GeV)"           , "Events/5GeV", 5, [15,100], regionText, YesLog, " "],   
+		"phosel_LeadingPhotonEt_MisIDEle"       : ["MisIDElePhoton Et (GeV)"          , "Events/5GeV", 5, [15,100], regionText, YesLog, " "],   
+		"phosel_LeadingPhotonEt_HadronicPhoton" : ["HadronicPhoton Et (GeV)"          , "Events/5GeV", 5, [15,100], regionText, YesLog, " "],   
+		"phosel_LeadingPhotonEt_HadronicFake"   : ["HadronicFakePhoton Et (GeV)"      , "Events/5GeV", 5, [15,100], regionText, YesLog, " "], 
 		"phosel_LeadingPhotonPhi"               : ["Photon Phi "         , "Events", 2, [-4,4],     regionText,  NoLog, " "],   
 		"phosel_LeadingPhotonEta"               : ["Photon Eta "         , "Events", 2, [-2.5,2.5], regionText,  NoLog, " "],  
-		"phosel_LeadingPhotonEt_barrel"         : ["Photon Et (GeV)"          , "Events", 5, [20,150], regionText,  NoLog, " "],
+
 		"phosel_LeadingPhotonSCEta"             : ["Photon SCEta (GeV)"       , "Events/0.1", 1, [-1,-1], regionText,  NoLog, " "], 
-		"phosel_LeadingPhotonEta_barrel"               : ["Photon Eta (GeV)"         , "Events/0.1", 1, [-1.47,1.47], regionText,  NoLog, " "],
-		"phosel_LeadingPhotonSCEta_barrel"             : ["Photon SCEta (GeV)"       , "Events/0.1", 1, [-1.47,1.47], regionText,  NoLog, " "],	
+
+
 		#"phosel_dRLeadingPhotonLepton"          : ["dR(LeadingPhoton,Lepton)" , "Events/0.025", 2, [-1,-1], regionText,  NoLog, " "],
 		"phosel_dRLeadingPromptPhotonLepton"    : ["dR(LeadingPhoton,Lepton)" , "Events/0.025", 2, [-1,-1], regionText,  NoLog, "Prompt Photon"],
 		#"phosel_dRLeadingNonPromptPhotonLepton" : ["dR(LeadingPhoton,Lepton)" , "Events/0.025", 2, [-1,-1], regionText,  NoLog, "NonPrompt Photon"],
@@ -430,23 +451,21 @@ histograms = {
 		"phosel_dRLeadingHadronicPhotonLepton"          : ["dR(LeadingPhoton,Jet)" , "Events/0.025", 2, [-1,-1], regionText,  NoLog, "Hadronic Photon"],
 		"phosel_dRLeadingHadronicFakeLepton"         : ["dR(LeadingPhoton,Jet)" , "Events/0.025", 2, [-1,-1], regionText,  NoLog, "Hadronic Fake"],
 		#"phosel_WtransMass"              : ["W transverse mass GeV "        , "Events/5 GeV", 5, [-1,-1], regionText,  NoLog, " "],
-		"phosel_Nphotons"                : ["Number of Photons "            , "Events", 1, [-1,-1], regionText,  YesLog, " "],
-		"phosel_Nphotons_barrel"         : ["Number of Photons "            , "Events", 1, [1,3], regionText,  YesLog, " "],
-		"phosel_HT_barrel"               : ["H_{T} (GeV)"                ,"Events",  5, [180,1000], regionText,  NoLog, " "],
+		"phosel_Nphotons"                : ["Number of Photons "            , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		"phosel_MET"                     : ["MET (GeV)  "                , "Events/2", 5, [-1,-1], regionText,  NoLog, " "],
 		"phosel_M3_gamma"                : ["M3(ttbar+#gamma) GeV"       ,"Events",10,[50,1000],regionText,  NoLog, " "],
 		"phosel_Mbjj_gamma"              : ["Reconstructed Top quark mass+#gamma GeV" ,"Events",10,[50,1000],regionText,  YesLog, " "],
-		"phosel_M3_barrel"               : ["M_{3} (GeV)"                , "Events/20 GeV", [60., 80., 100, 110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250.,260.,270.,280.,290.,300.,310.,320.,330.,340.,350.,360.,370.,380.,390., 400., 420.,440.,460., 480., 500.], [60,500],regionText,  NoLog, " "],   
-		"phosel_M3_endcap"               : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, " "],   
+		#"phosel_M3_barrel"               : ["M_{3} (GeV)"                , "Events/20 GeV", [60., 80., 100, 110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250.,260.,270.,280.,290.,300.,310.,320.,330.,340.,350.,360.,370.,380.,390., 400., 420.,440.,460., 480., 500.], [60,500],regionText,  NoLog, " "],   
+		#"phosel_M3_endcap"               : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, " "],   
 		  
-		"phosel_M3_GenuinePhoton_barrel"  : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Genuine Photon"],   
-		"phosel_M3_MisIDEle_barrel"       : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "MisIDEle"],
-		"phosel_M3_HadronicPhoton_barrel" : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Photon"],
-		"phosel_M3_HadronicFake_barrel"   : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Fake"],
-		"phosel_M3_GenuinePhoton_endcap"  : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Genuine Photon"],   
-		"phosel_M3_MisIDEle_endcap"       : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "MisIDEle"],
-		"phosel_M3_HadronicPhoton_endcap" : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Photon"],
-		"phosel_M3_HadronicFake_endcap"   : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Fake"],
+		#"phosel_M3_GenuinePhoton_barrel"  : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Genuine Photon"],   
+		#"phosel_M3_MisIDEle_barrel"       : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "MisIDEle"],
+		#"phosel_M3_HadronicPhoton_barrel" : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Photon"],
+		#"phosel_M3_HadronicFake_barrel"   : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Fake"],
+		#"phosel_M3_GenuinePhoton_endcap"  : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Genuine Photon"],   
+		#"phosel_M3_MisIDEle_endcap"       : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "MisIDEle"],
+		#"phosel_M3_HadronicPhoton_endcap" : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Photon"],
+		#"phosel_M3_HadronicFake_endcap"   : ["M_{3} (GeV)"                , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Fake"],
 
 		"phosel_muEta"                   : ["Muon #eta"                  , "Events/0.05", 5, [-2.4,2.4], regionText,  NoLog, " "],
 		#"phosel_muPt_barrel"    		       : ["Muon p_{T} (GeV) "          , "Events", 5, [30,200], regionText,  NoLog, " "],
@@ -455,36 +474,36 @@ histograms = {
 		"phosel_elePt"                   : ["Electron p_{T} (GeV)"       , "Events", 10,[35,200.], regionText,  NoLog, " "],
 		"phosel_eleSCEta"                : ["Electron SC#eta"            , "Events/0.04", 5, [-2.4,2.4], regionText,  NoLog, " "],
 		"phosel_Njet"                    : ["N Jets"                     , "Events", 1, [-1,-1], regionText,  NoLog, " "],
-		"phosel_Njet_barrel"                    : ["N Jets"                     , "Events", 1, [4,10], regionText,  NoLog, " "],
+		#"phosel_Njet_barrel"                    : ["N Jets"                     , "Events", 1, [4,10], regionText,  NoLog, " "],
 		"phosel_Nbjet"                   : ["N B-Jets"                   , "Events",1, [-1,1], regionText,  NoLog, " "],
-		"phosel_HoverE_barrel"           : ["H over E"                   , "Events/0.004", 10, [0,0.4], regionText, YesLog, " "],
-		"phosel_SIEIE_barrel"                   : ["Sigma Ieta Ieta"            , "Events/0.0003", 1, [-1,-1], regionText, YesLog, " "],
-		"phosel_ChIso_barrel"                   : ["Charged Hadron Iso (GeV)"   , "Events/0.005", 1, [0,0.441], regionText, YesLog, " "],
-		"phosel_NeuIso_barrel"                  : ["Neutral Hadron Iso (GeV)"   , "Events/0.05", 1,  [0,3.5], regionText, YesLog, " "],
-		"phosel_nVtx_barrel"     : ["N Vtx nominal"            , "Events", 1, [-1,-1], regionText,  NoLog, " "],
-		"phosel_nVtxup_barrel"   : ["N Vtx up"                 , "Events", 1, [-1,-1], regionText,  NoLog, " "],
-		"phosel_nVtxdo_barrel"   : ["N Vtx down"               , "Events", 1, [-1,-1], regionText,  NoLog, " "],
+		#"phosel_HoverE_barrel"           : ["H over E"                   , "Events/0.004", 10, [0,0.4], regionText, YesLog, " "],
+		#"phosel_SIEIE_barrel"                   : ["Sigma Ieta Ieta"            , "Events/0.0003", 1, [-1,-1], regionText, YesLog, " "],
+		#"phosel_ChIso_barrel"                   : ["Charged Hadron Iso (GeV)"   , "Events/0.005", 1, [0,0.441], regionText, YesLog, " "],
+		#"phosel_NeuIso_barrel"                  : ["Neutral Hadron Iso (GeV)"   , "Events/0.05", 1,  [0,3.5], regionText, YesLog, " "],
+		"phosel_nVtx"                    : ["N Vtx nominal"            , "Events", 1, [-1,-1], regionText,  NoLog, " "],
+		#"phosel_nVtxup_barrel"   : ["N Vtx up"                 , "Events", 1, [-1,-1], regionText,  NoLog, " "],
+		#"phosel_nVtxdo_barrel"   : ["N Vtx down"               , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		#"phosel_nVtxNoPU_barrel" : ["N Vtx noPU"               , "Events", 1, [-1,-1], regionText,  NoLog, " "],
-		"phosel_PhoIso_barrel"   : ["Photon Iso (GeV)"         , "Events/0.1", 1, [0,2.9], regionText, YesLog, " "],
-		"phosel_noCut_HoverE_barrel"            : ["H over E"                   , "Events/0.002", 1, [-1,-1], regionText, YesLog, " "],
-		"phosel_noCut_SIEIE_barrel"             : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, " "],
-		"phosel_noCut_SIEIE_GenuinePho"  : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Genuine Photon"],
-		"phosel_noCut_SIEIE_MisIDEle"    : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog,"MisIDEle"],
-		#"phosel_noCut_SIEIE_HadPho"      : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Photon"],
-		#"phosel_noCut_SIEIE_HadFake"     : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Fake"],
-		"phosel_noCutSIEIEChIso_GenuinePho_barrel" :["Charged Hadron Iso (GeV)"  , "Events", 1, [-1,-1], regionText, YesLog, "Genuine Photon"],
-		"phosel_noCutSIEIEChIso_GenuinePho_endcap" :["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Genuine Photon"],
-	    "phosel_noCutSIEIEChIso_MisIDEle_barrel": ["Charged Hadron Iso (GeV)"           , "Events", 1, [-1,-1], regionText, YesLog,"MisIDEle"],
-    	"phosel_noCutSIEIEChIso_MisIDEle_endcap": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog,"MisIDEle"],
+		#"phosel_PhoIso_barrel"   : ["Photon Iso (GeV)"         , "Events/0.1", 1, [0,2.9], regionText, YesLog, " "],
+		#"phosel_noCut_HoverE_barrel"            : ["H over E"                   , "Events/0.002", 1, [-1,-1], regionText, YesLog, " "],
+		# "phosel_noCut_SIEIE"             : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, " "],
+		# "phosel_noCut_SIEIE_GenuinePho"  : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Genuine Photon"],
+		# "phosel_noCut_SIEIE_MisIDEle"    : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "MisIDEle"],
+		# "phosel_noCut_SIEIE_HadPho"      : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Photon"],
+		# "phosel_noCut_SIEIE_HadFake"     : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Fake"],
+		#"phosel_noCutSIEIEChIso_GenuinePho_barrel" :["Charged Hadron Iso (GeV)"  , "Events", 1, [-1,-1], regionText, YesLog, "Genuine Photon"],
+		#"phosel_noCutSIEIEChIso_GenuinePho_endcap" :["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Genuine Photon"],
+	    #"phosel_noCutSIEIEChIso_MisIDEle_barrel": ["Charged Hadron Iso (GeV)"           , "Events", 1, [-1,-1], regionText, YesLog,"MisIDEle"],
+    	#"phosel_noCutSIEIEChIso_MisIDEle_endcap": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog,"MisIDEle"],
 		#"phosel_noCutSIEIEChIso_HadPho_barrel": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Hadronic Photon"],
-		"phosel_noCutSIEIEChIso_HadPho_endcap": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Hadronic Photon"],
+		#"phosel_noCutSIEIEChIso_HadPho_endcap": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Hadronic Photon"],
 		#"phosel_noCutSIEIEChIso_HadFake_barrel": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Hadronic Fake"],
-		"phosel_noCutSIEIEChIso_HadFake_endcap": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Hadronic Fake"],
-		"phosel_noCutSIEIEChIso" : ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, " "],
+		#"phosel_noCutSIEIEChIso_HadFake_endcap": ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, "Hadronic Fake"],
+		#"phosel_noCutSIEIEChIso" : ["Charged Hadron Iso (GeV)"            , "Events", 1, [-1,-1], regionText, YesLog, " "],
 		#	      "phosel_noCut_ChIso"             : ["Charged Hadron Iso (GeV)"   , "Events/0.25", 1, [-1,-1], regionText, NoLog, " "],
 		"phosel_noCut_ChIso"             : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.], [-1,-1], regionText, YesLog, " "],
-		"phosel_noCut_ChIso_barrel"      : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, " "],
-		"phosel_noCut_ChIso_endcap"      : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, NoLog, " "],
+		#"phosel_noCut_ChIso_barrel"      : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, " "],
+		#"phosel_noCut_ChIso_endcap"      : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, NoLog, " "],
 		####
 		"phosel_noCut_ChIso_GenuinePhoton": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, "Genuine Photon"],
 		"phosel_noCut_ChIso_MisIDEle"    : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, "MisIDEle"],
@@ -492,15 +511,15 @@ histograms = {
 		"phosel_noCut_ChIso_HadronicFake": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, "Hadronic Fake"],
 
 
-		"phosel_noCut_ChIso_GenuinePhoton_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Genuine Photon"],
-		"phosel_noCut_ChIso_MisIDEle_barrel"    : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "MisIDEle"],
-		"phosel_noCut_ChIso_HadronicPhoton_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Photon"],
-		"phosel_noCut_ChIso_HadronicFake_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Fake"],
+		#"phosel_noCut_ChIso_GenuinePhoton_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Genuine Photon"],
+		#"phosel_noCut_ChIso_MisIDEle_barrel"    : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "MisIDEle"],
+		#"phosel_noCut_ChIso_HadronicPhoton_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Photon"],
+		#"phosel_noCut_ChIso_HadronicFake_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Fake"],
 
-		"phosel_noCut_ChIso_GenuinePhoton_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Genuine Photon"],
-		"phosel_noCut_ChIso_MisIDEle_endcap"    : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "MisIDEle"],
-		"phosel_noCut_ChIso_HadronicPhoton_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Photon"],
-		"phosel_noCut_ChIso_HadronicFake_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Fake"],
+		#"phosel_noCut_ChIso_GenuinePhoton_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Genuine Photon"],
+		#"phosel_noCut_ChIso_MisIDEle_endcap"    : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "MisIDEle"],
+		#"phosel_noCut_ChIso_HadronicPhoton_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Photon"],
+		#"phosel_noCut_ChIso_HadronicFake_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, "Hadronic Fake"],
 
 		"phosel_noCut_ChIso_PromptPhoton": ["Charged Hadron Iso (GeV)"   , "Events/0.25", 1, [-1,-1], regionText, YesLog, "Prompt Photon"],
 		"phosel_noCut_ChIso_NonPromptPhoton": ["Charged Hadron Iso (GeV)"   , "Events/0.25", 1, [-1,-1], regionText, YesLog, "NonPrompt Photon"],
@@ -515,29 +534,31 @@ histograms = {
 
 
 		# "phosel_noCut_PhoIso"            : ["Photon Iso (GeV)"           , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText, YesLog, " "], [-1,-1], regionText, YesLog, " "],
-		"phosel_noCut_NeuIso_barrel"            : ["Neutral Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10], [-1,-1], regionText, YesLog, " "],
-		"phosel_noCut_PhoIso_barrel"            : ["Photon Iso (GeV)"           , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10], [-1,-1], regionText, YesLog, " "],
-		"phosel_AntiSIEIE_ChIso"         : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, " "],
-		"phosel_AntiSIEIE_ChIso_barrel"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, " "],
-		"phosel_AntiSIEIE_ChIso_endcap"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, " "],
-		"phosel_AntiSIEIE_ChIso_GenuinePhoton_barrel": ["Charged Hadron Iso (GeV)"   , "Events",  [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, "Genuine Photon"],
-		"phosel_AntiSIEIE_ChIso_GenuinePhoton_endcap": ["Charged Hadron Iso (GeV)"   , "Events",  [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, "Genuine Photon"],
-		"phosel_AntiSIEIE_ChIso_MisIDEle_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "MisIDEle"],    
+		#"phosel_noCut_NeuIso_barrel"            : ["Neutral Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10], [-1,-1], regionText, YesLog, " "],
+		#"phosel_noCut_PhoIso_barrel"            : ["Photon Iso (GeV)"           , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10], [-1,-1], regionText, YesLog, " "],
+		# NOT NOW "phosel_AntiSIEIE_ChIso"         : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, " "],
+		#"phosel_AntiSIEIE_ChIso_barrel"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, " "],
+		#"phosel_AntiSIEIE_ChIso_endcap"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, " "],
+		#"phosel_AntiSIEIE_ChIso_GenuinePhoton_barrel": ["Charged Hadron Iso (GeV)"   , "Events",  [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, "Genuine Photon"],
+		#"phosel_AntiSIEIE_ChIso_GenuinePhoton_endcap": ["Charged Hadron Iso (GeV)"   , "Events",  [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.], [-1,-1], regionText,  NoLog, "Genuine Photon"],
+		#"phosel_AntiSIEIE_ChIso_MisIDEle_barrel": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "MisIDEle"],    
 
-		"phosel_AntiSIEIE_ChIso_MisIDEle_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "MisIDEle"],
-		"phosel_AntiSIEIE_ChIso_HadronicPhoton_barrel"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog,"Hadronic Photon"],       
-		"phosel_AntiSIEIE_ChIso_HadronicPhoton_endcap"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog,"Hadronic Photon"],
-		"phosel_AntiSIEIE_ChIso_HadronicFake_barrel" : ["Charged Hadron Iso HadFake (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "Hadronic Fake"],
-		"phosel_AntiSIEIE_ChIso_HadronicFake_endcap" : ["Charged Hadron Iso HadFake (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "Hadronic Fake"],
-		"phosel_noCut_SIEIE_endcap"      : ["Sigma Ieta Ieta"            , "Events/0.0005", 5, [0.015,0.07], regionText,  NoLog, "Endcap"],
-		"phosel_noCut_SIEIE_barrel"      : ["Sigma Ieta Ieta"            , "Events/0.0005", 5, [0.008,0.028], regionText,  NoLog, "Barrel"],
-		"phosel_noCut_SIEIE_noChIso_barrel":["Sigma Ieta Ieta"            , "Events/0.0005", 5, [0.008,0.028], regionText,  NoLog, "Barrel"],
+		#"phosel_AntiSIEIE_ChIso_MisIDEle_endcap": ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "MisIDEle"],
+		#"phosel_AntiSIEIE_ChIso_HadronicPhoton_barrel"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog,"Hadronic Photon"],       
+		#"phosel_AntiSIEIE_ChIso_HadronicPhoton_endcap"  : ["Charged Hadron Iso (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog,"Hadronic Photon"],
+		#"phosel_AntiSIEIE_ChIso_HadronicFake_barrel" : ["Charged Hadron Iso HadFake (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "Hadronic Fake"],
+		#"phosel_AntiSIEIE_ChIso_HadronicFake_endcap" : ["Charged Hadron Iso HadFake (GeV)"   , "Events", [0.,0.1,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,12.,13.,14.,15.,16.,17.,18.,19.,20.] , [-1,-1], regionText,  NoLog, "Hadronic Fake"],
+		#"phosel_noCut_SIEIE_endcap"      : ["Sigma Ieta Ieta"            , "Events/0.0005", 5, [0.015,0.07], regionText,  NoLog, "Endcap"],
+		#"phosel_noCut_SIEIE_barrel"      : ["Sigma Ieta Ieta"            , "Events/0.0005", 5, [0.008,0.028], regionText,  NoLog, "Barrel"],
+		
+		"phosel_noCut_SIEIE_noChIso"     : ["Sigma Ieta Ieta"            , "Events/0.0005", 5, [0.005,0.025], regionText,  NoLog, ""],
+		
 		"phosel_mcMomPIDGenuinePho"      : ["ParentPID of GenuinePho"  , "Events", 1, [-25,25], regionText,  YesLog, ""],
 		"phosel_mcMomPIDMisIDEle"        : ["ParentPID of MisIDEle"    , "Events", 1, [-1,-1], regionText,  YesLog, "MisIDEle"],
 		#"phosel_mcMomPIDHadPho"          : ["ParentPID of HadronicPho" , "Events", 1, [-1000,600], regionText, YesLog, "Hadronic Photon"],
 		#"phosel_mcMomPIDHadFake"         : ["ParentPID of HadronicFake", "Events", 1, [-1,-1], regionText,  YesLog, "Hadronic Fake"],
 		#  "phosel_RandomCone"              : ["RandomConeIsolation GeV"  , "Events", 1, [-1,-1], regionText,  NoLog, " "],
-		"phosel_PhotonCategory_barrel"          : ["Photon Category","Events", 1, [-1,-1], regionText,  NoLog, " "],
+		#"phosel_PhotonCategory_barrel"          : ["Photon Category","Events", 1, [-1,-1], regionText,  NoLog, " "],
 		#"phosel_MassEGamma_barrel"       : ["m_{e,#gamma} GeV"  , "Events/10 GeV", [25, 35, 45, 55, 65, 75, 85, 95, 105, 115, 125, 135, 145, 155, 165, 175, 185], [25,185], regionText,  NoLog, " "],
 
 		#"phosel_MassEGamma"              : ["m_{e,#gamma} GeV"  , "Events/10 GeV", [25, 35, 45, 55, 65, 75, 85, 95, 105, 115, 125, 135, 145, 155, 165, 175], [-1,-1], regionText,  NoLog, " "],
@@ -545,22 +566,29 @@ histograms = {
 		#"phosel_MassEGammaOthers"              : ["m_{e,#gamma(others)} GeV"  , "Events/10 GeV", [25, 35, 45, 55, 65, 75, 85, 95, 105, 115, 125, 135, 145, 155, 165, 175], [-1,-1], regionText,  NoLog, " "],
 
 		# "phosel_MassEGamma"              : ["m_{e,#gamma} GeV",           "Events/3 GeV", 3, [60,140], regionText,  NoLog, " "],
-		"phosel_MassEGammaMisIDEle"      : ["m_{e,#gamma(misIDEle)} GeV", "Events/3 GeV", 3, [60,140], regionText,  NoLog, " "],
-		"phosel_MassEGammaOthers"        : ["m_{e,#gamma(others)} GeV",   "Events/3 GeV", 3, [60,140], regionText,  NoLog, " "],
-		"phosel_MassLepGamma"            : ["m_{lepton,#gamma} GeV"    , "Events", 5, [-1,-1], regionText,  NoLog, " "],
-		"phosel_R9_barrel"  :["R9","Events",1,[-1,-1],regionText,  NoLog, " "],
+		# "phosel_MassEGammaMisIDEle"      : ["m_{e,#gamma(misIDEle)} GeV", "Events/3 GeV", 3, [60,140], regionText,  NoLog, " "],
+		# "phosel_MassEGammaOthers"        : ["m_{e,#gamma(others)} GeV",   "Events/3 GeV", 3, [60,140], regionText,  NoLog, " "],
+		# "phosel_MassLepGamma"            : ["m_{lepton,#gamma} GeV"    , "Events", 5, [-1,-1], regionText,  NoLog, " "],
+		"phosel_R9"                         : ["R9","Events",1,[-1,-1],regionText,  NoLog, " "],
 
-		"phosel_noCut_SIEIE"      : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, " "],
-		"phosel_noCut_SIEIE_GenuinePhoton"  : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Genuine Photon"],
-		"phosel_noCut_SIEIE_MisIDEle"    : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog,"MisIDEle"],
-		"phosel_noCut_SIEIE_HadronicPhoton"      : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Photon"],
-		"phosel_noCut_SIEIE_HadronicFake"     : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, YesLog, "Hadronic Fake"],
+		# "phosel_noCut_SIEIE"                : ["Sigma Ieta Ieta"            , "Events/0.0007", 1, [-1,-1], regionText, NoLog, " "],
+		"phosel_noCut_SIEIE"                : ["Sigma Ieta Ieta"            , "Events/0.0007", 4, [0.005,0.025], regionText, NoLog, " "],
+		"phosel_noCut_SIEIE_GenuinePhoton"  : ["Sigma Ieta Ieta"            , "Events/0.0007", 4, [0.005,0.025], regionText, YesLog, "Genuine Photon"],
+		"phosel_noCut_SIEIE_MisIDEle"       : ["Sigma Ieta Ieta"            , "Events/0.0007", 4, [0.005,0.025], regionText, YesLog, "MisIDEle"],
+		"phosel_noCut_SIEIE_HadronicPhoton" : ["Sigma Ieta Ieta"            , "Events/0.0007", 4, [0.005,0.025], regionText, YesLog, "Hadronic Photon"],
+		"phosel_noCut_SIEIE_HadronicFake"   : ["Sigma Ieta Ieta"            , "Events/0.0007", 4, [0.005,0.025], regionText, YesLog, "Hadronic Fake"],
 
-		"phosel_MassEGamma"                             : ["m_{e,#gamma} GeV",           "Events/2 GeV", 2, [50,140], regionText,  NoLog, " "],
-		"phosel_MassEGamma_GenuinePhoton"               : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
-		"phosel_MassEGamma_MisIDEle"                    : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
-		"phosel_MassEGamma_HadronicPhoton"              : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
-		"phosel_MassEGamma_HadronicFake"                : ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
+		# "phosel_MassEGamma"                             : ["m_{e,#gamma} GeV",           "<Events/GeV>",  [50.,60,70,80,84,88,92,96,100,110,120,130,140.], [-1,-1], regionText,  NoLog, " "],
+		# "phosel_MassEGamma_GenuinePhoton"               : ["m_{e,#gamma} GeV",           "<Events/GeV>",  [50.,60,70,80,84,88,92,96,100,110,120,130,140.], [-1,-1], regionText,  NoLog, " "],
+		# "phosel_MassEGamma_MisIDEle"                    : ["m_{e,#gamma} GeV",           "<Events/GeV>",  [50.,60,70,80,84,88,92,96,100,110,120,130,140.], [-1,-1], regionText,  NoLog, " "],
+		# "phosel_MassEGamma_HadronicPhoton"              : ["m_{e,#gamma} GeV",           "<Events/GeV>",  [50.,60,70,80,84,88,92,96,100,110,120,130,140.], [-1,-1], regionText,  NoLog, " "],
+		# "phosel_MassEGamma_HadronicFake"                : ["m_{e,#gamma} GeV",           "<Events/GeV>",  [50.,60,70,80,84,88,92,96,100,110,120,130,140.], [-1,-1], regionText,  NoLog, " "],
+
+		"phosel_MassEGamma"                             : ["m_{e,#gamma} GeV",           "Events/10 GeV", 4, [49,140], regionText,  NoLog, " "],
+		"phosel_MassEGamma_GenuinePhoton"               : ["m_{e,#gamma} GeV",           "Events/10 GeV", 4, [49,140], regionText,  NoLog, " "],
+		"phosel_MassEGamma_MisIDEle"                    : ["m_{e,#gamma} GeV",           "Events/10 GeV", 4, [49,140], regionText,  NoLog, " "],
+		"phosel_MassEGamma_HadronicPhoton"              : ["m_{e,#gamma} GeV",           "Events/10 GeV", 4, [49,140], regionText,  NoLog, " "],
+		"phosel_MassEGamma_HadronicFake"                : ["m_{e,#gamma} GeV",           "Events/10 GeV", 4, [49,140], regionText,  NoLog, " "],
 
 		"phosel_jet1Pt"                             : ["Leading Jet Pt (GeV)", "Events", 10, [30,400], regionText, NoLog, " "],
 		"phosel_jet1Pt_GenuinePhoton"               : ["Leading Jet Pt (GeV)", "Events", 10, [30,400], regionText, NoLog, " "],
@@ -575,20 +603,24 @@ histograms = {
 		"phosel_WtransMass_HadronicFake"                : ["W transverse mass GeV "        , "Events/15 GeV", 15, [-1,-1], regionText,  NoLog, " "],
 
 		"phosel_mediumID_ChIso"                 : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.], [-1,-1], regionText, YesLog, " "],
-		"phosel_mediumID_ChIso_GenuinePhoton"   : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, "Genuine Photon"],
-		"phosel_mediumID_ChIso_MisIDEle"        : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, "MisIDEle"],
-		"phosel_mediumID_ChIso_HadronicPhoton"  : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, "Hadronic Photon"],
-		"phosel_mediumID_ChIso_HadronicFake"    : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0, 13.0, 15.0, 17.0, 20.0], [-1,-1], regionText, YesLog, "Hadronic Fake"],
-
+		"phosel_mediumID_ChIso_GenuinePhoton"   : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.], [-1,-1], regionText, YesLog, "Genuine Photon"],
+		"phosel_mediumID_ChIso_MisIDEle"        : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.], [-1,-1], regionText, YesLog, "MisIDEle"],
+		"phosel_mediumID_ChIso_HadronicPhoton"  : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.], [-1,-1], regionText, YesLog, "Hadronic Photon"],
+		"phosel_mediumID_ChIso_HadronicFake"    : ["Charged Hadron Iso (GeV)"   , "<Events/GeV>", [0.,0.1,1.,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.], [-1,-1], regionText, YesLog, "Hadronic Fake"],
 		
-		"phosel_M3"                      : ["M_{3} (GeV)"  , "<Events/GeV>", [ 50., 100., 125., 150., 175., 200., 250., 300., 500.], [-1,-1], regionText,  NoLog, " "],   
-		"presel_M3"                      : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100., 110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, " "],
-		#"phosel_M3"                      : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100,  110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, " "],   
-		"phosel_M3_GenuinePhoton"        : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Genuine Photon"],   
-		"phosel_M3_MisIDEle"             : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "MisIDEle"],
-		"phosel_M3_HadronicPhoton"       : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Photon"],
-		"phosel_M3_HadronicFake"         : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 90., 100, 110., 120., 130., 140., 150., 160., 180., 200., 220., 240., 260., 280., 300., 350., 400., 450., 500.], [-1,-1], regionText,  NoLog, "Hadronic Fake"],
+		# "phosel_M3"                      : ["M_{3} (GeV)"  , "<Events/GeV>", [ 50., 100., 125., 150., 175., 200., 250., 300., 500.], [-1,-1], regionText,  NoLog, " "],   
+		# "phosel_M3_GenuinePhoton"        : ["M_{3} (GeV)"  , "<Events/GeV>", [ 50., 100., 125., 150., 175., 200., 250., 300., 500.], [-1,-1], regionText,  NoLog, "Genuine Photon"],   
+		# "phosel_M3_MisIDEle"             : ["M_{3} (GeV)"  , "<Events/GeV>", [ 50., 100., 125., 150., 175., 200., 250., 300., 500.], [-1,-1], regionText,  NoLog, "MisIDEle"],
+		# "phosel_M3_HadronicPhoton"       : ["M_{3} (GeV)"  , "<Events/GeV>", [ 50., 100., 125., 150., 175., 200., 250., 300., 500.], [-1,-1], regionText,  NoLog, "Hadronic Photon"],
+		# "phosel_M3_HadronicFake"         : ["M_{3} (GeV)"  , "<Events/GeV>", [ 50., 100., 125., 150., 175., 200., 250., 300., 500.], [-1,-1], regionText,  NoLog, "Hadronic Fake"],
 
+		"presel_M3"                      : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100,  110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, " "],   
+		"phosel_M3"                      : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100,  110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, " "],   
+		"phosel_M3_GenuinePhoton"        : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100,  110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, "Genuine Photon"],   
+		"phosel_M3_MisIDEle"             : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100,  110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, "MisIDEle"],
+		"phosel_M3_HadronicPhoton"       : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100,  110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, "Hadronic Photon"],
+		"phosel_M3_HadronicFake"         : ["M_{3} (GeV)"  , "<Events/GeV>", [60., 70., 80., 90.,  100,  110., 120., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 370., 380., 390., 400., 410.,420.,430., 440.,450., 460.,470., 480.,490., 500.], [-1,-1], regionText,  NoLog, "Hadronic Fake"],
+		
 }
 if not plotList is None:
 	allHistsDefined = True
@@ -758,21 +790,27 @@ if useQCDCR:
 #else:
 #	systematics = ["BTagSF_b"]
 
-if finalState=="Mu" or "DiMu":
-	ZJetsSF=1.08 # just for now, need to check again
-	WJetsSF=1
-	WGammaSF=1.17
-	ZGammaSF=0.82
-	TTGammaSF = 0.8
-elif finalState=="Ele" or "DiEle":
-	ZJetsSF=1.08 # just for now, need to check again
-	WJetsSF=1
-	WGammaSF=1.17
-	ZGammaSF=0.82   
-	TTGammaSF = 0.8
+# if finalState=="Mu" or "DiMu":
+# 	ZJetsSF=1.08 # just for now, need to check again
+# 	WJetsSF=1
+# 	WGammaSF=1.17
+# 	ZGammaSF=0.82
+# 	TTGammaSF = 1
+# elif finalState=="Ele" or "DiEle":
+# 	ZJetsSF=1.08 # just for now, need to check again
+# 	WJetsSF=1
+# 	WGammaSF=1.17
+# 	ZGammaSF=0.82   
+# 	TTGammaSF = 1
 
-else:
-	print "neither Ele,Mu,DiEle or DiMu!!!!!!!!!!"
+# else:
+# 	print "neither Ele,Mu,DiEle or DiMu!!!!!!!!!!"
+
+
+isSelection = "looseCRge2e0"
+if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 
 #systematics2 = ["isr","fsr"]
 
@@ -784,11 +822,12 @@ else:
 
 skipData = False
 
+if removeData: skipData = True
 #if selYear in ["2017","2018"] and isTightSelection: # blinding 2017 and 2018 for validation region
 #    skipData = True
 
-#if selYear in ["2017","2018"]:
-#	skipData = True
+# if selYear in ["2017","2018"]:
+# 	skipData = True
 
 #_file_sys = TFile.Open("Combine_withDDTemplateData_v6_%s_tight_binned_PDF.root"%(channel),"read")
 
@@ -801,6 +840,7 @@ skipData = False
 #     for key in p_info:
 #         print(key + ':', p_info[key])
 
+print "Using data, True or False? ", not skipData
 histName = plotList[0]
 print histName
 #_filesys_up={}
@@ -873,7 +913,7 @@ if finalState=='Ele':
 elif finalState=='Mu':
 	dataHist = _file["DataMu"].Get("%s_DataMu"%(histName))
 
-else: print "wrong channel"
+else: print "wrong channel or Dilep channel"
 
 if finalState=='DiEle':
 	dataHist = _file["DataEle"].Get("%s_DataEle"%(histName))
@@ -988,25 +1028,34 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 	canvasRatio.cd()
 	pad1.Draw()
 	pad2.Draw()
+	for sample in stackList:
+		# _file[sample] = TFile.Open('%s%s.root'%(fileDir,sample),'read')
+		histtest = _file[sample].Get("%s_%s"%(histName,sample))
+		print sample, histtest.Integral(1,histtest.GetNbinsX(),"width")
 
+
+	# sys.exit()
 
 	canvas.cd()
 	canvas.ResetDrawn()
 	stack = THStack(histName,histName)
 	SetOwnership(stack,True)
+	print "==> making histogram for ", colored(histName,'red')
 	for sample in stackList:
 		# hist = None
 		if finalState=="Ele" and "mu" in histName:continue
 		if finalState=="Mu" and "ele" in histName:continue
 		if finalState =="Mu" and "MassEGamma" in histName: plotInfo[0] = "m_{#mu,#gamma} GeV"
-		if "phosel" in histName:
+		
+		if "phosel" in histName and "MassEGamma" in histName and prefitPlots:
 			if sample =="QCD_DD":
 				# tempFile = TFile.Open("%s%s.root"%(_fileDir,sample),"read")
 				hist = _file[sample].Get("%s_%s"%(histName,sample))
 			else:
 				# tempFile = TFile.Open("%s%s.root"%(_fileDir,sample),"read")
-				a1 = _file[sample].Get("%s_%s_%s"%(histName,"GenuinePhoton",sample)); a1.Scale(1)
-				a2 = _file[sample].Get("%s_%s_%s"%(histName,"MisIDEle",sample));      a2.Scale(2.3)
+				# if postfitPlots:
+				a1 = _file[sample].Get("%s_%s_%s"%(histName,"GenuinePhoton",sample)); 
+				a2 = _file[sample].Get("%s_%s_%s"%(histName,"MisIDEle",sample));      a2.Scale(1)
 				a3 = _file[sample].Get("%s_%s_%s"%(histName,"HadronicPhoton",sample));a3.Scale(1)
 				a4 = _file[sample].Get("%s_%s_%s"%(histName,"HadronicFake",sample));  a4.Scale(1)
 				hist = a1.Clone(sample)
@@ -1014,19 +1063,57 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 				hist.Add(a2)
 				hist.Add(a3)
 				hist.Add(a4)
+				# print "misID", MisIDEleSF
+				# else:
+					# hist = _file[sample].Get("%s_%s"%(histName,sample))
+			print hist			
+		elif "phosel" in histName:
+			if sample =="QCD_DD":
+				# tempFile = TFile.Open("%s%s.root"%(_fileDir,sample),"read")
+				hist = _file[sample].Get("%s_%s"%(histName,sample))
+			else:
+				# tempFile = TFile.Open("%s%s.root"%(_fileDir,sample),"read")
+				# if postfitPlots:
+				a1 = _file[sample].Get("%s_%s_%s"%(histName,"GenuinePhoton",sample)); 
+				a2 = _file[sample].Get("%s_%s_%s"%(histName,"MisIDEle",sample));      a2.Scale(MisIDEleSF)
+				a3 = _file[sample].Get("%s_%s_%s"%(histName,"HadronicPhoton",sample));a3.Scale(1)
+				a4 = _file[sample].Get("%s_%s_%s"%(histName,"HadronicFake",sample));  a4.Scale(1)
+				hist = a1.Clone(sample)
+				hist.SetDirectory(0)
+				hist.Add(a2)
+				hist.Add(a3)
+				hist.Add(a4)
+				# print "misID", MisIDEleSF
+				# else:
+					# hist = _file[sample].Get("%s_%s"%(histName,sample))
 			print hist
 		else:
 			print "**************************"
 			hist = _file[sample].Get("%s_%s"%(histName,sample))
-			print hist
+			print sample
 
 		# sys.exit()
+		if finalState=="DiMu" or finalState=="DiEle":
+			if postfitPlots:
+				if sample=="ZJets": 
+					print ZJetSF
+					hist.Scale(ZJetSF)
 
-		if sample=="ZJets":   hist.Scale(ZJetsSF)
-		if sample=="WJets":   hist.Scale(WJetsSF)
-		if sample=="WGamma":  hist.Scale(WGammaSF)
-		if sample=="ZGamma":  hist.Scale(ZGammaSF)
-		if sample=="TTGamma": hist.Scale(TTGammaSF)
+		elif finalState=="Mu" or finalState=="Ele":
+			if "phosel" in histName and "MassEGamma" in histName and prefitPlots: 
+				if sample=="ZJets":   hist.Scale(ZJetSF)
+				if sample=="WJets":   hist.Scale(WJetSF)
+			elif "phosel" in histName and "MassEGamma" in histName and postfitPlots: 
+				if sample=="ZJets":   hist.Scale(ZJetSF)
+				if sample=="WJets":   hist.Scale(WJetSF)
+				if sample=="WGamma":  hist.Scale(WGammaSF)
+				if sample=="ZGamma":  hist.Scale(ZGammaSF)
+			else:
+				if sample=="ZJets":   hist.Scale(ZJetSF)
+				if sample=="WJets":   hist.Scale(WJetSF)
+				if sample=="WGamma":  hist.Scale(WGammaSF)
+				if sample=="ZGamma":  hist.Scale(ZGammaSF)
+			# if sample=="TTGamma": hist.Scale(TTGammaSF)
 
 		if type(hist)==type(TObject()):continue
 		hist = hist.Clone(sample)	
@@ -1113,6 +1200,7 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 			dataHist.SetBinError(1, (firstBinError**2 + underFlowError**2)**0.5 )
 			print "DataMu","underflow==>", underFlowContent, "overflow==>", overFlowContent
 	noData = False
+	
 	#print dataHist
 	if type(dataHist)==type(TObject()): noData = True
 
@@ -1155,34 +1243,32 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 	_text.SetFillColor(0)
 	_text.SetTextSize(0.04)
 	_text.SetTextFont(42)
+	# ["m_{e,#gamma} GeV",           "Events/10 GeV", 10, [50,140], regionText,  NoLog, " "],
 	_text.AddText(plotInfo[6])
-
+	# print plotInfo[3]
 	#histograms list has flag whether it's log or not
 	canvas.SetLogy(plotInfo[5])
 	#canvas.SetLogy()
 	maxVal = stack.GetMaximum()
 	if not noData: 
 		maxVal = max(dataHist.GetMaximum(),maxVal)
+		print maxVal
 	
-	minVal = 1
+	minVal = 0.01
+	print "log or not?", plotInfo[5]
 	if plotInfo[5]:
-		#print histName, plotInfo[5], stack.GetStack()[1].GetMinimum()
 		minVal = max(stack.GetStack()[0].GetMinimum(),1)
-		stack.SetMaximum(10**(1.5*log10(maxVal) - 0.5*log10(minVal)))
-#	    stack.SetMaximum(10**(1.5*log10(maxVal) - 0.5*log10(stack.GetMinimum())))
-#	    print minVal
+		print histName, plotInfo[5], minVal, 10**(1.5*log10(maxVal) - 0.5*log10(minVal))
+		stack.SetMaximum(10**(1.5*log10(2.5*maxVal) - 0.5*log10(minVal)))
 		stack.SetMinimum(minVal)
-		# print stack.GetStack()[0]
-		# print stack.GetStack()[0].GetName()
-		# print stack.GetStack()[0].GetMinimum()
 	else:
 		stack.SetMaximum(2.5*maxVal) # 1.5 to 2.5
 		stack.SetMinimum(minVal)
 
-	if not noData:
-		stack.SetMaximum(2.35*max(dataHist.GetMaximum(),stack.GetMaximum()))
-	else:
-		stack.SetMaximum(2.35*stack.GetMaximum())
+	# if not noData:
+	# 	stack.SetMaximum(2.35*max(dataHist.GetMaximum(),stack.GetMaximum()))
+	# else:
+	# 	stack.SetMaximum(2.35*stack.GetMaximum())
 
 	errorband=stack.GetStack().Last().Clone("error")
 	errorband.Sumw2()
@@ -1409,8 +1495,8 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 	
 	#maxRatio = 1.5
 		#minRatio = 0.5	
-	ratio.GetYaxis().SetRangeUser(0.7,1.3)
-	ratio.GetYaxis().SetNdivisions(504)
+	ratio.GetYaxis().SetRangeUser(0.8,1.2)
+	ratio.GetYaxis().SetNdivisions(-402)
 	ratio.GetXaxis().SetTitle(plotInfo[0])
 	ratio.GetYaxis().SetTitle("Data/MC")
 	CMS_lumi.CMS_lumi(pad1, 4, 11)
@@ -1433,7 +1519,7 @@ def drawHist(histName,plotInfo, plotDirectory, _file, skipData = False):
 	#    pad2.Update()
 	canvasRatio.Update()
 	canvasRatio.RedrawAxis()
-	if postfitplot:
+	if postfitPlots:
 		canvasRatio.SaveAs("%s%s_ratio_postfit.root"%(plotDirectory,histName))
 		canvasRatio.SaveAs("%s%s_ratio_postfit.pdf"%(plotDirectory,histName))
 	else:
@@ -1458,3 +1544,7 @@ else:
 
 # for histName in phoselhistograms:
 #         drawHist("phosel_%s"%histName,phoselhistograms[histName],plotDirectory,_file)
+
+
+
+

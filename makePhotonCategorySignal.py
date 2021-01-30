@@ -149,7 +149,7 @@ if not os.path.exists(plotDirectory):
 	os.mkdir(plotDirectory)
 
 gStyle.SetOptStat(0)
-sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+sampleList = ['TTGamma', 'TTbar','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 category = {"GenuinePhoton":kOrange, "MisIDEle":kRed, "HadronicPhoton":kBlue, "HadronicFake":kGreen+1 }
 file = {}
 
@@ -182,15 +182,17 @@ if not HasCMSStyle:
 
 ROOT.gROOT.ForceStyle()
 
-# histName    = "phosel_LeadingPhotonEt_%s_%s"
-# histNameData= "phosel_LeadingPhotonEt_%s"
+histName    = "phosel_LeadingPhotonEt_%s_%s"
+histNameData= "phosel_LeadingPhotonEt_%s"
 
 # histName    = "phosel_noCut_SIEIE_%s_%s"
 # histNameData= "phosel_noCut_SIEIE_%s"
 
-histName    = "phosel_M3_%s_%s"
-histNameData= "phosel_M3_%s"
+# histName    = "phosel_M3_%s_%s"
+# histNameData= "phosel_M3_%s"
+
 rebin = 10
+
 if finalState=='Ele':
 	sample = "DataEle"
 	file[sample] = TFile.Open("%s%s.root"%(fileDir,sample),"read")
@@ -375,8 +377,10 @@ stack.GetHistogram().GetXaxis().SetLabelOffset(999)
 #stack.GetHistogram().GetXaxis().SetRangeUser(60,140)
 
 ymax = 0
-if stack.GetHistogram().GetBinContent(stack.GetHistogram().GetMaximumBin()) >= dataHist.GetBinContent(dataHist.GetMaximumBin()): ymax = stack.GetHistogram().GetBinContent(stack.GetHistogram().GetMaximumBin())
-else: ymax = dataHist.GetBinContent(dataHist.GetMaximumBin())
+if stack.GetHistogram().GetBinContent(stack.GetHistogram().GetMaximumBin()) >= dataHist.GetBinContent(dataHist.GetMaximumBin()): 
+	ymax = stack.GetHistogram().GetBinContent(stack.GetHistogram().GetMaximumBin())
+else: 
+	ymax = dataHist.GetBinContent(dataHist.GetMaximumBin())
 
 stack.SetMaximum(ymax*1.1)
 

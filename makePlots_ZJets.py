@@ -1,4 +1,4 @@
-from ROOT import TFile, TLegend, TCanvas, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory
+from ROOT import TFile, TLegend, TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory
 #from ROOT import *
 import os
 
@@ -112,7 +112,7 @@ useQCDMC = options.useQCDMC
 useQCDCR = options.useQCDCR
 noQCD = options.noQCD
 
-nBinss = options.nBinss
+nBinss = options.nBinss # this is a test
 
 template = options.template
 
@@ -422,10 +422,12 @@ for sample in sampleList:
 			
 
 #rebin = 4
-binning = numpy.array([88.,94.]) # Z mass pm Z width
-#binning = numpy.array([81,84,86,88,90,92,94,96,102.])
-#binning = numpy.array([82,88,92,98,102.])
-#binning = numpy.array([82,102.])
+# binning = numpy.array([88.,94.]) # Z mass pm Z width
+binning = numpy.array([81,84,86,88,90,92,94,96,102.])
+# binning = numpy.array([82,88,92,98,102.])
+# binning = numpy.array([82.,102.])
+# binning = numpy.array([82.,88.,94.,102.])
+
 binWidth = numpy.diff(binning)
 
 #print binning
@@ -526,8 +528,8 @@ else:
 		for ih in rebinnedHist:
 			rebinnedHist[ih].Scale(1.,"width")
 
-		if postfitPlots:
-			rebinnedHist['myZJets'].Scale(ZJetSF)
+		#if postfitPlots:
+		#	rebinnedHist['myZJets'].Scale(ZJetSF)
 
 		stack = THStack()
 		stack.Add(rebinnedHist['myBackground'])
@@ -535,7 +537,7 @@ else:
 	
 	if postfitPlots:
 		rebinnedData.Scale(1.,"width")
-		filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ZJetsFittingAllYear/fitDiagnostics%s_%s.root"%(crName,selYear)
+		filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ZJetsFittingAllYear/fitDiagnostics%s_%s.root"%(crName,selYear) #BothChannel
 		#if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ZJetsFittingAllYear/fitDiagnostics%s_%s.root"%(crName,selYear)
 		#if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ZJetsFittingAllYear/fitDiagnostics%s_%s.root"%(crName,selYear)
 
@@ -614,7 +616,7 @@ else:
 	if not noData: 
 	    maxVal = max(rebinnedData.GetMaximum(),maxVal)
 
-	minVal = 0
+	minVal = 0.1
 	# minVal = max(stack.GetStack()[0].GetMinimum(),1)
 	stack.SetMaximum(1.75*maxVal)
 	stack.SetMinimum(minVal)
@@ -632,7 +634,7 @@ else:
 	legend.AddEntry(rebinnedHist["myBackground"],"Background",'f')
 
 	pad1.cd()
-
+	# gPad.SetLogy() # commment this out to remove the log scale
 	stack.Draw('HIST')
 	rebinnedData.Draw('E,X0,SAME')
 	legend.Draw("same")
@@ -696,6 +698,7 @@ else:
 	ratio.GetYaxis().SetTitle("Data/MC")
 	ratio.GetYaxis().SetTitleOffset(.4)
 	ratio.GetYaxis().SetTitleSize(.09)
+	ratio.GetYaxis().SetNdivisions(2)
 	ratio.GetYaxis().SetNdivisions(2)
 
 	CMS_lumi.CMS_lumi(pad2, 4, 11)

@@ -31,16 +31,16 @@ else
 
 fi
 
-outputdir="root://cmseos.fnal.gov//store/user/npoudyal/TEST"
+outputdir="root://cmseos.fnal.gov//store/user/npoudyal"
 
 echo "Running python makeHistograms "
 declare -a    SampleList=("TTGamma" "TTbar"  "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
 declare -a SampleListEle=("TTGamma" "TTbar"  "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
 declare -a  SampleListMu=("TTGamma" "TTbar"  "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
 
-#declare -a    SampleList=("Data")
-#declare -a    SampleListEle=("DataEle")
-#declare -a    SampleListMu=("DataMu")
+#declare -a  SampleList=("Data")
+#declare -a  SampleListEle=("DataEle")
+#declare -a  SampleListMu=("DataMu")
 
 
 for mysample in ${SampleList[@]}; do

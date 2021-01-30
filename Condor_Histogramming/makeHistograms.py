@@ -8,6 +8,8 @@ import os
 from optparse import OptionParser
 from datetime import datetime
 
+startTime = datetime.now()
+
 from subprocess import Popen, PIPE
 
 timeString = datetime.now().strftime("%Y-%m-%d-%H:%M")
@@ -199,8 +201,8 @@ if testoneplot:
 
 isQCD = False # what is it doing now?
 dir_=""
-Q2 = "q2weight_nominal"  
-Pdf = "pdfWeight"
+Q2  = 1. #"q2weight_nominal"  
+Pdf = 1. #"pdfWeight"
 isr = 1.
 fsr = 1.
 Pileup ="PUweight"
@@ -1577,7 +1579,9 @@ for h in histograms:
 if options.condor:
 	command = ["xrdcp","-f",localdir+outputhistName+"/"+sample+".root", eosdir+outputhistName+"/"] #copy from local to eos
 	Popen(command)
-	
+
+
+print "==> TIME OF EXECUTION ==>", datetime.now() - startTime 	
 outputFile.Close()	
 	
 	

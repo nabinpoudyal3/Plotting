@@ -34,7 +34,7 @@ else
 
 fi
 
-outputdir="root://cmseos.fnal.gov//store/user/npoudyal/TEST"
+outputdir="root://cmseos.fnal.gov//store/user/npoudyal"
 
 echo "Running python makeHistograms "
 
@@ -49,6 +49,9 @@ else
 
 fi
 
+# declare -a    SampleList=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" )
+# declare -a SampleListEle=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" )
+# declare -a  SampleListMu=("TTGamma" "TTbar" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" )
 
 for mysample in ${SampleList[@]}; do
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --makePlotsMEG
