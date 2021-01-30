@@ -1,0 +1,1 @@
+(./finalScript.sh > out.log) >& err.log
