@@ -1,0 +1,26 @@
+{
+  "WGammaBkgPhotonSF" : "W#gamma",
+  "ZGammaBkgPhotonSF" : "Z#gamma",
+  "lumi":"Luminosity",
+  "PU":"Pile Up",
+  "PhoEff":"Photon Efficiency",
+  "MuEff":"Muon Efficiency",
+  "Q2": "LHE ScaleWeight",
+  "BTagSF_b":"B tagging SF for heavy flavour",
+  "BTagSF_l":"B tagging SF for light flavour",
+  "EleEff": "Electron Efficiency",
+  "prop_binmu_bin0": "#mu bin0",
+  "prop_binmu_bin1": "#mu bin1",
+  "prop_binmu_bin2": "#mu bin2",
+  "prop_binmu_bin3": "#mu bin3",
+  "prop_binmu_bin4": "#mu bin4",
+  "prop_binele_bin0": "ele bin0",
+  "prop_binele_bin1": "ele bin1",
+  "prop_binele_bin2": "ele bin2",
+  "prop_binele_bin3": "ele bin3",
+  "prop_binele_bin4": "ele bin4",
+  "prop_binele_bin5": "ele bin5",
+  "prop_binele_bin6": "ele bin6",
+  "prop_binele_bin7": "ele bin7"
+
+}
