@@ -1,0 +1,38 @@
+imax 1  
+jmax *  
+kmax *  
+---------------------------------
+shapes *  *  ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
+---------------------------------
+bin			    M30photon
+observation		-1
+-------------------------------------
+bin			M30photon		M30photon	M30photon	M30photon	M30photon
+process		TTGamma			TTbar		WGamma		ZGamma		Other
+process		0	            1	        2 	        3	        4
+rate		-1	           -1	        -1	       -1	        -1
+--------------------------------------------------------------------------------------------
+lumi        lnN     1.03    1.03    1.03    1.03    1.03     
+------------------------------------------------------------------------------------------       
+BTagSF_b    shape   1       1       1       1       1                           
+BTagSF_l    shape   1       1       1       1       1        
+PU          shape   1       1       1       1       1        
+MuEff       shape   1       1       1       1       1        
+Q2          shape   1       1       -       -       -  
+isr         shape   1       1       -       -       -        
+fsr         shape   1       1       -       -       -              
+---------------------------------------------------------------------------------------
+TTbarSF rateParam * *TTbar 1
+TTbarSF param  1.0   0.05
+WGSF rateParam * *WGamma 1
+WGSF param  1.0   0.19
+ZGSF rateParam * *ZGamma 1
+ZGSF param  1.0   0.21
+OtherSF rateParam * *Other 1
+OtherSF param  1.0   0.3
+------------------------------------------------------------------------------
+mySyst group = lumi BTagSF_b BTagSF_l PU MuEff Q2 isr fsr misIDE
+additionalSyst group = TTbarSF WGSF ZGSF OtherSF
+-------------------------------------------------------------------------------
+* autoMCStats 0 1
+------------------------------------------------------------------------------

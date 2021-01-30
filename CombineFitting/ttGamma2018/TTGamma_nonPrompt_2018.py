@@ -1,0 +1,14 @@
+ttgammaSF_el_2018 = 0.98 
+nonPromptSF_el_2018 = 1.05 
+TTbarSF_el_2018 = 0.99 
+WGSF_el_2018 = 1.07 
+ZGSF_el_2018 = 0.99 
+OtherSF_el_2018 = 1.00 
+Other_norm_el_2018 = 0.97 
+ttgammaSF_mu_2018 = 0.97 
+nonPromptSF_mu_2018 = 1.03 
+TTbarSF_mu_2018 = 1.01 
+WGSF_mu_2018 = 1.06 
+ZGSF_mu_2018 = 0.98 
+OtherSF_mu_2018 = 1.00 
+Other_norm_mu_2018 = 0.98 

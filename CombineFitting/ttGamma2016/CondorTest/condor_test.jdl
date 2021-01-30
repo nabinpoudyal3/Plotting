@@ -1,0 +1,13 @@
+Executable =  doFitting_condor.sh
+Universe   = vanilla
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+Transfer_Input_Files = myFitting.tar, doFitting_condor.sh
+use_x509userproxy = true 
+Output = condor/log$(cluster)_$(process).stdout
+Error  = condor/log$(cluster)_$(process).stderr
+Log    = condor/log$(cluster)_$(process).condor
+
+Queue 1
+
+

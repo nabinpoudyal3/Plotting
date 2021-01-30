@@ -1,0 +1,17 @@
+
+>>> method used is MultiDimFit
+>>> random number generator seed is 314159
+[?1034hTraceback (most recent call last):
+  File "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/bin/slc6_amd64_gcc700/text2workspace.py", line 62, in <module>
+    MB.doModel()
+  File "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/python/HiggsAnalysis/CombinedLimit/ModelTools.py", line 110, in doModel
+    self.doObservables()
+  File "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/python/HiggsAnalysis/CombinedLimit/ShapeTools.py", line 33, in doObservables
+    self.prepareAllShapes();
+  File "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/python/HiggsAnalysis/CombinedLimit/ShapeTools.py", line 287, in prepareAllShapes
+    shape = self.getShape(b,p); norm = 0;
+  File "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/CMSSW_10_2_14/python/HiggsAnalysis/CombinedLimit/ShapeTools.py", line 526, in getShape
+    raise RuntimeError, "Failed to find %s in file %s (from pattern %s, %s)" % (objname,finalNames[0],names[1],names[0])
+RuntimeError: Failed to find ChIso/data_obs/nominal in file ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root (from pattern $CHANNEL/$PROCESS/nominal, ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root)
+Error when running the combination:
+	Failed to convert the input datacard from LandS to RooStats format. The lines above probably contain more information about the error.

@@ -1,0 +1,464 @@
+
+>>> method used is MultiDimFit
+>>> random number generator seed is 314159
+Creating pdfs for individual modes (12): .    1.    2.    3.    4.    5.    6.    7.    8.    9.   10.   11[?1034hChannel ch1_ch1_ChIso will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch1_ch1_ChIso
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          3919.058453     44.739266       total sum                     
+0          7673.000000     87.595662       Unweighted events, alpha=0.510760
+  => Total parameter prop_binch1_ch1_ChIso_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          827.949266      21.241057       total sum                     
+1          1519.000000     38.974351       Unweighted events, alpha=0.545062
+  => Total parameter prop_binch1_ch1_ChIso_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          627.838019      19.426006       total sum                     
+2          1045.000000     32.326460       Unweighted events, alpha=0.600802
+  => Total parameter prop_binch1_ch1_ChIso_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          502.445549      14.845887       total sum                     
+3          1145.000000     33.837849       Unweighted events, alpha=0.438817
+  => Total parameter prop_binch1_ch1_ChIso_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          818.584940      15.164827       total sum                     
+4          2914.000000     53.981478       Unweighted events, alpha=0.280915
+  => Total parameter prop_binch1_ch1_ChIso_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          1396.097961     18.105273       total sum                     
+5          5946.000000     77.110311       Unweighted events, alpha=0.234796
+  => Total parameter prop_binch1_ch1_ChIso_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          2875.210462     24.303801       total sum                     
+6          13996.000000    118.304691      Unweighted events, alpha=0.205431
+  => Total parameter prop_binch1_ch1_ChIso_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          3651.193836     42.191333       total sum                     
+7          7489.000000     86.539009       Unweighted events, alpha=0.487541
+  => Total parameter prop_binch1_ch1_ChIso_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch1_ch1_M3 will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch1_ch1_M3
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          130.414148      10.498431       total sum                     
+0          154.000000      12.409674       Unweighted events, alpha=0.846845
+  => Total parameter prop_binch1_ch1_M3_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          210.625280      10.884368       total sum                     
+1          374.000000      19.339080       Unweighted events, alpha=0.563169
+  => Total parameter prop_binch1_ch1_M3_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          350.076494      10.249867       total sum                     
+2          1167.000000     34.161382       Unweighted events, alpha=0.299980
+  => Total parameter prop_binch1_ch1_M3_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          507.756897      8.588167        total sum                     
+3          3496.000000     59.126982       Unweighted events, alpha=0.145239
+  => Total parameter prop_binch1_ch1_M3_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          450.089318      9.178318        total sum                     
+4          2405.000000     49.040799       Unweighted events, alpha=0.187147
+  => Total parameter prop_binch1_ch1_M3_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          559.454842      17.038304       total sum                     
+5          1078.000000     32.832910       Unweighted events, alpha=0.518975
+  => Total parameter prop_binch1_ch1_M3_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          406.600692      16.679889       total sum                     
+6          594.000000      24.372115       Unweighted events, alpha=0.684513
+  => Total parameter prop_binch1_ch1_M3_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          771.190542      24.185606       total sum                     
+7          1017.000000     31.890437       Unweighted events, alpha=0.758299
+  => Total parameter prop_binch1_ch1_M3_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch1_ch2_ChIso will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch1_ch2_ChIso
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          5750.380161     134.284564      total sum                     
+0          1834.000000     42.825226       Unweighted events, alpha=3.135431
+  => Total parameter prop_binch1_ch2_ChIso_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          1196.363698     18.495486       total sum                     
+1          4184.000000     64.683847       Unweighted events, alpha=0.285938
+  => Total parameter prop_binch1_ch2_ChIso_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          921.513811      16.103986       total sum                     
+2          3274.000000     57.218878       Unweighted events, alpha=0.281464
+  => Total parameter prop_binch1_ch2_ChIso_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          785.387816      15.656611       total sum                     
+3          2516.000000     50.159745       Unweighted events, alpha=0.312157
+  => Total parameter prop_binch1_ch2_ChIso_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          1322.100236     17.061898       total sum                     
+4          6004.000000     77.485483       Unweighted events, alpha=0.220203
+  => Total parameter prop_binch1_ch2_ChIso_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          2230.525957     22.168208       total sum                     
+5          10124.000000    100.618090      Unweighted events, alpha=0.220321
+  => Total parameter prop_binch1_ch2_ChIso_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          4665.000134     41.293017       total sum                     
+6          12763.000000    112.973448      Unweighted events, alpha=0.365510
+  => Total parameter prop_binch1_ch2_ChIso_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          5759.526715     121.820790      total sum                     
+7          2235.000000     47.275787       Unweighted events, alpha=2.576969
+  => Total parameter prop_binch1_ch2_ChIso_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch1_ch2_M3 will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch1_ch2_M3
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          179.420992      7.396435        total sum                     
+0          588.000000      24.248711       Unweighted events, alpha=0.305138
+  => Total parameter prop_binch1_ch2_M3_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          326.480325      16.482694       total sum                     
+1          392.000000      19.798990       Unweighted events, alpha=0.832858
+  => Total parameter prop_binch1_ch2_M3_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          505.965682      10.042560       total sum                     
+2          2538.000000     50.378567       Unweighted events, alpha=0.199356
+  => Total parameter prop_binch1_ch2_M3_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          742.399092      10.951993       total sum                     
+3          4595.000000     67.786429       Unweighted events, alpha=0.161567
+  => Total parameter prop_binch1_ch2_M3_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          780.843305      128.041344      total sum                     
+4          37.000000       6.082763        Unweighted events, alpha=21.103873
+  => Total parameter prop_binch1_ch2_M3_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          822.884011      14.570914       total sum                     
+5          3189.000000     56.471232       Unweighted events, alpha=0.258038
+  => Total parameter prop_binch1_ch2_M3_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          597.271081      14.934797       total sum                     
+6          1599.000000     39.987498       Unweighted events, alpha=0.373528
+  => Total parameter prop_binch1_ch2_M3_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          1087.059371     19.238703       total sum                     
+7          3193.000000     56.506637       Unweighted events, alpha=0.340451
+  => Total parameter prop_binch1_ch2_M3_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch2_ch1_ChIso will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch2_ch1_ChIso
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          4984.279703     48.434863       total sum                     
+0          10590.000000    102.907726      Unweighted events, alpha=0.470659
+  => Total parameter prop_binch2_ch1_ChIso_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          928.707684      22.581435       total sum                     
+1          1691.000000     41.121770       Unweighted events, alpha=0.549206
+  => Total parameter prop_binch2_ch1_ChIso_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          903.665569      22.653453       total sum                     
+2          1591.000000     39.887341       Unweighted events, alpha=0.567986
+  => Total parameter prop_binch2_ch1_ChIso_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          785.986664      15.230675       total sum                     
+3          2663.000000     51.604263       Unweighted events, alpha=0.295151
+  => Total parameter prop_binch2_ch1_ChIso_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          1365.590662     57.807771       total sum                     
+4          558.000000      23.622024       Unweighted events, alpha=2.447295
+  => Total parameter prop_binch2_ch1_ChIso_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          2314.891719     34.079911       total sum                     
+5          4614.000000     67.926431       Unweighted events, alpha=0.501710
+  => Total parameter prop_binch2_ch1_ChIso_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          4932.801352     54.847967       total sum                     
+6          8088.000000     89.933309       Unweighted events, alpha=0.609891
+  => Total parameter prop_binch2_ch1_ChIso_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          6543.649425     255.304971      total sum                     
+7          657.000000      25.632011       Unweighted events, alpha=9.959893
+  => Total parameter prop_binch2_ch1_ChIso_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch2_ch1_M3 will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch2_ch1_M3
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          200.232450      7.593986        total sum                     
+0          695.000000      26.362853       Unweighted events, alpha=0.288104
+  => Total parameter prop_binch2_ch1_M3_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          351.553506      10.633182       total sum                     
+1          1093.000000     33.060551       Unweighted events, alpha=0.321641
+  => Total parameter prop_binch2_ch1_M3_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          598.424094      12.850041       total sum                     
+2          2169.000000     46.572524       Unweighted events, alpha=0.275899
+  => Total parameter prop_binch2_ch1_M3_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          859.369692      16.809490       total sum                     
+3          2614.000000     51.127292       Unweighted events, alpha=0.328757
+  => Total parameter prop_binch2_ch1_M3_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          749.691642      18.270666       total sum                     
+4          1684.000000     41.036569       Unweighted events, alpha=0.445185
+  => Total parameter prop_binch2_ch1_M3_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          925.229053      20.689333       total sum                     
+5          2000.000000     44.721360       Unweighted events, alpha=0.462615
+  => Total parameter prop_binch2_ch1_M3_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          635.807038      17.975886       total sum                     
+6          1251.000000     35.369478       Unweighted events, alpha=0.508239
+  => Total parameter prop_binch2_ch1_M3_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          1155.697172     25.184935       total sum                     
+7          2106.000000     45.891176       Unweighted events, alpha=0.548764
+  => Total parameter prop_binch2_ch1_M3_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch2_ch2_ChIso will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch2_ch2_ChIso
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          4984.279703     48.434863       total sum                     
+0          10590.000000    102.907726      Unweighted events, alpha=0.470659
+  => Total parameter prop_binch2_ch2_ChIso_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          928.707684      22.581435       total sum                     
+1          1691.000000     41.121770       Unweighted events, alpha=0.549206
+  => Total parameter prop_binch2_ch2_ChIso_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          903.665569      22.653453       total sum                     
+2          1591.000000     39.887341       Unweighted events, alpha=0.567986
+  => Total parameter prop_binch2_ch2_ChIso_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          785.986664      15.230675       total sum                     
+3          2663.000000     51.604263       Unweighted events, alpha=0.295151
+  => Total parameter prop_binch2_ch2_ChIso_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          1365.590662     57.807771       total sum                     
+4          558.000000      23.622024       Unweighted events, alpha=2.447295
+  => Total parameter prop_binch2_ch2_ChIso_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          2314.891719     34.079911       total sum                     
+5          4614.000000     67.926431       Unweighted events, alpha=0.501710
+  => Total parameter prop_binch2_ch2_ChIso_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          4932.801352     54.847967       total sum                     
+6          8088.000000     89.933309       Unweighted events, alpha=0.609891
+  => Total parameter prop_binch2_ch2_ChIso_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          6543.649425     255.304971      total sum                     
+7          657.000000      25.632011       Unweighted events, alpha=9.959893
+  => Total parameter prop_binch2_ch2_ChIso_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch2_ch2_M3 will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch2_ch2_M3
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          200.232450      7.593986        total sum                     
+0          695.000000      26.362853       Unweighted events, alpha=0.288104
+  => Total parameter prop_binch2_ch2_M3_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          351.553506      10.633182       total sum                     
+1          1093.000000     33.060551       Unweighted events, alpha=0.321641
+  => Total parameter prop_binch2_ch2_M3_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          598.424094      12.850041       total sum                     
+2          2169.000000     46.572524       Unweighted events, alpha=0.275899
+  => Total parameter prop_binch2_ch2_M3_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          859.369692      16.809490       total sum                     
+3          2614.000000     51.127292       Unweighted events, alpha=0.328757
+  => Total parameter prop_binch2_ch2_M3_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          749.691642      18.270666       total sum                     
+4          1684.000000     41.036569       Unweighted events, alpha=0.445185
+  => Total parameter prop_binch2_ch2_M3_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          925.229053      20.689333       total sum                     
+5          2000.000000     44.721360       Unweighted events, alpha=0.462615
+  => Total parameter prop_binch2_ch2_M3_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          635.807038      17.975886       total sum                     
+6          1251.000000     35.369478       Unweighted events, alpha=0.508239
+  => Total parameter prop_binch2_ch2_M3_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          1155.697172     25.184935       total sum                     
+7          2106.000000     45.891176       Unweighted events, alpha=0.548764
+  => Total parameter prop_binch2_ch2_M3_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch3_ch1_ChIso will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch3_ch1_ChIso
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          7204.265455     66.799026       total sum                     
+0          11632.000000    107.851750      Unweighted events, alpha=0.619349
+  => Total parameter prop_binch3_ch1_ChIso_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          1252.843038     24.222289       total sum                     
+1          2675.000000     51.720402       Unweighted events, alpha=0.468353
+  => Total parameter prop_binch3_ch1_ChIso_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          1359.073784     89.045332       total sum                     
+2          233.000000      15.264338       Unweighted events, alpha=5.832935
+  => Total parameter prop_binch3_ch1_ChIso_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          1107.960294     22.756419       total sum                     
+3          2371.000000     48.692915       Unweighted events, alpha=0.467297
+  => Total parameter prop_binch3_ch1_ChIso_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          1922.761426     45.584759       total sum                     
+4          1779.000000     42.178193       Unweighted events, alpha=1.080810
+  => Total parameter prop_binch3_ch1_ChIso_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          3212.192975     45.153186       total sum                     
+5          5061.000000     71.140706       Unweighted events, alpha=0.634695
+  => Total parameter prop_binch3_ch1_ChIso_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          6906.292973     93.743191       total sum                     
+6          5428.000000     73.674962       Unweighted events, alpha=1.272346
+  => Total parameter prop_binch3_ch1_ChIso_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          8480.947060     63.989285       total sum                     
+7          17566.000000    132.536787      Unweighted events, alpha=0.482805
+  => Total parameter prop_binch3_ch1_ChIso_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch3_ch1_M3 will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch3_ch1_M3
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          281.123915      10.990246       total sum                     
+0          654.000000      25.573424       Unweighted events, alpha=0.429853
+  => Total parameter prop_binch3_ch1_M3_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          507.533525      18.902607       total sum                     
+1          721.000000      26.851443       Unweighted events, alpha=0.703930
+  => Total parameter prop_binch3_ch1_M3_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          902.356276      27.476253       total sum                     
+2          1079.000000     32.848135       Unweighted events, alpha=0.836289
+  => Total parameter prop_binch3_ch1_M3_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          1254.949958     22.645286       total sum                     
+3          3071.000000     55.416604       Unweighted events, alpha=0.408645
+  => Total parameter prop_binch3_ch1_M3_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          1043.891795     23.637153       total sum                     
+4          1950.000000     44.158804       Unweighted events, alpha=0.535329
+  => Total parameter prop_binch3_ch1_M3_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          1284.244167     33.309001       total sum                     
+5          1487.000000     38.561639       Unweighted events, alpha=0.863648
+  => Total parameter prop_binch3_ch1_M3_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          887.460052      17.613895       total sum                     
+6          2539.000000     50.388491       Unweighted events, alpha=0.349531
+  => Total parameter prop_binch3_ch1_M3_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          1692.859718     32.577523       total sum                     
+7          2700.000000     51.961524       Unweighted events, alpha=0.626985
+  => Total parameter prop_binch3_ch1_M3_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch3_ch2_ChIso will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch3_ch2_ChIso
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          4984.279703     48.434863       total sum                     
+0          10590.000000    102.907726      Unweighted events, alpha=0.470659
+  => Total parameter prop_binch3_ch2_ChIso_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          928.707684      22.581435       total sum                     
+1          1691.000000     41.121770       Unweighted events, alpha=0.549206
+  => Total parameter prop_binch3_ch2_ChIso_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          903.665569      22.653453       total sum                     
+2          1591.000000     39.887341       Unweighted events, alpha=0.567986
+  => Total parameter prop_binch3_ch2_ChIso_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          785.986664      15.230675       total sum                     
+3          2663.000000     51.604263       Unweighted events, alpha=0.295151
+  => Total parameter prop_binch3_ch2_ChIso_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          1365.590662     57.807771       total sum                     
+4          558.000000      23.622024       Unweighted events, alpha=2.447295
+  => Total parameter prop_binch3_ch2_ChIso_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          2314.891719     34.079911       total sum                     
+5          4614.000000     67.926431       Unweighted events, alpha=0.501710
+  => Total parameter prop_binch3_ch2_ChIso_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          4932.801352     54.847967       total sum                     
+6          8088.000000     89.933309       Unweighted events, alpha=0.609891
+  => Total parameter prop_binch3_ch2_ChIso_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          6543.649425     255.304971      total sum                     
+7          657.000000      25.632011       Unweighted events, alpha=9.959893
+  => Total parameter prop_binch3_ch2_ChIso_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Channel ch3_ch2_M3 will use autoMCStats with settings: event-threshold=0, include-signal=1, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binch3_ch2_M3
+Poisson cut-off: 0
+============================================================
+Bin        Contents        Error           Notes                         
+0          200.232450      7.593986        total sum                     
+0          695.000000      26.362853       Unweighted events, alpha=0.288104
+  => Total parameter prop_binch3_ch2_M3_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          351.553506      10.633182       total sum                     
+1          1093.000000     33.060551       Unweighted events, alpha=0.321641
+  => Total parameter prop_binch3_ch2_M3_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          598.424094      12.850041       total sum                     
+2          2169.000000     46.572524       Unweighted events, alpha=0.275899
+  => Total parameter prop_binch3_ch2_M3_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          859.369692      16.809490       total sum                     
+3          2614.000000     51.127292       Unweighted events, alpha=0.328757
+  => Total parameter prop_binch3_ch2_M3_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          749.691642      18.270666       total sum                     
+4          1684.000000     41.036569       Unweighted events, alpha=0.445185
+  => Total parameter prop_binch3_ch2_M3_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          925.229053      20.689333       total sum                     
+5          2000.000000     44.721360       Unweighted events, alpha=0.462615
+  => Total parameter prop_binch3_ch2_M3_bin5[0.00,-7.00,7.00] to be.   12done.
+Importing combined pdf model_s
+ gaussian constrained
+------------------------------------------------------------
+6          635.807038      17.975886       total sum                     
+6          1251.000000     35.369478       Unweighted events, alpha=0.508239
+  => Total parameter prop_binch3_ch2_M3_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          1155.697172     25.184935       total sum                     
+7          2106.000000     45.891176       Unweighted events, alpha=0.548764
+  => Total parameter prop_binch3_ch2_M3_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+Redefining the POIs to be: RooArgSet:: = (r,nonPromptSF)
+Error when running the combination:
+	Parameter Q2 not in model.

@@ -1,0 +1,57 @@
+imax 1  
+jmax *  
+kmax *  
+---------------------------------
+shapes *   zerobtag ../../ttgamma_tightplots_ele_2016/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
+---------------------------------
+bin			    zerobtag  
+observation		-1       
+-------------------------------------
+bin			zerobtag		zerobtag		zerobtag		zerobtag		zerobtag		zerobtag			zerobtag		  zerobtag			zerobtag			
+process		isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	  nonPromptZGamma	nonPromptOther	
+process		0	            1	            2	            3	            4	            0	                1	              3	                4	
+rate		-1	            -1	            -1	             -1	            -1	            -1	                -1	              -1                -1
+------------------------------------------------------------------------------------------------------
+lumi        lnN       1.025   1.025  1.025   1.025   1.025   1.025   1.025   1.025   1.025   
+------------------------------------------------------------------------------------------------------- 
+BTagSF_b    shape     1       1      1       1       1       1       1       1       1              
+BTagSF_l    shape     1       1      1       1       1       1       1       1       1              
+PU          shape     1       1      1       1       1       1       1       1       1              
+PhoEff      shape     1       1      1       1       1       1       1       1       1              
+EleEff      shape     1       1      1       1       1       1       1       1       1              
+MuEff       shape     1       1      1       1       1       1       1       1       1              
+#Q2          shape     1       1      1       1       1       1       1       1       1             
+isr         shape     1       1      1       1       1       1       1       1       1              
+fsr         shape     1       1      1       1       1       1       1       1       1              
+misIDE      shape     1       1      1       1       1       1       1       1       1          
+prefireEcal shape     1       1      1       1       1       1       1       1       1           
+#JEC         shape     1       1      1       1       1       1       1       1       1           
+#JER         shape     1       1      1       1       1       1       1       1       1           
+------------------------------------------------------------------------------------------------------
+nonPromptSF rateParam * nonPrompt*  1 [-10,10]  
+-------------------------------------------------------------------------------------------------------
+TTbarSF rateParam * *TTbar 1 
+TTbarSF param  1.0   0.05
+WGSF rateParam * *WGamma 1 
+WGSF param  1.0   0.19
+ZGSF rateParam * *ZGamma 1 
+ZGSF param  1.0   0.21
+OtherSF rateParam * *Other 1 
+OtherSF param  1.0   0.3
+---------------------------------------------------------------------------------------
+# for isolatedTTGamma and nonPromtTTGamma 1/(10.528+10.234+2.424)
+renormTTGamma rateParam * *TTGamma 0.04312947468299836
+nuisance edit freeze renormTTGamma ifexists
+# for isolatedTTbar and nonPromptTTbar 1/831.76
+renormTTbar rateParam * *TTbar 0.0012022698855439068
+# for TTbaSF
+renormTTbar rateParam * TTbar* 0.0012022698855439068
+nuisance edit freeze renormTTbar ifexists
+# for isolatdedTTbar,nonPromptTTba, isolatedTTGamma, nonPromptTTbar, TTbarSF
+TTbarSF rateParam * *TT* 831.76
+------------------------------------------------------------------------------
+mySyst group = lumi BTagSF_b BTagSF_l  EleEff MuEff PU prefireEcal isr fsr PhoEff #Q2 JEC JER
+additionalSyst group = TTbarSF WGSF ZGSF Other_norm
+-------------------------------------------------------------------------------
+* autoMCStats 0 1
+------------------------------------------------------------------------------
