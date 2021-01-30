@@ -1,0 +1,14 @@
+ttgammaSF_el_2016Ratio = 0.02 
+nonPromptSF_el_2016Ratio = 1.04 
+TTbarSF_el_2016Ratio = 1.00 
+WGSF_el_2016Ratio = 0.94 
+ZGSF_el_2016Ratio = 0.96 
+OtherSF_el_2016Ratio = 1.02 
+Other_norm_el_2016Ratio = 0.96 
+ttgammaSF_mu_2016Ratio = 0.02 
+nonPromptSF_mu_2016Ratio = 1.01 
+TTbarSF_mu_2016Ratio = 1.00 
+WGSF_mu_2016Ratio = 1.04 
+ZGSF_mu_2016Ratio = 0.95 
+OtherSF_mu_2016Ratio = 1.00 
+Other_norm_mu_2016Ratio = 0.98 

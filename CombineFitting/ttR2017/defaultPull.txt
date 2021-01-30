@@ -1,0 +1,30 @@
+[?1034hdiffNuisances run on fitDiagnostics.datacard_ele_2017.root, at 2020-06-04 17:39:18.329424 with the following options ... {'absolute_values': False, 'show_all_parameters': True, 'format': 'text', 'stol2': 0.5, 'pullDef': '', 'vtol': 0.3, 'stol': 0.1, 'plotfile': None, 'vtol2': 2.0, 'poi': 'r'}
+
+name                                              b-only fit            s+b fit         rho
+BTagSF_b                                      ! +2.73, 1.02!        -0.00, 0.97       -0.21
+BTagSF_l                                      ! +5.18, 1.20!        -0.00, 0.99       -0.10
+EleEff                                        * +1.29, 0.95*        -0.00, 0.92       -0.26
+OtherSF                                       ! +2.93, 1.01!        -0.00, 0.95       +0.02
+PU                                            ! +8.56, 0.80!     * +0.00, 0.83*       -0.10
+PhoEff                                        ! +5.06, 0.93!        -0.00, 0.96       -0.62
+Q2                                            * -0.05, 0.77*        -0.00, 0.97       +0.01
+TTbarSF                                       * -1.84, 0.63*     * -0.00, 0.56*       +0.46
+WGSF                                          ! +3.12, 1.35!     * -0.00, 0.72*       +0.23
+ZGSF                                          * -0.31, 1.00*        -0.00, 0.97       +0.05
+fsr                                           * -0.46, 0.76*     * -0.00, 0.82*       -0.04
+isr                                           * -0.69, 0.90*     * +0.00, 0.85*       -0.02
+lumi                                          * +1.43, 0.91*     * -0.00, 0.76*       -0.30
+misIDE                                        ! +7.42, 1.17!        -0.00, 0.92       -0.08
+prop_binChIso_bin0                            ! +4.58, 0.84!        -0.00, 0.93       -0.20
+prop_binChIso_bin1                            ! +2.83, 0.59!     * -0.00, 0.87*       -0.08
+prop_binChIso_bin2                            * +1.86, 0.65*        +0.00, 0.91       -0.07
+prop_binChIso_bin3                            * +1.59, 0.81*        +0.00, 0.92       -0.07
+prop_binChIso_bin4                               -0.14, 0.93        -0.00, 0.96       +0.02
+prop_binChIso_bin5                            ! -2.08, 0.93!        +0.00, 0.95       +0.06
+prop_binM30btag_bin0                         ! -11.37, 0.47!        -0.00, 0.92       +0.25
+prop_binM30photon_bin0                           -0.09, 0.99        -0.00, 0.99       +0.01
+prop_binM3_bin0                               * +0.27, 0.50*     * +0.00, 0.81*       -0.01
+prop_binM3_bin1                               ! +2.76, 0.58!        +0.00, 0.90       -0.06
+prop_binM3_bin2                               ! +5.38, 0.68!        +0.00, 0.94       -0.08
+prop_binM3_bin3                               * +0.63, 0.62*     * +0.00, 0.87*       -0.05
+prop_binM3_bin4                               * -0.97, 0.61*     * -0.00, 0.89*       -0.02

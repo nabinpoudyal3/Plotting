@@ -1,0 +1,51 @@
+
+imax 1  
+jmax *  
+kmax *  
+---------------------------------
+shapes *  M30photon  ../../ttgamma_tightplots_mu_2016/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
+---------------------------------
+bin			    M30photon
+observation		-1
+-------------------------------------
+bin			M30photon		M30photon	M30photon	M30photon	M30photon
+process		TTGamma			TTbar		WGamma		ZGamma		Other
+process		0	            1	        2	        3	        4
+rate		-1	            -1	        -1	        -1	       -1
+--------------------------------------------------------------------------------------------
+lumi        lnN     1.025   1.025   1.025   1.025   1.025           
+--------------------------------------------------------------------------------------------
+BTagSF_b    shape   1       1       1       1       1                           
+BTagSF_l    shape   1       1       1       1       1        
+PU          shape   1       1       1       1       1        
+EleEff      shape   1       1       1       1       1        
+PhoEff      shape   1       1       1       1       1        
+MuEff       shape   1       1       1       1       1        
+prefireEcal shape   1       1       1       1       1  
+JER         shape   1       1       1       1       1                
+#Q2          shape   1       1       1       1       1  
+#isr         shape   1       1       1       1       1        
+#fsr         shape   1       1       1       1       1      
+#JECTotal    shape   1       1       1       1       1                     
+---------------------------------------------------------------------------------------
+TTbarSF rateParam * *TTbar 1 
+TTbarSF param  1.0   0.055
+WGSF rateParam * *WGamma 1 
+WGSF param  1.0   0.21
+ZGSF rateParam * *ZGamma 1 
+ZGSF param  1.0   0.19
+Other_norm rateParam * *Other 1 
+Other_norm param  1.0   0.1
+-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+mySyst group = lumi BTagSF_b BTagSF_l  EleEff MuEff PU prefireEcal PhoEff JER
+additionalSyst group = TTbarSF WGSF ZGSF Other_norm
+-------------------------------------------------------------------------------
+renormTTGamma rateParam * *TTGamma 0.04312947468299836
+nuisance edit freeze renormTTGamma ifexists
+renormTTbar   rateParam * *TTbar*   0.0012022698855439068
+nuisance edit freeze renormTTbar ifexists
+TTbar_norm       rateParam * *TT*      831.76
+-------------------------------------------------------------------
+* autoMCStats 0 1
+------------------------------------------------------
