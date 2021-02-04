@@ -44,7 +44,7 @@ declare -a  SampleListMu=("TTGamma" "TTbar"  "SingleTop" "WJets" "ZJets" "WGamma
 
 for mysample in ${SampleList[@]}; do
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --makePlotsMEG
-	python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --dilepmassPlots 
+	python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --dilepmassPlots --verbose
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --plot presel_Njet
 done
 wait

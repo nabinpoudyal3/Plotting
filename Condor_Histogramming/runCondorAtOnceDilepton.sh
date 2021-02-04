@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+
+
+
+
+
+
 condor_submit condor_makeHistograms_Dilep_nominal.jdl
 condor_submit condor_makeHistograms_Dilep_PU.jdl
 condor_submit condor_makeHistograms_Dilep_MuEff.jdl
@@ -14,3 +21,5 @@ condor_submit condor_makeHistograms_Dilep_fsr.jdl
 condor_submit condor_makeHistograms_Dilep_prefireEcal.jdl
 condor_submit condor_makeHistograms_Dilep_JECTotal.jdl
 condor_submit condor_makeHistograms_Dilep_JER.jdl
+
+

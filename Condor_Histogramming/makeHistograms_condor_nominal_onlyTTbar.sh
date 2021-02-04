@@ -35,12 +35,9 @@ outputdir="root://cmseos.fnal.gov//store/user/npoudyal"
 
 echo "Running python makeHistograms "
 
-
-declare -a    SampleList=("TTGamma" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCD" "Data" )
-declare -a SampleListEle=("TTGamma" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDEle" "DataEle" )
-declare -a  SampleListMu=("TTGamma" "SingleTop" "WJets" "ZJets" "WGamma" "ZGamma" "Diboson" "TTV" "GJets" "QCDMu" "DataMu" )
-
-
+declare -a    SampleList=("TTbar")
+declare -a SampleListEle=("TTbar")
+declare -a  SampleListMu=("TTbar")
 
 
 for mysample in ${SampleList[@]}; do

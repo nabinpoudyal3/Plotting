@@ -1,16 +1,13 @@
 #!/bin/bash
 
-
+#Run for all except ttbar
 # condor_submit condor_makeHistograms_nominal.jdl
-
-# condor_submit condor_makeHistograms_JECTotal.jdl
-# condor_submit condor_makeHistograms_PU.jdl
-# condor_submit condor_makeHistograms_MuEff.jdl
-# condor_submit condor_makeHistograms_PhoEff.jdl
-# condor_submit condor_makeHistograms_BTagSF_b.jdl
-# condor_submit condor_makeHistograms_BTagSF_l.jdl
-
-
+condor_submit condor_makeHistograms_JECTotal.jdl
+condor_submit condor_makeHistograms_PU.jdl
+condor_submit condor_makeHistograms_MuEff.jdl
+condor_submit condor_makeHistograms_PhoEff.jdl
+condor_submit condor_makeHistograms_BTagSF_b.jdl
+condor_submit condor_makeHistograms_BTagSF_l.jdl
 condor_submit condor_makeHistograms_EleEff.jdl
 condor_submit condor_makeHistograms_Q2.jdl
 condor_submit condor_makeHistograms_Pdf.jdl
@@ -20,3 +17,20 @@ condor_submit condor_makeHistograms_prefireEcal.jdl
 condor_submit condor_makeHistograms_JER.jdl
 
 
+# Run below only for ttbar
+condor_submit condor_makeHistograms_nominal_ttbar.jdl
+condor_submit condor_makeHistograms_JECTotal_ttbar.jdl
+condor_submit condor_makeHistograms_PU_ttbar.jdl
+condor_submit condor_makeHistograms_MuEff_ttbar.jdl
+condor_submit condor_makeHistograms_PhoEff_ttbar.jdl
+condor_submit condor_makeHistograms_BTagSF_b_ttbar.jdl
+condor_submit condor_makeHistograms_BTagSF_l_ttbar.jdl
+condor_submit condor_makeHistograms_EleEff_ttbar.jdl
+condor_submit condor_makeHistograms_Q2_ttbar.jdl
+condor_submit condor_makeHistograms_Pdf_ttbar.jdl
+condor_submit condor_makeHistograms_isr_ttbar.jdl
+condor_submit condor_makeHistograms_fsr_ttbar.jdl
+condor_submit condor_makeHistograms_prefireEcal_ttbar.jdl
+condor_submit condor_makeHistograms_JER_ttbar.jdl
+
+exit 1

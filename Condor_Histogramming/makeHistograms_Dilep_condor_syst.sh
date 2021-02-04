@@ -50,7 +50,7 @@ fi
 
 for mysample in ${SampleList[@]}; do
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --makePlotsMEG
-	python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --dilepmassPlots
+	python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --dilepmassPlots --verbose
 	#python makeHistograms.py -c $channel -y $year --$controlRegion -s $mysample --syst $systX --level $levelX --plot phosel_MET
 done
 wait
