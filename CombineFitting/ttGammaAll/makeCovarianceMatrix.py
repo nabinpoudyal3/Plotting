@@ -34,8 +34,8 @@ canvas.SetFrameBorderMode(0);
    
    
 f1 = ROOT.TFile.Open('fitDiagnostics.Data.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
+#h_background = f1.Get('correlation_fit_b')
+h_signal = f1.Get('correlation_fit_s')
 
 h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
@@ -45,7 +45,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
+h_signal.Draw('colz, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 print mypal
@@ -56,13 +56,13 @@ mypal.SetY2NDC(0.9);
 canvas.Modified();
 canvas.Update();
 #ROOT.gApplication.Run()
-canvas.SaveAs('covariance_ttgamma_data.pdf') #########################################################
+canvas.SaveAs('correlation_ttgamma_data.pdf') #########################################################
 
 
 
-f1 = ROOT.TFile.Open('fitDiagnostics.TOY_ele_2016.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
+f1 = ROOT.TFile.Open('fitDiagnostics.TOY.root','read')
+#h_background = f1.Get('correlation_fit_b')
+h_signal = f1.Get('correlation_fit_s')
 
 h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
@@ -72,7 +72,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
+h_signal.Draw('colz, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 print mypal
@@ -83,12 +83,12 @@ mypal.SetY2NDC(0.9);
 canvas.Modified();
 canvas.Update(); 
 #ROOT.gApplication.Run()
-canvas.SaveAs('covariance_ttgamma_toy.pdf') #########################################################
+canvas.SaveAs('correlation_ttgamma_toy.pdf') #########################################################
 
 
 f1 = ROOT.TFile.Open('fitDiagnostics.Asimov.root','read')
-h_background = f1.Get('covariance_fit_b')
-h_signal = f1.Get('covariance_fit_s')
+#h_background = f1.Get('correlation_fit_b')
+h_signal = f1.Get('correlation_fit_s')
 
 h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
@@ -98,7 +98,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+, TEXT0')
+h_signal.Draw('colz, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 print mypal
@@ -109,7 +109,7 @@ mypal.SetY2NDC(0.9);
 canvas.Modified();
 canvas.Update();
 #ROOT.gApplication.Run()
-canvas.SaveAs('covariance_ttgamma_Asimov.pdf') #########################################################
+canvas.SaveAs('correlation_ttgamma_Asimov.pdf') #########################################################
 
 
 print "Done"

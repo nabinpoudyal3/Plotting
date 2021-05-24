@@ -91,7 +91,7 @@ def main(args):
 	                          isMC
 	                          ],
 
-	           "WGamma"    : [["WGamma_01J_5f_%s_AnalysisNtuple.root"%selYear,
+	           "WGamma"    : [["WGamma_%s_AnalysisNtuple.root"%selYear,
 	                           ],
 	                          kBlue-4,
 	                          "W+#gamma",

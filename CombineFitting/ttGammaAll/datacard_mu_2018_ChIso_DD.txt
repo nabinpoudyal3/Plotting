@@ -4,44 +4,49 @@ kmax *
 ---------------------------------
 shapes *  ChIso  ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
 ---------------------------------
-bin			    ChIso    
-observation		-1       
+bin             ChIso    
+observation     -1       
 -------------------------------------
-bin			ChIso			ChIso			ChIso			ChIso			ChIso			ChIso				ChIso			  ChIso			    ChIso			
-process		isolatedTTGamma	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	  nonPromptZGamma	nonPromptOther	
-process		0	            1	            2	            3	            4	            0	                1	              3	                4	
-rate		-1	            -1	            -1	            -1	            -1	            -1	                -1	               -1	            -1	
+bin         ChIso           ChIso           ChIso           ChIso           ChIso           ChIso               ChIso             ChIso             ChIso           
+process     isolatedTTGamma isolatedTTbar   isolatedWGamma  isolatedZGamma  isolatedOther   nonPromptTTGamma    nonPromptTTbar    nonPromptZGamma   nonPromptOther  
+process     0               1               2               3               4               0                   1                 3                 4   
+rate        -1              -1              -1              -1              -1              -1                  -1                 -1               -1  
 ---------------------------------------------------------------------------------------------------------
-lumi        lnN       1.025   1.025  1.025   1.025   1.025   -   -   -   -     
+lumi18      lnN       1.015   1.015  1.015   1.015   1.015   -       -       -       -
+lumi1718    lnN       1.003   1.003  1.003   1.003   1.003   -       -       -       -
+lumiXY      lnN       1.02    1.02   1.02    1.02    1.02    -       -       -       -
 ------------------------------------------------------------------------------------------------------- 
-BTagSF_b    shape     1       1      1       1       1       -       -       -       -              
-BTagSF_l    shape     1       1      1       1       1       -       -       -       -              
-PU          shape     1       1      1       1       1       -       -       -       -              
-PhoEff      shape     1       1      1       1       1       -       -       -       -              
-EleEff      shape     1       1      1       1       1       -       -       -       -              
-MuEff       shape     1       1      1       1       1       -       -       -       -              
-misIDE      shape     1       1      1       1       1       -       -       -       -           
-prefireEcal shape     1       1      1       1       1       -       -       -       -           
-JER         shape     1       1      1       1       1       -       -       -       -              
-#Q2          shape     1       1      1       1       1       -       -       -       -             
-#isr         shape     1       1      1       1       1       -       -       -       -             
-#fsr         shape     1       1      1       1       1       -       -       -       -             
-#JECTotal    shape     1       1      1       1       1       -       -       -       -             
+BTagSF_b18    shape     1       1      1       1       1       -       -       -       -              
+BTagSF_l18    shape     1       1      1       1       1       -       -       -       -              
+PU            shape     1       1      1       1       1       -       -       -       -              
+PhoEff        shape     1       1      1       1       1       -       -       -       -              
+EleEff        shape     1       1      1       1       1       -       -       -       -              
+MuEff         shape     1       1      1       1       1       -       -       -       -              
+misIDE        shape     1       1      1       1       1       -       -       -       -           
+JER18         shape     1       1      1       1       1       -       -       -       -              
+Q2            shape     1       -      -       -       -       -       -       -       - 
+isr           shape     1       -      -       -       -       -       -       -       - 
+fsr           shape     1       -      -       -       -       -       -       -       - 
+Pdf           shape     1       -      -       -       -       -       -       -       - 
+JECTotal      shape     1       1      1       1       1       -       -       -       -             
 ------------------------------------------------------------------------------------------------
 nonPromptSF rateParam * nonPrompt*  1 
 -------------------------------------------------------------------------------------------------------
-TTbarSF rateParam * *TTbar 1 
-TTbarSF param  1.0   0.055
-WGSF rateParam * *WGamma 1 
-WGSF param  1.0   0.21
-ZGSF rateParam * *ZGamma 1 
-ZGSF param  1.0   0.19
-OtherSF rateParam * *Other 1 
-OtherSF param  1.0   0.1
--------------------------------------------------------------------------------
+TTbarSF18 rateParam * *TTbar 1 
+TTbarSF18 param  1.0   0.055
+WGSF18 rateParam * *WGamma 1 
+WGSF18 param  1.0   0.21
+ZGSF18 rateParam * *ZGamma 1 
+ZGSF18 param  1.0   0.19
+OtherSF18 rateParam * *Other 1 
+OtherSF18 param  1.0   0.1
 ---------------------------------------------------------------------------------------
-mySyst group = lumi BTagSF_b BTagSF_l  EleEff MuEff PU prefireEcal PhoEff JER
-additionalSyst group = TTbarSF WGSF ZGSF OtherSF
+mySyst group = lumi18 lumi1718 lumiXY BTagSF_b18 BTagSF_l18  EleEff MuEff PU  PhoEff JER18 JECTotal Pdf isr fsr Q2
+additionalSyst group = TTbarSF18 WGSF18 ZGSF18 OtherSF18
 -------------------------------------------------------------------------------
 * autoMCStats 0 1
 ------------------------------------------------------------------------------
+
+
+
+

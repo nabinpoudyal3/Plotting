@@ -189,7 +189,7 @@ if looseCRge2e0:  #CR1+CR2+CR3 ZJetSF = getZJetsSF(selYear,isSelectionDir)
 
 ###
 if looseCRe2e0:  #CR1
-	isSelectionDir = "looseCRge2e0"
+	isSelectionDir = "looseCRe2e0"
 	crName="CR1"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
@@ -209,7 +209,7 @@ if looseCRe2e0:  #CR1
 		regionText = "N_{j}=2, N_{b}=0"
 
 if looseCRe3e0:  #CR2
-	isSelectionDir = "looseCRge2e0"
+	isSelectionDir = "looseCRe3e0"
 	crName="CR2"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
@@ -229,7 +229,7 @@ if looseCRe3e0:  #CR2
 		regionText = "N_{j}=3, N_{b}=0"
 
 if looseCRge4e0:  #CR3
-	isSelectionDir = "looseCRge2e0"
+	isSelectionDir = "looseCRge4e0"
 	crName="CR3"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
@@ -250,17 +250,20 @@ if looseCRge4e0:  #CR3
 
 if looseCRe2e1:  #CR4
 	isSelectionDir = "looseCRe2e1"
+	crName="CR4"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
 	else :                ZJetSF = getZJetsSF(selYear,isSelectionDir); WJetSF = getWJetsSF(selYear,isSelectionDir);        
 	fileDirQCD  = "histograms_%s/%s/hists_looseCRe2e1/"%(selYear, channel)
 	if systematics in allsystematics:
 		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe2e1/"%(selYear, channel,systematics,level)
-		plotDirectory = "misIDEle_syst_looseCRe2e1plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRe2e1plots_%s_%s/"%(channel,selYear)
+		plotDirectoryTemplate = "misIDEle_syst_looseCRe2e1plots_%s/"%(selYear)
 
 	else:
 		fileDir  = "histograms_%s/%s/hists_looseCRe2e1/"%(selYear, channel)
-		plotDirectory = "misIDEle_syst_looseCRe2e1plots_%s/"%(selYear)
+		plotDirectory = "misIDEle_syst_looseCRe2e1plots_%s_%s/"%(channel,selYear)
+		plotDirectoryTemplate = "misIDEle_syst_looseCRe2e1plots_%s/"%(selYear)
 		regionText = "N_{j}=2, N_{b}=1"
 	
 if looseCRe3e1:  #CR5
@@ -552,7 +555,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["Q2","Pdf","isr","fsr"]:
+			if systematics in ["Q2","Pdf","isr","fsr","JER", "JECTotal"]:
 				myNominalHist = myfile.Get(mydir+"nominal")
 				valNominal = myNominalHist.Integral()
 				val = myhist.Integral()

@@ -1,112 +1,120 @@
 #!/bin/bash
 
-myParameterRange=" --setParameterRanges nonPromptSF=0,5:TTbarSF=0,4:WGSF=0,4:OtherSF=0,4:Other_norm=0,4:ZGSF=0,4 "
-mySignalParamters=" --redefineSignalPOIs=r,nonPromptSF "
-mySignalModifierRange=" --rMin=-1 --rMax=5 "
-myAsimovFit=" -t -1 --expectSignal 1 "
-myFakeDataFit=" -t 1 --expectSignal 1 "
-myToyFit=" -t 300 --expectSignal 1 "
-verbose=" -v1 "
-myTrackParameters=" --trackParameters r,BTagSF_b,BTagSF_l,EleEff,MuEff,PhoEff,lumi,misIDE,ZGSF,TTbarSF,OtherSF,WGSF,Other_norm,nonPromptSF "
-mySeed=" --seed=314159 "
-myPoints=" --points=100 "
+# rm *.png
+# rm impacts*.json
+# rm validation.json
+# rm single_scan_*.pdf
+# rm impacts*.pdf
+# rm freeze*.pdf
+# rm combine_logger.out
+# rm *.tex
+# rm higgsCombine.*.root
+# rm higgsCombine_*.root
+# rm single_scan_*.root
+# rm fitDiagnostics*.root
 
-rm *.png
-rm *.json
-rm *.tex
-rm single_scan_*.pdf
-rm impacts*.pdf
-rm freeze*.pdf
-rm datacard_*_2018.root
-rm higgsCombine.*.root
-rm higgsCombine_*.root
-rm single_scan_*.root
-rm fitDiagnostics*.root
+# rm datacard_*_2018.root
 
 ./allCombine.sh
-text2workspace.py    datacard_ele_2018.txt 
-ValidateDatacards.py datacard_ele_2018.txt  --printLevel 3 --checkUncertOver 0.1 
-text2workspace.py    datacard_mu_2018.txt 
-ValidateDatacards.py datacard_mu_2018.txt   --printLevel 3 --checkUncertOver 0.1 
-text2workspace.py    datacard_both_2018.txt 
-ValidateDatacards.py datacard_both_2018.txt --printLevel 3 --checkUncertOver 0.1 
+text2workspace.py datacard_ele_2018.dat  --out=datacard_ele_2018.root  --default-morphing=DEFMORPH 
+text2workspace.py datacard_mu_2018.dat   --out=datacard_mu_2018.root   --default-morphing=DEFMORPH 
+text2workspace.py datacard_both_2018.dat --out=datacard_both_2018.root --default-morphing=DEFMORPH 
 
-declare -a CHANNEL=("ele" "mu" "both") 
+ValidateDatacards.py datacard_ele_2018.dat  --printLevel 3 --checkUncertOver 0.1 
+ValidateDatacards.py datacard_mu_2018.dat   --printLevel 3 --checkUncertOver 0.1 
+ValidateDatacards.py datacard_both_2018.dat --printLevel 3 --checkUncertOver 0.1 
+
+mySignalParamters=" --redefineSignalPOIs=r,nonPromptSF "
+myAsimovFit=" -t -1 --expectSignal 1 "
+myExpectSignal=" --expectSignal 1 "
+myToyFit=" -t 50 --expectSignal 1 "
+verbose=" -v1 "
+# myTrackParameters=" --trackParameters r,BTagSF_b,BTagSF_l,PhoEff,lumi,misIDE,Pdf,isr,fsr,PU,prefireEcal,JECTotal,JER,Q2,ZGSF,TTbarSF,OtherSF,WGSF,Other_norm,nonPromptSF "
+mySeed=" --seed=314159 "
+myPoints=" --points=50 "
+myFakeDataFit=" -t 1 --expectSignal 1  "
+mySignalModifierRange=" --rMin=0 --rMax=2 "
+# myParameterRange=" "
+myParameterRange=" --setParameterRanges nonPromptSF=0,5:TTbarSF=0,5:WGSF=0,5:OtherSF=0,5:Other_norm=0,5:ZGSF=0,5:SingleTopSF=0,2 "
+# myParameterRange=" --autoBoundsPOIs "WGSF,OtherSF,Other_norm" "
+
+declare -a CHANNEL=("ele" "mu") 
 for channel in ${CHANNEL[@]}; do
+set -x
 
-    combine -M ChannelCompatibilityCheck --expectSignal=1  datacard_"$channel"_2018.root $verbose $mySignalParamters  $myParameterRange
-    combine datacard_"$channel"_2018.root -M FitDiagnostics -n .datacard_"$channel"_2018 $myAsimovFit  $mySeed $mySignalParamters $verbose $mySignalModifierRange   $myParameterRange
-    python diffNuisances.py fitDiagnostics.datacard_"$channel"_2018.root --all 
+    combine -M ChannelCompatibilityCheck datacard_"$channel"_2018.root $verbose $mySignalParamters  $myParameterRange $myExpectSignal
 
-    combine datacard_"$channel"_2018.root -M FitDiagnostics -n .datacard_"$channel"_2018 $myFakeDataFit $mySeed $mySignalParamters $verbose $mySignalModifierRange   $myParameterRange
-    python diffNuisances.py fitDiagnostics.datacard_"$channel"_2018.root --all 
+    # combine datacard_"$channel"_2018.root --skipBOnlyFit --skipBOnlyFit -M FitDiagnostics -n .datacard_"$channel"_2018_Asimov $myAsimovFit   $mySeed $mySignalParamters $verbose $mySignalModifierRange   $myParameterRange
+    # python diffNuisances.py fitDiagnostics.datacard_"$channel"_2018_Asimov.root
+    # combine datacard_"$channel"_2018.root --skipBOnlyFit --skipBOnlyFit -M FitDiagnostics -n .datacard_"$channel"_2018_Data   $myFakeDataFit $mySeed $mySignalParamters $verbose $mySignalModifierRange   $myParameterRange $myExpectSignal
+    # python diffNuisances.py fitDiagnostics.datacard_"$channel"_2018_Data.root --all 
+    
+    combine --cminPreScan --skipBOnlyFit --forceRecreateNLL -M FitDiagnostics -n .Asimov_"$channel"_2018 datacard_"$channel"_2018.root $mySeed   --saveOverallShapes     --plots --saveNLL   $mySignalParamters --saveShapes --saveWithUncertainties --saveNormalizations  $mySignalModifierRange  $myParameterRange $myAsimovFit                   $verbose 
+    # combine --cminPreScan --skipBOnlyFit --forceRecreateNLL -M FitDiagnostics -n "$channel"_2018         datacard_"$channel"_2018.root $mySeed   --saveOverallShapes     --plots --saveNLL   $mySignalParamters --saveShapes --saveWithUncertainties --saveNormalizations  $mySignalModifierRange  $myParameterRange $myExpectSignal $myFakeDataFit $verbose 
+    combine --cminPreScan --skipBOnlyFit --forceRecreateNLL -M FitDiagnostics -n .TOY_"$channel"_2018    datacard_"$channel"_2018.root $mySeed                           --plots --saveNLL   $mySignalParamters              --saveWithUncertainties --saveNormalizations  $mySignalModifierRange  $myParameterRange $myToyFit                      -v3   
 
     combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed $myAsimovFit --algo grid $myPoints -n .Main $mySignalModifierRange  $myParameterRange
     combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed $myAsimovFit --saveWorkspace -n .snapshot $mySignalModifierRange  $myParameterRange
     combine -M MultiDimFit higgsCombine.snapshot.MultiDimFit.mH120.314159.root $mySeed $myAsimovFit -n .freezeAll  --algo grid $myPoints --freezeNuisanceGroups mySyst --snapshotName MultiDimFit $mySignalModifierRange    $myParameterRange
-    python plot1DScan.py  higgsCombine.Main.MultiDimFit.mH120.314159.root --others 'higgsCombine.freezeAll.MultiDimFit.mH120.314159.root:Stat:2' --breakdown Syst,Stat -o freeze_"$channel"_2018_Asimov 
+    python plot1DScan.py  --translate rename.json  higgsCombine.Main.MultiDimFit.mH120.314159.root --others 'higgsCombine.freezeAll.MultiDimFit.mH120.314159.root:Stat:2' --breakdown Syst,Stat -o freeze_"$channel"_2018_Asimov 
 
-    combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed $myFakeDataFit --algo grid $myPoints -n .Main $mySignalModifierRange    $myParameterRange
-    combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed $myFakeDataFit --saveWorkspace -n .snapshot $mySignalModifierRange     $myParameterRange
-    combine -M MultiDimFit higgsCombine.snapshot.MultiDimFit.mH120.314159.root $mySeed $myFakeDataFit -n .freezeAll  --algo grid $myPoints --freezeNuisanceGroups mySyst --snapshotName MultiDimFit $mySignalModifierRange    $myParameterRange
-    python plot1DScan.py  higgsCombine.Main.MultiDimFit.mH120.314159.root --others 'higgsCombine.freezeAll.MultiDimFit.mH120.314159.root:Stat:2' --breakdown Syst,Stat -o freeze_"$channel"_2018_Data 
-
-    combine -M FitDiagnostics -n .Asimov_"$channel"_2018 datacard_"$channel"_2018.root $mySeed $mySignalParamters --saveWithUncertainties --saveNormalizations --saveToys  --plots --saveNLL $mySignalModifierRange  $myParameterRange $myAsimovFit $verbose --skipBOnlyFit
-
-    combine -M FitDiagnostics -n "$channel"_2018 datacard_"$channel"_2018.root $myFakeDataFit --plots --saveNLL --robustFit=1 $mySeed $mySignalParamters --saveShapes --saveWithUncertainties --saveNormalizations $verbose $mySignalModifierRange  $myParameterRange --skipBOnlyFit
-    python mlfitNormsToText.py fitDiagnostics$"channel"_2018.root --uncertainties
-
-    combine -M FitDiagnostics -n .TOY_"$channel"_2018 datacard_"$channel"_2018.root $mySeed --saveWithUncertainties --saveNormalizations --saveToys  --plots --saveNLL $mySignalModifierRange  $myParameterRange $myToyFit -v3  --skipBOnlyFit $myTrackParameters 
+    # combine -M MultiDimFit datacard_"$channel"_2018.root                       $mySeed $myFakeDataFit --algo grid $myPoints -n .Main $mySignalModifierRange     $myParameterRange $myExpectSignal
+    # combine -M MultiDimFit datacard_"$channel"_2018.root                       $mySeed $myFakeDataFit --saveWorkspace -n .snapshot   $mySignalModifierRange     $myParameterRange $myExpectSignal
+    # combine -M MultiDimFit higgsCombine.snapshot.MultiDimFit.mH120.314159.root $mySeed $myFakeDataFit -n .freezeAll  --algo grid     $myPoints --freezeNuisanceGroups mySyst --snapshotName MultiDimFit $mySignalModifierRange    $myParameterRange $myExpectSignal
+    # python plot1DScan.py  --translate rename.json  higgsCombine.Main.MultiDimFit.mH120.314159.root --others 'higgsCombine.freezeAll.MultiDimFit.mH120.314159.root:Stat:2' --breakdown Syst,Stat -o freeze_"$channel"_2018_Data 
+    
 
     # no need to redefine POIs r and nonPromptSF but use the range for nonPromptSF 
-    combineTool.py -M Impacts -d datacard_"$channel"_2018.root -m 125  --doInitialFit                 $myAsimovFit  --robustFit=1 $mySignalModifierRange  $myParameterRange 
-    combineTool.py -M Impacts -d datacard_"$channel"_2018.root -m 125  --doFits                       $myAsimovFit  --robustFit=1 $mySignalModifierRange  $myParameterRange  --parallel 24
-    combineTool.py -M Impacts -d datacard_"$channel"_2018.root -m 125  -o impacts_toy_"$channel"_2018.json   $myAsimovFit  --robustFit=1 $mySignalModifierRange  $myParameterRange 
-    plotImpacts.py -i impacts_toy_"$channel"_2018.json -o impacts_toy_"$channel"_2018 
+    combineTool.py  --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doInitialFit                        $myAsimovFit    --robustFit=1   $mySignalModifierRange  $myParameterRange 
+    combineTool.py  --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doFits                              $myAsimovFit    --robustFit=1   $mySignalModifierRange  $myParameterRange  --parallel 24
+    combineTool.py  --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  -o impacts_toy_"$channel"_2018.json   $myAsimovFit    --robustFit=1   $mySignalModifierRange  $myParameterRange 
+    plotImpacts.py  -t rename.json  -i impacts_toy_"$channel"_2018.json -o impacts_toy_"$channel"_2018 --label-size 0.035
 
-    combineTool.py -M Impacts -d datacard_"$channel"_2018.root -m 125  --doInitialFit                 $myFakeDataFit  --robustFit=1   $mySignalModifierRange  $myParameterRange 
-    combineTool.py -M Impacts -d datacard_"$channel"_2018.root -m 125  --doFits                       $myFakeDataFit  --robustFit=1   $mySignalModifierRange  $myParameterRange  --parallel 24
-    combineTool.py -M Impacts -d datacard_"$channel"_2018.root -m 125  -o impacts_data_"$channel"_2018.json  $myFakeDataFit  --robustFit=1   $mySignalModifierRange  $myParameterRange 
-    plotImpacts.py -i impacts_data_"$channel"_2018.json -o impacts_data_"$channel"_2018 
+    combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doInitialFit                        $myFakeDataFit  --robustFit=1  $mySignalModifierRange  $myParameterRange 
+    combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doFits                              $myFakeDataFit  --robustFit=1  $mySignalModifierRange  $myParameterRange  --parallel 24
+    combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  -o impacts_data_"$channel"_2018.json  $myFakeDataFit  --robustFit=1  $mySignalModifierRange  $myParameterRange 
+    plotImpacts.py  -t rename.json  -i impacts_data_"$channel"_2018.json -o impacts_data_"$channel"_2018 --label-size 0.035
 
-    declare -a PARAMETERS=("PhoEff" "misIDE" "BTagSF_b" "lumi" "BTagSF_l" "MuEff" "EleEff" "TTbarSF" "WGSF" "ZGSF" "OtherSF" "Other_norm" "nonPromptSF")
-    for parameter in ${PARAMETERS[@]}; do
-      combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed $myAsimovFit --algo grid $myPoints -n .Asimov_Main_"$channel"_"$parameter" $mySignalModifierRange  -P $parameter --floatOtherPOIs 1  $myParameterRange
-      python plot1DScan.py higgsCombine.Asimov_Main_"$channel"_"$parameter".MultiDimFit.mH120.314159.root --POI $parameter -o single_scan_Asimov_"$channel"_"$parameter"
+    # combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doInitialFit                                   $myAsimovFit --redefineSignalPOIs   TTbarSF    --robustFit=1   $mySignalModifierRange  $myParameterRange 
+    # combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doFits                                         $myAsimovFit --redefineSignalPOIs   TTbarSF    --robustFit=1   $mySignalModifierRange  $myParameterRange  --parallel 24
+    # combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  -o impacts_toy_"$channel"_2018_TTbarSF.json      $myAsimovFit --redefineSignalPOIs   TTbarSF    --robustFit=1   $mySignalModifierRange  $myParameterRange 
+    # plotImpacts.py  -t rename.json  -i impacts_toy_"$channel"_2018_TTbarSF.json -o impacts_toy_"$channel"_2018_TTbarSF  --label-size 0.035 --POI TTbarSF
 
-      combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed --algo grid $myFakeDataFit $myPoints -n .Data_Main_"$channel"_"$parameter" $mySignalModifierRange -P $parameter --floatOtherPOIs 1  $myParameterRange
-      python plot1DScan.py higgsCombine.Data_Main_"$channel"_"$parameter".MultiDimFit.mH120.314159.root --POI $parameter -o single_scan_data_"$channel"_"$parameter"
-    done
+    # combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doInitialFit                                 $myFakeDataFit --redefineSignalPOIs   TTbarSF --robustFit=1 $mySignalModifierRange  $myParameterRange 
+    # combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  --doFits                                         $myFakeDataFit --redefineSignalPOIs   TTbarSF --robustFit=1 $mySignalModifierRange  $myParameterRange  --parallel 24
+    # combineTool.py --cminPreScan -M Impacts -d datacard_"$channel"_2018.root -m 125  -o impacts_data_"$channel"_2018_TTbarSF.json     $myFakeDataFit --redefineSignalPOIs   TTbarSF --robustFit=1 $mySignalModifierRange  $myParameterRange 
+    # plotImpacts.py  -t rename.json  -i impacts_data_"$channel"_2018_TTbarSF.json -o impacts_data_"$channel"_2018_TTbarSF --label-size 0.035 --POI TTbarSF
 
+    # declare -a PARAMETERS=("PhoEff" "misIDE" "BTagSF_b" "lumi" "BTagSF_l" "MuEff" "EleEff" "Pdf" "isr" "fsr" "PU" "prefireEcal" "JECTotal" "JER" "Q2" "TTbarSF" "WGSF" "ZGSF" "OtherSF" "Other_norm" "nonPromptSF")
+    # # declare -a PARAMETERS=("TTbarSF")
+    # for parameter in ${PARAMETERS[@]}; do
+    #   combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed $myAsimovFit   --algo grid  $myPoints -n .Asimov_Main_"$channel"_"$parameter" $mySignalModifierRange  -P $parameter --floatOtherPOIs 1  $myParameterRange
+    #   python plot1DScan.py  --translate rename.json higgsCombine.Asimov_Main_"$channel"_"$parameter".MultiDimFit.mH120.314159.root --POI $parameter -o single_scan_Asimov_"$channel"_"$parameter"
+
+    #   combine -M MultiDimFit datacard_"$channel"_2018.root $mySeed $myFakeDataFit --algo grid  $myPoints -n .Data_Main_"$channel"_"$parameter"   $mySignalModifierRange  -P $parameter --floatOtherPOIs 1  $myParameterRange $myExpectSignal
+    #   python plot1DScan.py  --translate rename.json higgsCombine.Data_Main_"$channel"_"$parameter".MultiDimFit.mH120.314159.root --POI $parameter -o single_scan_data_"$channel"_"$parameter"
+    # done
 done
 
-wait
 echo "Done fitting only!!!"
 
-echo "python make2018ttGammaSS.py"
-python make2018ttGammaSS.py
-echo "python make2018ttGammaSS_Toy.py"
-python make2018ttGammaSS_Toy.py
-echo "python make2018ttGammaSS_Toy.py"
-python make2018ttGammaSS_Asimov.py
-echo "python makeCovarianceMatrix.py"
-python makeCovarianceMatrix.py
-echo "python getTrackParameterPlots.py"
-python getTrackParameterPlots.py
-echo "python getNPToyDistribution.py"
-python getNPToyDistribution.py
+# python makettGammaSS.py         
+python makettGammaSS_Toy.py     
+python makettGammaSS_Asimov.py   
+python makeCorrelationMatrixNoData.py   
+# python makeCorrelationMatrix.py   
+# python makeTotalCovarianceMatrix.py    
+   
+# python getTrackParameterPlots.py
+# python getNPToyDistribution.py
 
 echo "Done fitting and Extraction!!!"
-exit 1
-#For test
-setenv channel "ele"
-setenv myParameterRange " --setParameterRanges nonPromptSF=0,10:TTbarSF=0,4:WGSF=0,4:OtherSF=0,4:Other_norm=0,4:ZGSF=0,4 "
-setenv mySignalParamters " --redefineSignalPOIs=r,nonPromptSF "
-setenv mySignalModifierRange " --rMin=0 --rMax=10 "
-setenv myAsimovFit " -t -1 --expectSignal 1 "
-setenv myFakeDataFit " -t 1 --expectSignal 1 "
-setenv myToyFit " -t 300 --expectSignal 1 "
-setenv verbose " -v3 "
-setenv myTrackParameters " --trackParameters r,BTagSF_b,BTagSF_l,EleEff,MuEff,PhoEff,lumi,misIDE,ZGSF,TTbarSF,OtherSF,WGSF,Other_norm,nonPromptSF "
-setenv mySeed " --seed=314159 "
-setenv myPoints " --points=300 "
+
+
+# Toy toysFrequentist has the following benifits:
+# Your analysis may have parameters which are determined from the observed data (eg, you are fitting a mass spectrum with some function for the background whose parameters are determined from the S+B fit). In this case, you should add --toysFrequentist to your combine line which will first fit the data to produce reasonable estimates for these free parameters. 
+# One of your nuisances seems to not close and it is a gmN type nuisance. This is related to the initial guess for the poisson component in these nuisances which is n+1 as opposed to n. This can also be avoided using toysFrequentist 
+
+
+
+

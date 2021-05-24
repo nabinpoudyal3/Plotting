@@ -1,7 +1,7 @@
-Combination of M3=datacard_mu_2018_M3_DD.txt  ChIso=datacard_mu_2018_ChIso_DD.txt  zerobtag=datacard_mu_2018_M30btag_DD.txt  M30photon=datacard_mu_2018_M30photon_DD.txt
+Combination of M3=datacard_mu_2018_M3.dat  ChIso=datacard_mu_2018_ChIso.dat  zerobtag=datacard_mu_2018_M30btag.dat  M30photon=datacard_mu_2018_M30photon.dat
 imax 4 number of bins
-jmax 13 number of processes minus 1
-kmax 15 number of nuisance parameters
+jmax 14 number of processes minus 1
+kmax 20 number of nuisance parameters
 ----------------------------------------------------------------------------------------------------------------------------------
 shapes *          ChIso      ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
 shapes *          M3         ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
@@ -11,64 +11,78 @@ shapes *          zerobtag   ../../ttgamma_tightplots_mu_2018/ttgamma_Prefit.roo
 bin          M3         ChIso      zerobtag   M30photon
 observation  -1         -1         -1         -1       
 ----------------------------------------------------------------------------------------------------------------------------------
-bin                               M3                M3                M3                M3                M3                M3                M3                M3                ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          M30photon         M30photon         M30photon         M30photon         M30photon       
-process                           nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    nonPromptZGamma   nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptTTbar    nonPromptZGamma   TTGamma           WGamma            TTbar             ZGamma            Other           
-process                           -2                -1                1                 2                 3                 4                 5                 6                 -2                -1                1                 2                 3                 4                 5                 6                 7                 -2                -1                1                 2                 3                 4                 5                 6                 7                 0                 8                 9                 10                11              
-rate                              -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1              
+bin                               M3                M3                M3                M3                M3                M3                M3                M3                M3                M3                ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             ChIso             zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          zerobtag          M30photon         M30photon         M30photon         M30photon         M30photon       
+process                           nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptWGamma   nonPromptTTbar    nonPromptZGamma   nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptWGamma   nonPromptTTbar    nonPromptZGamma   nonPromptTTGamma  isolatedTTGamma   isolatedZGamma    isolatedTTbar     isolatedWGamma    isolatedOther     nonPromptOther    nonPromptWGamma   nonPromptTTbar    nonPromptZGamma   TTGamma           WGamma            TTbar             ZGamma            Other           
+process                           -2                -1                1                 2                 3                 4                 5                 6                 7                 8                 -2                -1                1                 2                 3                 4                 5                 6                 7                 8                 -2                -1                1                 2                 3                 4                 5                 6                 7                 8                 0                 9                 10                11                12              
+rate                              -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1                -1              
 ----------------------------------------------------------------------------------------------------------------------------------
-BTagSF_b                shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-BTagSF_l                shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-EleEff                  shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-JER                     shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-MuEff                   shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-PU                      shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-PhoEff                  shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-lumi                    lnN       1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             -                 1.025             1.025             1.025             1.025             1.025             -                 -                 -                 1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025           
-misIDE                  shape     -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -               
-prefireEcal             shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
-ZGSF          param  1.0 0.19
-TTbarSF       param  1.0 0.055
-OtherSF       param  1.0 0.1
-WGSF          param  1.0 0.21
-Other_norm    param  1.0 0.1
-ZGSF          rateParam M30photon ZGamma 1  
+BTagSF_b18              shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0             
+BTagSF_l18              shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0             
+JECTotal                shape     -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 1.0               -                 1.0               -                 -               
+JER18                   shape     -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 1.0               -                 1.0               -                 -               
+MuEff                   shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
+PU                      shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0             
+Pdf                     shape     1.0               1.0               -                 1.0               -                 -                 -                 -                 1.0               -                 1.0               1.0               -                 1.0               -                 -                 -                 -                 1.0               -                 1.0               1.0               -                 1.0               -                 -                 -                 -                 1.0               -                 1.0               -                 1.0               -                 -               
+PhoEff                  shape     1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -               
+Q2                      shape     1.0               1.0               -                 1.0               -                 -                 -                 -                 1.0               -                 1.0               1.0               -                 1.0               -                 -                 -                 -                 1.0               -                 1.0               1.0               -                 1.0               -                 -                 -                 -                 1.0               -                 1.0               -                 1.0               -                 -               
+fsr                     shape     -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 1.0               -                 1.0               -                 -               
+isr                     shape     -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 -                 1.0               -                 -                 -                 -                 -                 -                 1.0               -                 1.0               -                 1.0               -                 -               
+lumi1718                lnN       1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003             1.003           
+lumi18                  lnN       1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015             1.015           
+lumiXY                  lnN       1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02              1.02            
+misIDE                  shape     -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 1.0               1.0               1.0               1.0               1.0               -                 -                 -                 -                 -                 -                 -                 -                 -               
+WGSF18        param  1.0 0.21
+Other_norm18  param  1.0 0.1
+OtherSF18     param  1.0 0.1
+TTbarSF18     param  1.0 0.055
+ZGSF18        param  1.0 0.19
+ZGSF18        rateParam M30photon ZGamma 1  
+nonPromptSF   rateParam M3 nonPromptZGamma 1  
+ZGSF18        rateParam M3 nonPromptZGamma 1  
+nonPromptSF   rateParam M3 nonPromptWGamma 1  
+WGSF18        rateParam M3 nonPromptWGamma 1  
+TTbarSF18     rateParam M30photon TTGamma 1  
 nonPromptSF   rateParam M3 nonPromptOther 1  
-OtherSF       rateParam M3 nonPromptOther 1  
-Other_norm    rateParam M30photon Other 1  
-OtherSF       rateParam ChIso isolatedOther 1  
+OtherSF18     rateParam M3 nonPromptOther 1  
+Other_norm18  rateParam M30photon Other 1  
+OtherSF18     rateParam ChIso isolatedOther 1  
 nonPromptSF   rateParam ChIso nonPromptTTGamma 1  
+nonPromptSF   rateParam ChIso nonPromptWGamma 1  
+WGSF18        rateParam ChIso nonPromptWGamma 1  
 nonPromptSF   rateParam M3 nonPromptTTbar 1  
-TTbarSF       rateParam M3 nonPromptTTbar 1  
-ZGSF          rateParam zerobtag isolatedZGamma 1  
-WGSF          rateParam zerobtag isolatedWGamma 1  
+TTbarSF18     rateParam M3 nonPromptTTbar 1  
+ZGSF18        rateParam zerobtag isolatedZGamma 1  
+WGSF18        rateParam zerobtag isolatedWGamma 1  
 nonPromptSF   rateParam ChIso nonPromptTTbar 1  
-TTbarSF       rateParam ChIso nonPromptTTbar 1  
-WGSF          rateParam ChIso isolatedWGamma 1  
-TTbarSF       rateParam ChIso isolatedTTbar 1  
+TTbarSF18     rateParam ChIso nonPromptTTbar 1  
+WGSF18        rateParam ChIso isolatedWGamma 1  
+TTbarSF18     rateParam ChIso isolatedTTbar 1  
 nonPromptSF   rateParam zerobtag nonPromptOther 1  
-OtherSF       rateParam zerobtag nonPromptOther 1  
-TTbarSF       rateParam M3 isolatedTTbar 1  
-OtherSF       rateParam zerobtag isolatedOther 1  
+OtherSF18     rateParam zerobtag nonPromptOther 1  
+TTbarSF18     rateParam M3 isolatedTTbar 1  
+OtherSF18     rateParam zerobtag isolatedOther 1  
 nonPromptSF   rateParam zerobtag nonPromptZGamma 1  
-ZGSF          rateParam zerobtag nonPromptZGamma 1  
+ZGSF18        rateParam zerobtag nonPromptZGamma 1  
 nonPromptSF   rateParam zerobtag nonPromptTTGamma 1  
-WGSF          rateParam M30photon WGamma 1  
-ZGSF          rateParam ChIso isolatedZGamma 1  
-WGSF          rateParam M3 isolatedWGamma 1  
-ZGSF          rateParam M3 isolatedZGamma 1  
+WGSF18        rateParam M30photon WGamma 1  
+ZGSF18        rateParam ChIso isolatedZGamma 1  
+WGSF18        rateParam M3 isolatedWGamma 1  
+ZGSF18        rateParam M3 isolatedZGamma 1  
 nonPromptSF   rateParam zerobtag nonPromptTTbar 1  
-TTbarSF       rateParam zerobtag nonPromptTTbar 1  
-TTbarSF       rateParam zerobtag isolatedTTbar 1  
-TTbarSF       rateParam M30photon TTbar 1  
+TTbarSF18     rateParam zerobtag nonPromptTTbar 1  
+TTbarSF18     rateParam zerobtag isolatedTTbar 1  
+nonPromptSF   rateParam zerobtag nonPromptWGamma 1  
+WGSF18        rateParam zerobtag nonPromptWGamma 1  
+TTbarSF18     rateParam M30photon TTbar 1  
 nonPromptSF   rateParam ChIso nonPromptZGamma 1  
-ZGSF          rateParam ChIso nonPromptZGamma 1  
-OtherSF       rateParam M3 isolatedOther 1  
+ZGSF18        rateParam ChIso nonPromptZGamma 1  
+OtherSF18     rateParam M3 isolatedOther 1  
 nonPromptSF   rateParam M3 nonPromptTTGamma 1  
 nonPromptSF   rateParam ChIso nonPromptOther 1  
-OtherSF       rateParam ChIso nonPromptOther 1  
-additionalSyst group = TTbarSF Other_norm OtherSF ZGSF WGSF
-mySyst group = JER PhoEff PU prefireEcal EleEff BTagSF_b lumi BTagSF_l MuEff
-zerobtag autoMCStats 0 1 1
-ChIso autoMCStats 0 1 1
-M3 autoMCStats 0 1 1
-M30photon autoMCStats 0 1 1
+OtherSF18     rateParam ChIso nonPromptOther 1  
+additionalSyst group = Other_norm18 TTbarSF18 WGSF18 OtherSF18 ZGSF18
+mySyst group = lumi1618 PhoEff Q2 lumi1718 JER18 Pdf MuEff JECTotal lumi18 PU isr EleEff BTagSF_l18 fsr BTagSF_b18 lumiXY
+zerobtag autoMCStats 20 0 1
+ChIso autoMCStats 20 0 1
+M3 autoMCStats 20 0 1
+M30photon autoMCStats 20 0 1

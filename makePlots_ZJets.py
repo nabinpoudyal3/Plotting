@@ -421,17 +421,21 @@ for sample in sampleList:
 			templateHist["myBackground"].Add(tempHist)
 			
 
-#rebin = 4
+#rebin = 4 # from 81 to 101
 # binning = numpy.array([88.,94.]) # Z mass pm Z width
-binning = numpy.array([81,84,86,88,90,92,94,96,102.])
-# binning = numpy.array([82,88,92,98,102.])
+# binning = numpy.array([81,84,86,88,90,92,94,96,102.])
+# binning = numpy.array([81,88,91,94,101.]) # test the best
+# binning = numpy.array([81,87,91,97,101.])
 # binning = numpy.array([82.,102.])
 # binning = numpy.array([82.,88.,94.,102.])
 
-binWidth = numpy.diff(binning)
 
 #print binning
-#binning = numpy.array([80,88,92,100.1])
+# binning = numpy.array([80,88,92,100.1])
+# binning = numpy.array([81.,86.,88.,91.,94.,96.,101.]) # might be the best one
+binning = numpy.array(list(numpy.arange(81.,100.1,1)))
+
+binWidth = numpy.diff(binning)
 
 rebinnedHist ={} 
 for ih in templateHist:
@@ -492,7 +496,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["Q2","isr","fsr"]:
+			if systematics in ["Q2","isr","fsr","Pdf","JER","JECTotal"]:
 				myNominalHist = myfile.Get(mydir+"nominal")
 				valNominal = myNominalHist.Integral()
 				val = myhist.Integral()

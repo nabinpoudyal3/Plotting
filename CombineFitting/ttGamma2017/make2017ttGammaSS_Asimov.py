@@ -9,9 +9,9 @@ import sys
 	#ListOfFiles2017Both = ["fitDiagnostics.TOY_ele_2017.root"]
 	
 #else:
-ListOfFiles2017Ele  = ["fitDiagnostics.datacard_ele_2017.root"]
-ListOfFiles2017Mu   = ["fitDiagnostics.datacard_mu_2017.root"]
-ListOfFiles2017Both = ["fitDiagnostics.datacard_both_2017.root"]
+ListOfFiles2017Ele  = ["fitDiagnostics.Asimov_ele_2017.root"]
+ListOfFiles2017Mu   = ["fitDiagnostics.Asimov_mu_2017.root"]
+ListOfFiles2017Both = ["fitDiagnostics.Asimov_both_2017.root"]
 
 
 lineTest = ""

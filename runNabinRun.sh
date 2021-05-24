@@ -1,4 +1,64 @@
 
+# CR1_TTGamma_Dilepton_2016_AnalysisNtuple.root
+# CR1_TTGamma_SingleLept_2016_AnalysisNtuple.root
+# CR2_TTGamma_Dilepton_2016_AnalysisNtuple.root
+# CR2_TTGamma_SingleLept_2016_AnalysisNtuple.root
+
+# TuneDown_TTGamma_Dilepton_2016_AnalysisNtuple.root
+# TuneDown_TTGamma_SingleLept_2016_AnalysisNtuple.root
+# TuneUp_TTGamma_Dilepton_2016_AnalysisNtuple.root
+# TuneUp_TTGamma_SingleLept_2016_AnalysisNtuple.root
+
+# erdOn_TTGamma_Dilepton_2016_AnalysisNtuple.root
+# erdOn_TTGamma_SingleLept_2016_AnalysisNtuple.root
+
+
+
+python makeHistograms.py -y 2016 -c Ele --tight -s TTGamma --syst Tune    --level up            --verbose --allPlots  #--plot presel_M3
+python makeHistograms.py -y 2016 -c Ele --tight -s TTGamma --syst Tune    --level down          --verbose --allPlots  #--plot presel_M3
+
+python makeHistograms.py -y 2016 -c Ele --looseCRge4e0 -s TTGamma --syst Tune    --level up            --verbose --allPlots  #--plot presel_M3
+python makeHistograms.py -y 2016 -c Ele --looseCRge4e0 -s TTGamma --syst Tune    --level down          --verbose --allPlots  #--plot presel_M3
+
+
+exit 1
+
+for year in 2016 2017 2018; do
+for channel in Ele Mu; do
+for cr in tight looseCRge4e0; do
+# python makeHistograms.py -y $year -c $channel --$cr -s TTGamma --moreSyst CR1   --output hists_CR1    --verbose --allPlots  #--plot presel_M3
+# python makeHistograms.py -y $year -c $channel --$cr -s TTGamma --moreSyst CR2   --output hists_CR2    --verbose --allPlots  #--plot presel_M3
+# python makeHistograms.py -y $year -c $channel --$cr -s TTGamma --moreSyst erdOn --output hists_erdOn  --verbose --allPlots  #--plot presel_M3
+# python makeHistograms.py -y $year -c $channel --$cr -s TTGamma --moreSyst erdOn --output hists_erdOn  --verbose --allPlots  #--plot presel_M3
+python makeHistograms.py -y $year -c $channel --$cr -s TTGamma --syst Tune    --level up            --verbose --allPlots  #--plot presel_M3
+python makeHistograms.py -y $year -c $channel --$cr -s TTGamma --syst Tune    --level down          --verbose --allPlots  #--plot presel_M3
+done
+done
+done
+
+
+exit 1
+python makeHistograms.py -y 2016 -c Ele --tight -s TTGamma --syst TuneUp --level up --plot presel_M3
+
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2016/TTGamma_Hadronic_2016_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2016/CR1_TTGamma_Hadronic_2016_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2016/TTGamma_Hadronic_2016_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2016/CR2_TTGamma_Hadronic_2016_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2016/TTGamma_Hadronic_2016_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2016/erdOn_TTGamma_Hadronic_2016_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2016/TTGamma_Hadronic_2016_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2016/TuneUp_TTGamma_Hadronic_2016_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2016/TTGamma_Hadronic_2016_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2016/TuneDown_TTGamma_Hadronic_2016_AnalysisNtuple.root
+
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2017/TTGamma_Hadronic_2017_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2017/CR1_TTGamma_Hadronic_2017_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2017/TTGamma_Hadronic_2017_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2017/CR2_TTGamma_Hadronic_2017_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2017/TTGamma_Hadronic_2017_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2017/erdOn_TTGamma_Hadronic_2017_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2017/TTGamma_Hadronic_2017_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2017/TuneUp_TTGamma_Hadronic_2017_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2017/TTGamma_Hadronic_2017_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2017/TuneDown_TTGamma_Hadronic_2017_AnalysisNtuple.root
+
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2018/TTGamma_Hadronic_2018_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2018/CR1_TTGamma_Hadronic_2018_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2018/TTGamma_Hadronic_2018_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2018/CR2_TTGamma_Hadronic_2018_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2018/TTGamma_Hadronic_2018_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2018/erdOn_TTGamma_Hadronic_2018_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2018/TTGamma_Hadronic_2018_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2018/TuneUp_TTGamma_Hadronic_2018_AnalysisNtuple.root
+eos cp root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/2018/TTGamma_Hadronic_2018_AnalysisNtuple.root root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/2018/TuneDown_TTGamma_Hadronic_2018_AnalysisNtuple.root
+
+
 
 python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst BTagSF_b    --level down --verbose --plot phosel_elePt
 python makeHistograms.py -y 2016 -c Ele --tight  -s TTGamma   --syst BTagSF_l    --level down --verbose --plot phosel_elePt

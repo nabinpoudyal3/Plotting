@@ -1,36 +1,33 @@
 #!/bin/bash
 
-#Run for all except ttbar
-# condor_submit condor_makeHistograms_nominal.jdl
-condor_submit condor_makeHistograms_JECTotal.jdl
-condor_submit condor_makeHistograms_PU.jdl
-condor_submit condor_makeHistograms_MuEff.jdl
-condor_submit condor_makeHistograms_PhoEff.jdl
-condor_submit condor_makeHistograms_BTagSF_b.jdl
-condor_submit condor_makeHistograms_BTagSF_l.jdl
-condor_submit condor_makeHistograms_EleEff.jdl
-condor_submit condor_makeHistograms_Q2.jdl
-condor_submit condor_makeHistograms_Pdf.jdl
-condor_submit condor_makeHistograms_isr.jdl
-condor_submit condor_makeHistograms_fsr.jdl
-condor_submit condor_makeHistograms_prefireEcal.jdl
-condor_submit condor_makeHistograms_JER.jdl
+condor_submit nominal1.jdl
+condor_submit nominal2.jdl
+condor_submit nominal3.jdl
+condor_submit nominal4.jdl
+condor_submit nominal5.jdl
+condor_submit nominal6.jdl
 
+condor_submit nominal_ttbar1.jdl
+condor_submit nominal_ttbar2.jdl
+condor_submit nominal_ttbar3.jdl
+condor_submit nominal_ttbar4.jdl
+condor_submit nominal_ttbar5.jdl
+condor_submit nominal_ttbar6.jdl
 
-# Run below only for ttbar
-condor_submit condor_makeHistograms_nominal_ttbar.jdl
-condor_submit condor_makeHistograms_JECTotal_ttbar.jdl
-condor_submit condor_makeHistograms_PU_ttbar.jdl
-condor_submit condor_makeHistograms_MuEff_ttbar.jdl
-condor_submit condor_makeHistograms_PhoEff_ttbar.jdl
-condor_submit condor_makeHistograms_BTagSF_b_ttbar.jdl
-condor_submit condor_makeHistograms_BTagSF_l_ttbar.jdl
-condor_submit condor_makeHistograms_EleEff_ttbar.jdl
-condor_submit condor_makeHistograms_Q2_ttbar.jdl
-condor_submit condor_makeHistograms_Pdf_ttbar.jdl
-condor_submit condor_makeHistograms_isr_ttbar.jdl
-condor_submit condor_makeHistograms_fsr_ttbar.jdl
-condor_submit condor_makeHistograms_prefireEcal_ttbar.jdl
-condor_submit condor_makeHistograms_JER_ttbar.jdl
+# good for nominal
+
+condor_submit syst.jdl
+condor_submit syst_ttbar.jdl
+
 
 exit 1
+
+# makeHistograms_condor_nominal.sh makeHistograms_condor_nominal_onlyTTbar.sh
+# makeHistograms_condor_syst.sh    makeHistograms_condor_syst_onlyTTbar.sh
+
+
+# makeHistograms_Dilep_condor_nominal.sh 
+# makeHistograms_Dilep_condor_syst.sh    
+
+condor_submit syst_SS.jdl
+condor_submit syst_SS_ttbar.jdl

@@ -1,4 +1,4 @@
-from ROOT import TFile, TLegend, TCanvas, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory
+from ROOT import kWarning, TFile, TLegend, TCanvas, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kViolet
 #from ROOT import *
 import os, PyPDF2
 
@@ -38,6 +38,8 @@ finalState = options.channel
 tight          =options.tight
 plotVariable   =options.plotVariable
 
+# gSystem.RedirectOutput("/dev/null")
+gErrorIgnoreLevel = kWarning
 
 print plotVariable
 
@@ -138,8 +140,54 @@ if tight:      #SR8
 
 gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
+
 from Style import *
-gROOT.ForceStyle()
+thestyle = Style()
+
+HasCMSStyle = False
+style = None
+if os.path.isfile('tdrstyle.C'):
+	ROOT.gROOT.ProcessLine('.L tdrstyle.C')
+	ROOT.setTDRStyle()
+	print "Found tdrstyle.C file, using this style."
+	HasCMSStyle = True
+	if os.path.isfile('CMSTopStyle.cc'):
+		gROOT.ProcessLine('.L CMSTopStyle.cc+')
+		style = CMSTopStyle()
+		style.setupICHEPv1()
+		print "Found CMSTopStyle.cc file, use TOP style if requested in xml file."
+if not HasCMSStyle:
+	print "Using default style defined in cuy package."
+	thestyle.SetStyle()
+
+ROOT.gROOT.ForceStyle()
+
+
+template_category = {"isolatedTTGamma":kOrange,  "nonPromptTTGamma":kOrange-3,  
+					 "isolatedTTbar":  kRed+1,   "nonPromptTTbar":  kRed+3,   
+					 "isolatedWGamma": kBlue-4,  "nonPromptWGamma": kViolet-1,  
+					 "isolatedZGamma": kBlue-2,  "nonPromptZGamma": kViolet+8,  
+					 "isolatedOther":  kGreen+3, "nonPromptOther":  kGreen+4, 
+					 "TTGamma":kOrange,
+					 "TTbar":  kRed+1, 
+					 "WGamma": kBlue-4,
+					 "ZGamma": kBlue-2,
+					 "Other":  kGreen+3
+					}
+
+template_categoryName = {"isolatedTTGamma":"t#bar{t}#gamma iso", "nonPromptTTGamma":"t#bar{t}#gamma non prompt",  
+					     "isolatedTTbar":  "t#bar{t} iso",        "nonPromptTTbar":  "t#bar{t} non prompt",   
+					     "isolatedWGamma": "W#gamma iso",  "nonPromptWGamma": "W#gamma non prompt",  
+					     "isolatedZGamma": "Z#gamma iso",  "nonPromptZGamma": "Z#gamma non prompt",  
+					     "isolatedOther":  "other_1 #gamma iso",    "nonPromptOther":  "other_1 #gamma non prompt", 
+					     "TTGamma":"t#bart#gamma",
+						 "TTbar":  "t#bart",      
+						 "WGamma": "W#gamma",     
+						 "ZGamma": "Z#gamma",     
+						 "Other":  "Other_0#gamma"
+					    }
+					
+
 # if selYear=='2016': 
 # 	myDir = {"ele/MisIDEleSixteen":"ele_MisIDEleSixteen","ele/WgammaBkgPhoton":"ele_WgammaBkgPhoton","ele/ZgammaBkgPhoton":"ele_ZgammaBkgPhoton","ele/OtherSampleBkgPhoton":"ele_OtherSampleBkgPhoton",
 #              "mu/MisIDEleSixteen":"mu_MisIDEleSixteen","mu/WgammaBkgPhoton":"mu_WgammaBkgPhoton","mu/ZgammaBkgPhoton":"mu_ZgammaBkgPhoton","mu/OtherSampleBkgPhoton":"mu_OtherSampleBkgPhoton"}
@@ -152,41 +200,94 @@ gROOT.ForceStyle()
 # 	myDir = {"ele/MisIDEleEighteen":"ele_MisIDEleEighteen","ele/WgammaBkgPhoton":"ele_WgammaBkgPhoton","ele/ZgammaBkgPhoton":"ele_ZgammaBkgPhoton","ele/OtherSampleBkgPhoton":"ele_OtherSampleBkgPhoton",
 #              "mu/MisIDEleEighteen":"mu_MisIDEleEighteen","mu/WgammaBkgPhoton":"mu_WgammaBkgPhoton","mu/ZgammaBkgPhoton":"mu_ZgammaBkgPhoton","mu/OtherSampleBkgPhoton":"mu_OtherSampleBkgPhoton"}
 if plotVariable=="M30photon":
-	# systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","prefireEcal","JER"] # keep adding more systematics 
-	systematicList = ["JECTotal"]
+	# systematicList = ["PhoEff","BTagSF_b","BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
+	# systematicList = ["fsr"] #,"BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
 	myDir= {"%s/ZGamma"%plotVariable:  "%s_ZGamma"%plotVariable,
 	 		"%s/TTGamma"%plotVariable: "%s_TTGamma"%plotVariable,
 	 		"%s/TTbar"%plotVariable:   "%s_TTbar"%plotVariable,
 	 		"%s/Other"%plotVariable:   "%s_Other"%plotVariable,
 	 		"%s/WGamma"%plotVariable:  "%s_WGamma"%plotVariable,
 	}
+	myDirName = {
+
+			"%s/ZGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["ZGamma"]),
+	 		"%s/TTGamma"%plotVariable: "%s %s "%(plotVariable,template_categoryName["TTGamma"]),
+	 		"%s/TTbar"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["TTbar"]),
+	 		"%s/Other"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["Other"]),
+	 		"%s/WGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["WGamma"]),
+
+
+
+	}
 else:
-	# systematicList = ["BTagSF_b","BTagSF_l","MuEff","EleEff","PhoEff","PU","misIDE","prefireEcal","JER"] # keep adding more systematics 
-	systematicList = ["JECTotal"] # keep adding more systematics 
+	systematicList = ["shapeDD"]
+
+	# systematicList = ["PhoEff","misIDE","BTagSF_b","BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
+	# systematicList = ["fsr"] #,"BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
 	myDir= {"%s/nonPromptZGamma"%plotVariable:  "%s_nonPromptZGamma"%plotVariable,
 	 		"%s/nonPromptTTGamma"%plotVariable: "%s_nonPromptTTGamma"%plotVariable,
-	 		"%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
 	 		"%s/nonPromptTTbar"%plotVariable:   "%s_nonPromptTTbar"%plotVariable,
 	 		"%s/nonPromptOther"%plotVariable:   "%s_nonPromptOther"%plotVariable,
 	 		"%s/nonPromptWGamma"%plotVariable:  "%s_nonPromptWGamma"%plotVariable,
-	 		"%s/isolatedOther"%plotVariable:    "%s_isolatedOther"%plotVariable,
-	 		"%s/isolatedZGamma"%plotVariable:   "%s_isolatedZGamma"%plotVariable,
-	 		"%s/isolatedTTbar"%plotVariable:    "%s_isolatedTTbar"%plotVariable,
-	 		"%s/isolatedWGamma"%plotVariable:   "%s_isolatedWGamma"%plotVariable,
+	 		# "%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
+	 		# "%s/isolatedOther"%plotVariable:    "%s_isolatedOther"%plotVariable,
+	 		# "%s/isolatedZGamma"%plotVariable:   "%s_isolatedZGamma"%plotVariable,
+	 		# "%s/isolatedTTbar"%plotVariable:    "%s_isolatedTTbar"%plotVariable,
+	 		# "%s/isolatedWGamma"%plotVariable:   "%s_isolatedWGamma"%plotVariable,
 	}
 
+	myDirName= {"%s/nonPromptZGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["nonPromptZGamma"]),
+	 		    "%s/nonPromptTTGamma"%plotVariable: "%s %s "%(plotVariable,template_categoryName["nonPromptTTGamma"]),
+	 		    "%s/nonPromptTTbar"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["nonPromptTTbar"]),
+	 		    "%s/nonPromptOther"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["nonPromptOther"]),
+	 		    "%s/nonPromptWGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["nonPromptWGamma"]),
+	 		    # "%s/isolatedTTGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["isolatedTTGamma"]),
+	 		    # "%s/isolatedOther"%plotVariable:    "%s %s "%(plotVariable,template_categoryName["isolatedOther"]),
+	 		    # "%s/isolatedZGamma"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["isolatedZGamma"]),
+	 		    # "%s/isolatedTTbar"%plotVariable:    "%s %s "%(plotVariable,template_categoryName["isolatedTTbar"]),
+	 		    # "%s/isolatedWGamma"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["isolatedWGamma"])
+	}
+systematicsDictionary = {
+"lumi"       : "Luminosity",
+"PU"         : "Pile Up",
+"PhoEff"     : "Photon Efficiency",
+"MuEff"      : "Muon Efficiency",
+"Q2"         : "Renorm/Fact Scale",
+"BTagSF_b"   : "b tagging ",
+"BTagSF_l"   : "l tagging ",
+"EleEff"     : "Electron Efficiency",
+"prefireEcal": "L1 prefire Efficiency",
+"JECTotal"   : "Jet Energy Correction",
+"JER"        : "Jet Energy Resolution",
+"OtherSF"    : "1#gamma other bkg norm",
+"Other_norm" : "0#gamma other bkg norm",
+"TTbarSF"    : "tt norm",
+"WGSF"       : "W#gamma norm",
+"ZGSF"       : "Z#gamma norm",
+"misIDE"     : "MisID ele",
+"Pdf"  : "PDF ",
+"erd"  : "Color Reconnection",
+"hdamp": "ME/PS matching",
+"UE"   : "Underlying Events",
+"fsr"  : "FSR",
+"isr"  : "ISR",
+"phoscale" : "Photon Energy Scale",
+"phosmear" : "Photon Energy Smearing",
+"elescale" : "Electron Energy Scale",
+"elesmear" : "Electron Energy Smearing",
+"shapeDD"  : "Shape of DataDriven templates"
+}
 
 import CMS_lumi
 
-if selYear == '2016':	CMS_lumi.lumi_13TeV = "[2016] 35.92 fb^{-1}"
-if selYear == '2017':	CMS_lumi.lumi_13TeV = "[2017] 41.53 fb^{-1}"
-if selYear == '2018':	CMS_lumi.lumi_13TeV = "[2018] 59.74 fb^{-1}"
+if selYear == '2016':	CMS_lumi.lumi_13TeV = "35.92 fb^{-1}"
+if selYear == '2017':	CMS_lumi.lumi_13TeV = "41.53 fb^{-1}"
+if selYear == '2018':	CMS_lumi.lumi_13TeV = "59.74 fb^{-1}"
 
 
 if not os.path.exists("upDownTemplateTTGamma/"+plotDirectory):
 	os.mkdir("upDownTemplateTTGamma/"+plotDirectory)
-	
-	
+		
 inputfilename = "ttgamma_tightplots_%s_%s/ttgamma_Prefit.root"%(channel,selYear)
 
 myfile = ROOT.TFile(inputfilename,"READ")
@@ -195,6 +296,9 @@ myfile = ROOT.TFile(inputfilename,"READ")
 # #Note: PhoEff doesn't seem to be normalized.
 line = ""
 eline = ""
+
+
+
 for idir in myDir.keys():
 	myfile.cd(idir)
 	for item in systematicList:
@@ -214,6 +318,8 @@ for idir in myDir.keys():
 		line += " %s --> %s :: nominal ==> %.3f Up-nominal ==>  %.3f  Dn-nominal ==> %.3f \n"%(idir,item, h_nominal.Integral(-1,-1), h_Up.Integral(-1,-1)-h_nominal.Integral(-1,-1), h_Down.Integral(-1,-1)-h_nominal.Integral(-1,-1))
       
 		if h_nominal.Integral() <= 0: eline += " %s --> %s :: nominal ==> %.3f \n"%(idir,item,h_nominal.Integral())
+
+		print item, systematicsDictionary[item]
         # c = ROOT.TCanvas('c','',800,600)
         # legend = ROOT.TLegend(0.7,0.7,0.88,0.88)
         # legend.SetBorderSize(0)
@@ -248,7 +354,8 @@ for idir in myDir.keys():
 		legend = TLegend(legendStart, 1-T/H-0.01 - legendHeightPer*(6), legendEnd, 0.99-(T/H)-0.01)
 		legend.SetBorderSize(0)
 		legend.SetFillColor(0)
-		legend.SetHeader(myDir[idir],"L")
+		print idir
+		legend.SetHeader(myDirName[idir],"L")
 		TGaxis.SetMaxDigits(3)
 
 		c = TCanvas('c','',W,H)
@@ -307,10 +414,12 @@ for idir in myDir.keys():
 		# errorband.SetMarkerSize(0)
 
 		pad1.cd()
+		
 
+		print "==>",item
 		legend.AddEntry(h_nominal,"nominal","f")
-		legend.AddEntry(h_Up,"%s_Up"%item,"f")
-		legend.AddEntry(h_Down,"%s_Down"%item,"f")
+		legend.AddEntry(h_Up,"%s Up"%systematicsDictionary[item],"f")
+		legend.AddEntry(h_Down,"%s Down"%systematicsDictionary[item],"f")
 		
 		h_nominal.Draw()
 		h_Up.Draw("same")
@@ -330,18 +439,19 @@ for idir in myDir.keys():
 		#minVal = 1
 		minVal = min(h_nominal.GetMinimum(),h_Up.GetMinimum(),h_Down.GetMinimum())
 		# minVal = min(0,minVal)*2
-		minVal = -5
-		h_nominal.SetMaximum(1.1*maxVal)
+		minVal = 0.001
+		h_nominal.SetMaximum(1.3*maxVal)
 		h_nominal.SetMinimum(minVal)
 		
 		print maxVal, minVal
 		#CMS_lumi.channelText = (channelText+"\\n"+regionText)
 		#if postfitPlots: CMS_lumi.channelText =channel
 
-		CMS_lumi.channelText = regionText
-		CMS_lumi.cmsText=''
+		CMS_lumi.channelText =  "#splitline{%s}{%s}"%(channelText,regionText)
+		# CMS_lumi.channelText = regionText
+		CMS_lumi.cmsText="CMS"
 		CMS_lumi.writeChannelText = True
-		CMS_lumi.writeExtraText = False
+		CMS_lumi.writeExtraText = True
 		CMS_lumi.CMS_lumi(pad1, 4, 11)
 
 
@@ -357,11 +467,7 @@ for idir in myDir.keys():
 		    
 		ratioUp.SetTitle('')
 
-		ratioUp.GetXaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
-		ratioUp.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
-		ratioUp.GetXaxis().SetTitleSize(gStyle.GetTitleSize()/(padRatio+padOverlap))
-		ratioUp.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(1.-padRatio+padOverlap))
-		ratioUp.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap-padGap))
+
 
 		maxRatio = 1.8 #ratioUp.GetMaximum()
 		minRatio = 0.2 #ratioDown.GetMinimum()
@@ -382,17 +488,24 @@ for idir in myDir.keys():
 		else:
 			ratioUp.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-		ratioUp.GetYaxis().SetRangeUser(0.2,1.8)
-		ratioUp.GetYaxis().SetNdivisions(504)
-		#ratioUp.GetXaxis().SetTitle(inputfilename[:-12])
-		ratioUp.GetXaxis().SetTitle(plotVariable+" "+item)
-		ratioUp.GetYaxis().SetTitle("Data/MC")
-		ratioUp.GetYaxis().SetTitleOffset(.4)
-		ratioUp.GetYaxis().SetTitleSize(.09)
-		ratioUp.GetYaxis().SetNdivisions(2)
+		ratioUp.GetYaxis().SetRangeUser(0.8,1.2)
 
+		# ratioUp.GetYaxis().SetNdivisions(504)
+		#ratioUp.GetXaxis().SetTitle(inputfilename[:-12])
+		ratioUp.GetXaxis().SetTitle(plotVariable+" "+systematicsDictionary[item])
+		ratioUp.GetYaxis().SetTitle("Data/MC")
+		# ratioUp.GetYaxis().SetTitleOffset(.38)
+		# ratioUp.GetYaxis().SetTitleSize(.1)
+		# ratioUp.GetXaxis().SetTitleSize(.1)
+		ratioUp.GetYaxis().SetNdivisions(-402)
+		ratioUp.GetXaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
+		ratioUp.GetYaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
+		ratioUp.GetXaxis().SetTitleSize(gStyle.GetTitleSize()/(padRatio+padOverlap))
+		ratioUp.GetYaxis().SetTitleSize(gStyle.GetTitleSize()/(padRatio+padOverlap))
+		ratioUp.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(padRatio+padOverlap-padGap))
 		CMS_lumi.CMS_lumi(pad2, 4, 11)
 		pad2.cd()
+
 		ratioUp.SetMarkerStyle(1)
 		ratioUp.SetLineColor(2)
 		ratioUp.SetFillColor(0)
@@ -415,7 +528,8 @@ for idir in myDir.keys():
 		c.Print("upDownTemplateTTGamma/%s%s_%s.pdf"%(plotDirectory,myDir[idir],item))
 		c.Close()
 
-
+# c.Print("upDownTemplateTTGamma/%s%s.pdf"%(plotDirectory,myDir[idir]))
+# c.Close()
 with open("oneSigmaVariation/oneSigmaVariation_%s_%s_%s.py"%(plotVariable,channel,selYear),"w") as _file:
     _file.write(line)
 

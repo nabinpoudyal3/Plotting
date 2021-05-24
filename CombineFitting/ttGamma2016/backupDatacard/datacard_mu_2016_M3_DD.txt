@@ -20,28 +20,29 @@ PU          shape     1       1      1       1       1       1       1       1  
 PhoEff      shape     1       1      1       1       1       1       1       1       1       1
 MuEff       shape     1       1      1       1       1       1       1       1       1       1
 EleEff      shape     1       1      1       1       1       1       1       1       1       1
-#Q2          shape     1       1      1       1       1       1       1       1       1       1
-isr         shape     1       1      1       1       1       1       1       1       1       1
-fsr         shape     1       1      1       1       1       1       1       1       1       1
+JER         shape     1       1      1       1       1       1       1       1       1       1
 misIDE      shape     1       1      1       1       1       1       1       1       1       1
 prefireEcal shape     1       1      1       1       1       1       1       1       1       1
-#JEC         shape     1       1      1       1       1       1       1       1       1       1
-#JER         shape     1       1      1       1       1       1       1       1       1       1
-
+Q2          shape     1       -      -       -       -       1       -       -       -       -
+isr         shape     1       -      -       -       -       1       -       -       -       -
+fsr         shape     1       -      -       -       -       1       -       -       -       -
+Pdf         shape     1       -      -       -       -       1       -       -       -       -
+JECTotal    shape     1       1      1       1       1       1       1       1       1       1
 ------------------------------------------------------------------------------------------------
-nonPromptSF rateParam * nonPrompt*  1 [0,10]  
+nonPromptSF rateParam * nonPrompt*  1 
 -------------------------------------------------------------------------------------------------------
 TTbarSF rateParam * *TTbar 1 
-TTbarSF param  1.0   0.05
+TTbarSF param  1.0   0.055
 WGSF rateParam * *WGamma 1 
-WGSF param  1.0   0.19
+WGSF param  1.0   0.21
 ZGSF rateParam * *ZGamma 1 
-ZGSF param  1.0   0.21
+ZGSF param  1.0   0.19
 OtherSF rateParam * *Other 1 
-OtherSF param  1.0   0.3
----------------------------------------------------------------------------------------
-mySyst group = lumi BTagSF_b BTagSF_l  EleEff MuEff PU prefireEcal isr fsr PhoEff #Q2 JEC JER
-additionalSyst group = TTbarSF WGSF ZGSF Other_norm
+OtherSF param  1.0   0.1
 -------------------------------------------------------------------------------
-* autoMCStats 0 1
+---------------------------------------------------------------------------------------
+mySyst group = lumi BTagSF_b BTagSF_l PU MuEff EleEff PhoEff prefireEcal Pdf isr fsr JECTotal JER Q2
+additionalSyst group = TTbarSF WGSF ZGSF OtherSF
+-------------------------------------------------------------------------------
+* autoMCStats 20 1
 ------------------------------------------------------------------------------

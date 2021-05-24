@@ -23,6 +23,7 @@ done
 wait
 echo "Done Prefit!" 
 
+exit 1
 
 for val in ${StringArray[@]}; do
 	echo "===>" python makePlots.py -c DiMu   -y 2016 --useQCDMC  --dilepmassPlots  --postfitPlots --$val 

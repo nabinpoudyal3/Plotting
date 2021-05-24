@@ -4,44 +4,50 @@ kmax *
 ---------------------------------
 shapes *  ChIso  ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root  $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC
 ---------------------------------
-bin			ChIso    
-observation		-1       
+bin         ChIso    
+observation     -1       
 -------------------------------------
-bin			ChIso			    ChIso			ChIso			ChIso			ChIso			ChIso				ChIso			ChIso               ChIso			   ChIso			
-process		isolatedTTGamma  	isolatedTTbar	isolatedWGamma	isolatedZGamma	isolatedOther	nonPromptTTGamma	nonPromptTTbar	nonPromptWGamma 	nonPromptZGamma	   nonPromptOther	
-process		0	                1	            2	            3	            4	            0	                1	            2                   3	                4	
-rate		-1	               -1	           -1	           -1	            -1	           -1	                -1	            -1                  -1	               -1	
+bin         ChIso               ChIso           ChIso           ChIso           ChIso           ChIso               ChIso           ChIso               ChIso              ChIso            
+process     isolatedTTGamma     isolatedTTbar   isolatedWGamma  isolatedZGamma  isolatedOther   nonPromptTTGamma    nonPromptTTbar  nonPromptWGamma     nonPromptZGamma    nonPromptOther   
+process     0                   1               2               3               4               0                   1               2                   3                   4   
+rate        -1                 -1              -1              -1               -1             -1                   -1              -1                  -1                 -1   
 ---------------------------------------------------------------------------------------------------------
-lumi        lnN       1.023   1.023  1.023   1.023   1.023   -      -       -       -       -  
+lumi17      lnN       1.020   1.020  1.020   1.020   1.020  -      -       -       -        -
+lumi1617    lnN       1.006   1.006  1.006   1.006   1.006  -      -       -       -        -
+lumi1718    lnN       1.004   1.004  1.004   1.004   1.004  -      -       -       -        -
+lumiXY      lnN       1.008   1.008  1.008   1.008   1.008  -      -       -       -        -  
 ------------------------------------------------------------------------------------------------------- 
-BTagSF_b    shape     1       1      1       1       1       -      -       -       -       -       
-BTagSF_l    shape     1       1      1       1       1       -      -       -       -       -       
-PU          shape     1       1      1       1       1       -      -       -       -       -       
-PhoEff      shape     1       1      1       1       1       -      -       -       -       -       
-EleEff      shape     1       1      1       1       1       -      -       -       -       -       
-MuEff       shape     1       1      1       1       1       -      -       -       -       -       
-misIDE      shape     1       1      1       1       1       -      -       -       -       -   
-prefireEcal shape     1       1      1       1       1       -      -       -       -       -    
-JER         shape     1       1      1       1       1       -      -       -       -       -    
-#fsr         shape     1       1      1       1       1       -      -       -       -       -       
-#isr         shape     1       1      1       1       1       -      -       -       -       -       
-#Q2          shape     1       1      1       1       1       -      -       -       -       -       
-#JECTotal    shape     1       1      1       1       1       -      -       -       -       -    
+BTagSF_b17    shape     1       1      1       1       1       -      -       -       -       -       
+BTagSF_l17    shape     1       1      1       1       1       -      -       -       -       -       
+PU            shape     1       1      1       1       1       -      -       -       -       -       
+PhoEff        shape     1       1      1       1       1       -      -       -       -       -       
+EleEff        shape     1       1      1       1       1       -      -       -       -       -       
+MuEff         shape     1       1      1       1       1       -      -       -       -       -       
+misIDE        shape     1       1      1       1       1       -      -       -       -       -   
+prefireEcal   shape     1       1      1       1       1       -      -       -       -       -    
+JER17         shape     1       1      1       1       1       -      -       -       -       -    
+fsr           shape     1       -      -       -       -       -      -       -       -       - 
+isr           shape     1       -      -       -       -       -      -       -       -       - 
+Q2            shape     1       -      -       -       -       -      -       -       -       - 
+Pdf           shape     1       -      -       -       -       -      -       -       -       - 
+JECTotal      shape     1       1      1       1       1       -      -       -       -       -    
 ------------------------------------------------------------------------------------------------------
 nonPromptSF rateParam * nonPrompt*  1  
 -------------------------------------------------------------------------------------------------------
-TTbarSF rateParam * *TTbar 1 
-TTbarSF param  1.0   0.055
-WGSF rateParam * *WGamma 1 
-WGSF param  1.0   0.21
-ZGSF rateParam * *ZGamma 1 
-ZGSF param  1.0   0.19
-OtherSF rateParam * *Other 1 
-OtherSF param  1.0   0.1
+TTbarSF17 rateParam * *TTbar 1 
+TTbarSF17 param  1.0   0.055
+WGSF17 rateParam * *WGamma 1 
+WGSF17 param  1.0   0.21
+ZGSF17 rateParam * *ZGamma 1 
+ZGSF17 param  1.0   0.19
+OtherSF17 rateParam * *Other 1 
+OtherSF17 param  1.0   0.1
 ---------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
-mySyst group = lumi BTagSF_b BTagSF_l  EleEff MuEff PU prefireEcal PhoEff JER
-additionalSyst group = TTbarSF WGSF ZGSF OtherSF
+mySyst group = lumi17 lumi1617 lumi1718 lumiXY BTagSF_b17 BTagSF_l17 PU MuEff EleEff PhoEff prefireEcal Pdf isr fsr JECTotal JER17 Q2
+additionalSyst group = TTbarSF17 WGSF17 ZGSF17 OtherSF17
 -------------------------------------------------------------------------------
 * autoMCStats 0 1
 ------------------------------------------------------------------------------
+
+

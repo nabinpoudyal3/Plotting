@@ -470,8 +470,9 @@ histograms = {
 		"phosel_muEta"                   : ["Muon #eta"                  , "Events/0.05", 5, [-2.4,2.4], regionText,  NoLog, " "],
 		#"phosel_muPt_barrel"    		       : ["Muon p_{T} (GeV) "          , "Events", 5, [30,200], regionText,  NoLog, " "],
 		#"phosel_elePt_barrel"                   : ["Electron p_{T} (GeV)"       , "Events", 15,[35.,200.], regionText,  NoLog, " "],
-		"phosel_muPt"    		       : ["Muon p_{T} (GeV) "          , "Events", 10, [30,200], regionText,  NoLog, " "],
-		"phosel_elePt"                   : ["Electron p_{T} (GeV)"       , "Events", 10,[35,200.], regionText,  NoLog, " "],
+		"phosel_muPt"    		       : ["Muon p_{T} (GeV) "          , "Events", 5, [30,200], regionText,  NoLog, " "],
+		# "phosel_elePt"                   : ["Electron p_{T} (GeV)"       , "Events", 10,[35,200.], regionText,  NoLog, " "],
+		"phosel_elePt"                   : ["Electron p_{T} (GeV)"       , "Events", 5,[35,200.], regionText,  NoLog, " "],
 		"phosel_eleSCEta"                : ["Electron SC#eta"            , "Events/0.04", 5, [-2.4,2.4], regionText,  NoLog, " "],
 		"phosel_Njet"                    : ["N Jets"                     , "Events", 1, [-1,-1], regionText,  NoLog, " "],
 		#"phosel_Njet_barrel"                    : ["N Jets"                     , "Events", 1, [4,10], regionText,  NoLog, " "],
@@ -932,6 +933,7 @@ if useQCDCR:
 
 for sample in legList:
 	hist = _file[sample].Get("%s_%s"%(histName,sample))
+	print histName,sample
 	hist.SetFillColor(samples[sample][1])
 	hist.SetLineColor(samples[sample][1])
 	legend.AddEntry(hist,samples[sample][2],'f')

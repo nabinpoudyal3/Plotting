@@ -1,37 +1,34 @@
 imax 2  
-jmax * 
+jmax *  
 kmax *  
----------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
 shapes * * ../../misIDEle_syst_looseCRe2e0plots_2016/misIDEle_syst_Prefit.root $CHANNEL/$PROCESS/nominal   $CHANNEL/$PROCESS/$SYSTEMATIC 
----------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
 bin			       ele   mu
 observation		   -1    -1
--------------------------------------------------------------------------------------------
-bin 	  ele                 ele                 ele               ele                      mu                  mu                  mu                mu                 
+--------------------------------------------------------------------------------------------------------------
+bin 	  ele                 ele                 ele               ele                      mu                  mu                  mu                mu                  
 process   MisIDEleSixteen     ZgammaBkgPhoton     WgammaBkgPhoton   OtherSampleBkgPhoton     MisIDEleSixteen     ZgammaBkgPhoton     WgammaBkgPhoton   OtherSampleBkgPhoton
-process   0                   1                   2                 3                        0                   1                   2                 3                       
-rate      -1                  -1                  -1                -1                       -1                  -1                  -1                -1                                        
---------------------------------------------------------------------------------------------
-lumi        lnN     1.025  1.025  1.025  1.025      1.025  1.025  1.025  1.025 
----------------------------------------------------------------------------------------------
-BTagSF_b    shape   1     1     1     1         1     1     1     1    
-BTagSF_l    shape   1     1     1     1         1     1     1     1    
-PU          shape   1     1     1     1         1     1     1     1                          
-MuEff       shape   -     -     -     -         1     1     1     1               
-PhoEff      shape   1     1     1     1         1     1     1     1       
-EleEff      shape   1     1     1     1         -     -     -     -
-#Q2          shape   1     1     1     1         1     1     1     1
-#isr         shape   1     1     1     1         1     1     1     1
-#fsr         shape   1     1     1     1         1     1     1     1
-prefireEcal shape   1     1     1     1         1     1     1     1
-JER         shape   1     1     1     1         1     1     1     1
-#JECTotal	shape   1     1     1     1         1     1     1     1
--------------------------------------------------------------------------------------------------------
+process   0                   1                   2                 3                        0                   1                   2                 3                   
+rate      -1                  -1                  -1                -1                       -1                  -1                  -1                -1                  
+--------------------------------------------------------------------------------------------------------------
+lumi        lnN        1.025  1.025  1.025  1.025  1.025  1.025  1.025  1.025 
+--------------------------------------------------------------------------------------------------------------
+EleEff      shape      1      1      1      1      -      -      -      -
+MuEff       shape      -      -      -      -      1      1      1      1
+BTagSF_l    shape      1      1      1      1      1      1      1      1
+JER         shape      1      1      1      1      1      1      1      1
+JECTotal	shape      1      1      1      1      1      1      1      1
+PhoEff      shape      1      1      1      1      1      1      1      1
+PU          shape      1      1      1      1      1      1      1      1
+prefireEcal shape      1      1      1      1      1      1      1      1
+-------------------------------------------------------------------------------------------------------------
 ZGammaBkgPhotonSF rateParam * ZgammaBkgPhoton  1 
 WGammaBkgPhotonSF rateParam * WgammaBkgPhoton  1 
-#OtherSampleBkgPhotonSF rateParam * OtherSampleBkgPhoton 1
-#OtherSampleBkgPhotonSF param 1   0.1
--------------------------------------------------------------------------------------------------
-mySyst group = lumi BTagSF_b BTagSF_l PU MuEff PhoEff EleEff prefireEcal JER #JECTotal
------------------------------------------------------------------------------------------------
-* autoMCStats 0 1
+OtherSampleBkgPhotonSF rateParam * OtherSampleBkgPhoton 1
+OtherSampleBkgPhotonSF param 1   0.1
+-------------------------------------------------------------------------------------------------------------
+mySyst group = lumi BTagSF_l PU MuEff EleEff PhoEff prefireEcal JECTotal JER
+-------------------------------------------------------------------------------------------------------------
+* autoMCStats 20 0 1
+-------------------------------------------------------------------------------------------------------------

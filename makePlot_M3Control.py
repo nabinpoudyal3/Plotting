@@ -1,4 +1,4 @@
-from ROOT import TFile, TLegend, Double,TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
+from ROOT import kFullCircle,TFile, TLegend, Double,TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
 #from ROOT import *
 import os
 
@@ -79,7 +79,7 @@ parser.add_option("--LooseCRe3e1","--looseCRe3e1", dest="looseCRe3e1", default=F
 parser.add_option("--LooseCRe2e2","--looseCRe2e2", dest="looseCRe2e2", default=False,action="store_true",
                      help="Use ==2 jets + ==2 bjets selection" ) 
 
-parser.add_option("--LooseCRe3ge2","--looseCRe3ge2", dest="looseCRe3ge2", default=False,action="store_true",
+parser.add_option("--verytight","--verytight", dest="verytight", default=False,action="store_true",
                      help="Use ==3 jets + >=2 bjets selection" )  
 
 parser.add_option("--useQCDMC","--qcdMC",dest="useQCDMC", default=False, action="store_true",
@@ -96,12 +96,17 @@ parser.add_option("--noData",dest="noData", default=False, action="store_true",
 parser.add_option("--ratioPlot",dest="ratioPlot", default=False, action="store_true",
 		help="")
 
+parser.add_option("--xsecPlot",dest="xsecPlot", default=False, action="store_true",
+		help="")
 ############
 #parser=argparse.ArgumentParser(
 #    description='''How to run this script? ''',
 #    epilog=""" python makePlot_signal_prompt.py -c Ele -y 2016 --tight --useQCDMC --M3Plot --posfitPlots""")
 
 #args=parser.parse_args()
+
+
+# python makePlot_M3Control.py -y 2016 -c Ele   --zeroPhoton --prefitPlots 
 
 (options, args) = parser.parse_args()
 selYear = options.Year
@@ -114,6 +119,7 @@ postfitPlots  = options.postfitPlots
 prefitPlots   = options.prefitPlots
 
 ratioPlot     = options.ratioPlot
+xsecPlot      = options.xsecPlot
 
 systematics   = options.systematics
 level         = options.level
@@ -127,7 +133,7 @@ looseCRe3e0   = options.looseCRe3e0
 looseCRge4e0  = options.looseCRge4e0
 looseCRe3e1   = options.looseCRe3e1
 looseCRe2e2   = options.looseCRe2e2
-looseCRe3ge2  = options.looseCRe3ge2
+verytight     = options.verytight
 useQCDMC      = options.useQCDMC
 useQCDCR      = options.useQCDCR
 noQCD         = options.noQCD
@@ -143,8 +149,44 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal", "JER", "JEC"]
-#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]#,"fsr","isr","Pdf"]
+commonSystematics= ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal","phosmear","elesmear","phoscale" "elescale"]
+
+RunIISytematics = [
+"BTagSF_b16", "BTagSF_l16", "JER1_16", "JER0_16", "elescale_16", "phoscale_16",
+"BTagSF_b17", "BTagSF_l17", "JER1_17", "JER0_17", "elescale_17", "phoscale_17",
+"BTagSF_b18", "BTagSF_l18", "JER1_18", "JER0_18", "elescale_18", "phoscale_18"]
+
+separateSytematics =  ["JER0", "JECTotal0","JER1", "JECTotal1"]
+
+
+allsystematics = RunIISytematics+commonSystematics+separateSytematics
+
+RunIISytematicsDict = {
+"BTagSF_b16":"BTagSF_b",
+"BTagSF_l16":"BTagSF_l", 
+"JER1_16":"JER", 
+"JER0_16":"JER", 
+"elescale_16":"elescale", 
+"phoscale_16":"phoscale",
+"BTagSF_b17":"BTagSF_b", 
+"BTagSF_l17":"BTagSF_l", 
+"JER1_17":"JER", 
+"JER0_17":"JER", 
+"elescale_17":"elescale", 
+"phoscale_17":"phoscale",
+"BTagSF_b18":"BTagSF_b", 
+"BTagSF_l18":"BTagSF_l", 
+"JER1_18":"JER", 
+"JER0_18":"JER", 
+"elescale_18":"elescale", 
+"phoscale_18":"phoscale"
+}
+
+print RunIISytematics
+print commonSystematics
+print separateSytematics
+print allsystematics
+
 if systematics in allsystematics: print "running on systematics"
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
 
@@ -161,22 +203,67 @@ if level=='down': mylevel='Down'
 if zeroPhoton:      #tight but 0 photon
 	crName = "zeroPhoton"
 	isSelection = "looseCRge2e0"
+	# isSelection = "looseCRge4e0"
+	# isSelection = "looseCRe2e1"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	fileDirQCD = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 	if systematics in allsystematics:
-		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
-		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
-		regionText = "N_{j}#geq4, N_{b}#geq1"
+		if systematics in RunIISytematics: 
+			print systematics, " For full RunII",RunIISytematicsDict[systematics]
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,RunIISytematicsDict[systematics],level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}#geq1"
+		
+		# elif systematics=="JECTotal0" or systematics=="JER0" or systematics=="JECTotal1" or systematics=="JER1": 
+		elif systematics in separateSytematics:
+			print "JECTotal and JER stuffs."
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics[:-1],level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}#geq1"
+
+		elif systematics in commonSystematics:
+			print "Common systematics"
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}#geq1"		
 	else:
 		fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
-		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
 		regionText = "N_{j}#geq4, N_{b}#geq1"
 		
-		
+print ZJetSF,"==>",WJetSF,"==>",MisIDEleSF,"==>",ZGammaSF,"==>",WGammaSF
+# 1.09 ==> 1.14 ==> 2.24 ==> 0.82 ==> 1.15
+# 1.0  ==> 1.14 ==> 2.42 ==> 1.17 ==> 1.25
+# 1.14 ==> 1.32 ==> 2.69 ==> 1.12 ==> 0.36
 
+# python makePlots.py -y 2016 -c Ele --tight --plot presel_M3
+# python makePlots.py -y 2016 -c Mu --tight  --plot presel_M3
+
+# if zeroPhoton:      #tight but 0 photon
+# 	crName = "zeroPhoton"
+# 	isSelection = "looseCRge2e0"
+# 	# isSelection = "looseCRge4e0"
+# 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+# 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+# 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+# 	fileDirQCD = "histograms_%s/%s/hists_verytight/"%(selYear, channel)
+# 	if systematics in allsystematics:
+# 		if "1" in systematics:
+# 			fileDir  = "histograms_%s/%s/hists_%s_%s_verytight/"%(selYear, channel,systematics[:-2],level)
+# 			plotDirectory = "ttgamma_verytightplots_%s_%s/"%(channel,selYear)
+# 			regionText = "N_{j}#geq4, N_{b}#geq2"
+# 		else:
+# 			fileDir  = "histograms_%s/%s/hists_%s_%s_verytight/"%(selYear, channel,systematics,level)
+# 			plotDirectory = "ttgamma_verytightplots_%s_%s/"%(channel,selYear)
+# 			regionText = "N_{j}#geq4, N_{b}#geq2"			
+# 	else:
+# 		fileDir  = "histograms_%s/%s/hists_verytight/"%(selYear, channel)
+# 		#fileDir  = "histograms_%s/%s/hists_verytight/"%(selYear, channel)
+# 		plotDirectory = "ttgamma_verytightplots_%s_%s/"%(channel,selYear)
+# 		regionText = "N_{j}#geq4, N_{b}#geq2"
+		
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
 
@@ -197,8 +284,11 @@ from Style import *
 
 gROOT.ForceStyle()
 
+
 sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
-sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
+# sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+# sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
+sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
 
 #sampleList = ['TTGamma', 'TTbar', 'TGJets','SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV']
 #sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'TGJets':kGray,'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7}
@@ -208,11 +298,13 @@ template_category = {"TTGamma":kOrange,
 					 "TTbar":  kRed+1,    
 					 "WGamma": kBlue-4, 
 					 "ZGamma": kBlue-2,   
+					 "SingleTop": 228,   
 					 "Other":  kGreen+3}
-template_categoryName = {"TTGamma":"t#bart#gamma",  
+template_categoryName = {"TTGamma":"t#bar{t}#gamma", 
 					     "TTbar":  "t#bart",    
 					     "WGamma": "W#gamma", 
 					     "ZGamma": "Z#gamma",   
+					     "SingleTop": "t",   
 					     "Other":  "Other_0#gamma"}
 _file = {}
 
@@ -292,6 +384,7 @@ templateHist["TTGamma" ] = None
 templateHist["TTbar"   ] = None
 templateHist["WGamma"  ] = None 
 templateHist["ZGamma"  ] = None  
+templateHist["SingleTop"  ] = None  
 templateHist["Other"   ] = None 
 
 print sampleList
@@ -312,9 +405,9 @@ for sample in sampleList:
 	elif sample=='TTbar'  : templateHist["TTbar"]  = tempHist.Clone("TTbar")
 	elif sample=='WGamma' :	templateHist["WGamma"] = tempHist.Clone("WGamma")
 	elif sample=='ZGamma' : templateHist["ZGamma"] = tempHist.Clone("ZGamma")
-
+	elif sample=='SingleTop' : templateHist["SingleTop"] = tempHist.Clone("SingleTop")
+	# elif sample=='TTV':
 	else:
-
 
 		if  templateHist["Other"] is None:
 			templateHist["Other"] = tempHist.Clone("Other")
@@ -322,24 +415,34 @@ for sample in sampleList:
 		else:
 			templateHist["Other"].Add(tempHist)
 		
-
+		print ""
 		
 #templateHist["Other"].Add(qcdHist)
 #gApplication.Run()
 #print "exited"
 #sys.exit()
 # apply SF before plotting or feeding into combine
+# sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+
 templateHist["WGamma"].Scale(WGammaSF)
 templateHist["ZGamma"].Scale(ZGammaSF)
 # templateHist["WJets"].Scale(WJetSF) already applied above
 
 #print "WGammaSF and ZGammaSF",  WGammaSF,"  ",ZGammaSF 
-
+# mean = 172.5, Width = 1.94 + 0.5 = 2.34, 
+# [170,175]
 #binning = numpy.array([50,105,155,185,260,500.])
 #binning = numpy.array([50,500.])
 #binning = numpy.array([50,105,155,185,260,500.])
 
-binning = numpy.array([50,100,125,150,175,200,250,300,500.])
+# binning = numpy.array([ 50.,70.,90.,110.,130,150.,170.,190.,210.,230.,250.,300.,400.,500.]) #good one
+# binning = numpy.array([50,100,125,150,175,200,250,300,500.]) #good one
+# binning = numpy.array([50,150,200,500.]) #good one
+
+# binning = numpy.array([50,500.])
+# binning = numpy.array(list(numpy.arange(60.,500.1,20)))
+# [ 50.,70.,90.,110.,130,150.,170.,190.,210.,230.,250.,350.,500.]
+binning = numpy.array([60., 100., 140., 160., 180., 200., 240., 280.,340., 420.,500.1]) # best one
 print binning
 binWidth = numpy.diff(binning)
 
@@ -397,6 +500,7 @@ if prefitPlots:
 					      "TTbar":   "\\ttbar ",          
 					      "WGamma":  "\\Wgamma ",         
 					      "ZGamma":  "\\Zgamma ",         
+					      "SingleTop":  "\\SingleTop ",         
 					      "Other":   "other"
 					    }
 	totalMCEvents = 0
@@ -460,7 +564,7 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["Q2","isr","fsr"]:
+			if systematics in ["Q2","isr","fsr","Pdf","JECTotal0","JECTotal1","JER0","JER1"]:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
 			 	if myNominalHist != None:
 					valNominal = myNominalHist.Integral()
@@ -500,20 +604,36 @@ else:
 
 		stack = THStack()
 		stack.Add(rebinnedHist["Other"  ])
+		stack.Add(rebinnedHist["SingleTop" ])   
 		stack.Add(rebinnedHist["ZGamma" ])   
 		stack.Add(rebinnedHist["WGamma" ])   
 		stack.Add(rebinnedHist["TTbar"  ]) 
 		stack.Add(rebinnedHist["TTGamma"])  
 		#rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
 
-	if postfitPlots:
+
+		f = TFile("CombinedData/prefit_%s_%s_%s.root"%(channel,selYear,mydistributionName),"RECREATE")
+		rebinnedData.Write("rebinnedData")
+		rebinnedHist["TTGamma" ].Write()  
+		rebinnedHist["TTbar"   ].Write()
+		rebinnedHist["WGamma"  ].Write()		 
+		rebinnedHist["ZGamma"  ].Write()		  
+		rebinnedHist["SingleTop"  ].Write()		  
+		rebinnedHist["Other"   ].Write()		 
+		f.Close()
+
+
+	elif postfitPlots:
 		rebinnedData.Scale(1.,"width")
 
 		if ratioPlot == True:
-			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
+		elif xsecPlot == True:
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttXsection%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
+			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttXsection%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 		else:
-			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 		
 		print filename
@@ -526,6 +646,7 @@ else:
 		templatePostHist["TTbar"   ] = TH1F("TTbar"   ,"",len(binWidth),binning)   
 		templatePostHist["WGamma"  ] = TH1F("WGamma"  ,"",len(binWidth),binning)   
 		templatePostHist["ZGamma"  ] = TH1F("ZGamma"  ,"",len(binWidth),binning)    
+		templatePostHist["SingleTop"  ] = TH1F("SingleTop"  ,"",len(binWidth),binning)    
 		templatePostHist["Other"   ] = TH1F("Other"   ,"",len(binWidth),binning)    
 
 		for process in template_category.keys():
@@ -540,10 +661,41 @@ else:
 
 		stack = THStack()
 		stack.Add(templatePostHist["Other"   ])  
+		stack.Add(templatePostHist["SingleTop"  ])   
 		stack.Add(templatePostHist["ZGamma"  ])   
 		stack.Add(templatePostHist["WGamma"  ])  
 		stack.Add(templatePostHist["TTbar"   ]) 
 		stack.Add(templatePostHist["TTGamma" ]) 
+
+
+		if noData:
+			rebinnedData = TH1F("rebinnedData" ,"",len(binWidth),binning)
+			fakeData = Postfile.Get("shapes_fit_s/%s/%s"%(mydistributionName,"data"))
+			nPoints = fakeData.GetN()
+			x = Double(0.)
+			y = Double(0.)
+			for i in range(0,nPoints):
+				# print i
+				fakeData.GetPoint(i, x, y)
+				# print x-0.5,y
+				ey = fakeData.GetErrorY(i)
+				rebinnedData.SetBinContent(i+1, y)
+				rebinnedData.SetBinError(i+1, ey)
+			
+			rebinnedData.Scale(1.,"width")		
+			rebinnedData.SetMarkerStyle(kFullCircle)
+
+
+
+		f = TFile("CombinedData/postfit_%s_%s_%s.root"%(channel,selYear,mydistributionName),"RECREATE")
+		rebinnedData.Write("rebinnedData")
+		templatePostHist["TTGamma" ].Write()  
+		templatePostHist["TTbar"   ].Write()
+		templatePostHist["WGamma"  ].Write()		 
+		templatePostHist["ZGamma"  ].Write()		  
+		templatePostHist["SingleTop"  ].Write()		  
+		templatePostHist["Other"   ].Write()		 
+		f.Close()
 
 	canvasRatio = TCanvas('c1Ratio','c1Ratio',W,H)
 	canvasRatio.SetFillColor(0)
@@ -620,17 +772,20 @@ else:
 
 	#for ih in rebinnedHist:
 	#	legend.AddEntry(rebinnedHist[ih],template_categoryName[ih],'f')
-
+	if noData:legend.AddEntry(rebinnedData,"Toy Data", 'pe')
 	legend.AddEntry(rebinnedHist["TTGamma" ],template_categoryName["TTGamma" ],'f')	
 	legend.AddEntry(rebinnedHist["TTbar"   ],template_categoryName["TTbar"   ],'f') 
 	legend.AddEntry(rebinnedHist["WGamma"  ],template_categoryName["WGamma"  ],'f')  
 	legend.AddEntry(rebinnedHist["ZGamma"  ],template_categoryName["ZGamma"  ],'f')
+	legend.AddEntry(rebinnedHist["SingleTop"  ],template_categoryName["SingleTop"  ],'f')
 	legend.AddEntry(rebinnedHist["Other"   ],template_categoryName["Other"   ],'f')  
 	
 	pad1.cd()
 
 	stack.Draw('HIST')
 	if not noData == True:
+		rebinnedData.Draw('E,X0,SAME')
+	if noData:
 		rebinnedData.Draw('E,X0,SAME')
 	legend.Draw("same")
 	stack.GetXaxis().SetTitle('')
@@ -717,6 +872,9 @@ else:
 		if ratioPlot == True:
 			canvasRatio.SaveAs("%s%s_%s_postfit_ratioPlot.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
 			canvasRatio.Print("%s%s_%s_postfit_ratioPlot.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+		elif xsecPlot == True:
+			canvasRatio.SaveAs("%s%s_%s_postfit_xsectionPlot.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+			canvasRatio.Print("%s%s_%s_postfit_xsectionPlot.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))		
 		else:
 			canvasRatio.SaveAs("%s%s_%s_postfit.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
 			canvasRatio.Print("%s%s_%s_postfit.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))

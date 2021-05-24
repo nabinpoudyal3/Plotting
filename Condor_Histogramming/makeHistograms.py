@@ -31,6 +31,8 @@ parser.add_option("--Tight0b","--tight0b", dest="isTightSelection0b", default=Fa
 					 help="Use 4j0t selection" )
 ##nabin
 
+parser.add_option("--moreSyst", dest="moreSyst", default="",type='str', help="")
+
 parser.add_option("--makeNabinPlots", dest="makeNabinPlots",action="store_true",default=False,
 					 help="Make larger list of plots in histogramDict (mostly object kinematics)" )
 
@@ -130,6 +132,8 @@ parser.add_option("--condor", dest="condor",default=False,action="store_true",
 
 level =options.level
 syst = options.systematic
+moreSyst = options.moreSyst
+
 if syst=="":
 	runsystematic = False
 else:
@@ -137,12 +141,18 @@ else:
 
 gROOT.SetBatch(True)
 
+
+
 selYear = options.Year
 if selYear=="":
 	print "Specify which year 2016, 2017 or 2018?"
 	sys.exit()
 
 samples = sampleInformation.main([selYear])
+
+
+# using weights evtWeight*prefireSF*PUweight*muEffWeight*eleEffWeight*1.0*1.0*1.0*1.0*btagWeight_1a
+# using weights evtWeight*prefireSF*PUweight*muEffWeight*eleEffWeight*1.0*1.0*1.0*1.0*btagWeight_1a
 
 Dilepmass=options.Dilepmass
 finalState = options.channel
@@ -238,8 +248,14 @@ if finalState=="Mu":
 	if sample=="QCD":
 		sample = "QCDMu"
 
-	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/%s/"%selYear 
+	analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/%s/"%selYear 
 	outputhistName = "histograms_%s/mu/%s"%(selYear, outputFileName)
+
+
+	if moreSyst=="CR1" or moreSyst=="CR2" or moreSyst=="erdOn": 
+		analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/%s/%s_"%(selYear,moreSyst) 
+		outputhistName = "histograms_%s/mu/%s"%(selYear, outputFileName)		
+
 	if runsystematic:
 		if syst=="PU":
 			print "is here" 
@@ -325,6 +341,8 @@ if finalState=="Mu":
 			else:
 				isr = "ISRweight_Do"
 			outputhistName = "histograms_%s/mu/%s_isr_%s"%(selYear,outputFileName,level)
+
+
 			
 	#	elif syst=="isr" or syst=="fsr":
 	#		if level=="up":
@@ -337,10 +355,10 @@ if finalState=="Mu":
 		else:
 			print "Running systematics ==>", syst
 			if  level=="up":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/mu/%s_%s_up"%(selYear,outputFileName,syst)
 			if level=="down":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/mu/%s_%s_down"%(selYear,outputFileName,syst)
 
 	extraCuts                = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
@@ -398,8 +416,15 @@ elif finalState=="Ele":
 	if sample=="QCD":
 		sample = "QCDEle"
 	#analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma/13TeV_AnalysisNtuples_2019/electrons/V08_00_26_07/"
-	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/%s/"%selYear
+	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/%s/"%selYear
 	outputhistName = "histograms_%s/ele/%s"%(selYear,outputFileName)
+
+	if moreSyst=="CR1" or moreSyst=="CR2" or moreSyst=="erdOn": 
+		analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/%s/%s_"%(selYear,moreSyst) 
+		outputhistName = "histograms_%s/ele/%s"%(selYear, outputFileName)		
+
+
+
 	if runsystematic:
 
 		if syst=="PU":
@@ -501,10 +526,10 @@ elif finalState=="Ele":
 		else:
 			print "Running systematics ==>", syst
 			if  level=="up":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/ele/%s_%s_up"%(selYear,outputFileName,syst)
 			if level=="down":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/ele/%s_%s_down"%(selYear,outputFileName,syst)
 
 	extraCuts                = "(passPresel_Ele && nJet>=3 && nBJet>=1)*"
@@ -566,7 +591,7 @@ elif finalState=="DiMu":
 		sample = "DataMu"
 	if sample=="QCD":
 		sample = "QCDMu"
-	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Dilepton/%s/"%selYear
+	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Dilepton/%s/"%selYear
 	outputhistName = "histograms_%s/mu/Dilep_%s"%(selYear,outputFileName)
 	
 	if runsystematic:
@@ -670,10 +695,10 @@ elif finalState=="DiMu":
 		else:
 			print "Running systematics ==>", syst
 			if  level=="up":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Dilepton/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Dilepton/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/mu/Dilep_%s_%s_up"%(selYear,outputFileName,syst)
 			if level=="down":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Dilepton/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Dilepton/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/mu/Dilep_%s_%s_down"%(selYear,outputFileName,syst)
 			
 	extraCuts            = "(passPresel_Mu && nJet>=3 && nBJet>=1)*"
@@ -733,7 +758,7 @@ elif finalState=="DiEle":
 		sample = "DataEle"
 	if sample=="QCD":
 		sample = "QCDEle"
-	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Dilepton/%s/"%selYear
+	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Dilepton/%s/"%selYear
 	outputhistName = "histograms_%s/ele/Dilep_%s"%(selYear,outputFileName)
 
 	if runsystematic:
@@ -837,10 +862,10 @@ elif finalState=="DiEle":
 		else:
 			print "Running systematics ==>", syst
 			if  level=="up":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Dilepton/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Dilepton/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/ele/Dilep_%s_%s_up"%(selYear,outputFileName,syst)
 			if level=="down":
-				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/Dilepton/Systematics/%s/"%selYear 
+				analysisNtupleLocation = "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/Dilepton/Systematics/%s/"%selYear 
 				outputhistName = "histograms_%s/ele/Dilep_%s_%s_down"%(selYear,outputFileName,syst)
 
 
@@ -899,7 +924,7 @@ elif finalState=="QCDMu":
 
 	isQCD = True
 
-	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/QCD_controlRegion/%s/"%selYear
+	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/QCD_controlRegion/%s/"%selYear
 	outputhistName = "histograms_%s/mu/qcd%sCR"%(selYear,outputFileName)
 
 	nBJets = 0
@@ -967,7 +992,7 @@ elif finalState=="QCDMu2":
 
 	isQCD = True
 
-	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/QCD_controlRegion/%s/"%selYear
+	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/QCD_controlRegion/%s/"%selYear
 	outputhistName = "histograms_%s/mu/qcd%sCR2"%(selYear,outputFileName)
 
 	nBJets = 0
@@ -994,7 +1019,7 @@ elif finalState=="QCDEle":
 		sample = "DataEle"
 	if sample=="QCD":
 		sample = "QCDEle"
-	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Dec2020/QCD_controlRegion/%s/"%selYear
+	analysisNtupleLocation =  "root://cmseos.fnal.gov//store/user/lpctop/TTGamma_FullRun2/AnalysisNtuples_Feb2021/QCD_controlRegion/%s/"%selYear
 	outputhistName = "histograms_%s/ele/qcd%sCR"%(selYear,outputFileName)
 	print outputhistName
 
@@ -1053,6 +1078,9 @@ elif finalState=="QCDEle":
 	extraCutsLooseCRe3ge2         = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet>=2)*"
 	extraPhotonCutsLooseCRe3ge2   = "(passPresel_Ele && elePFRelIso>0.01 && nJet==3 && nBJet>=2 && %s)*"
 
+
+
+# python makePlot_M3Control.py -y 2016 -c Ele --zeroPhoton --prefitPlots
 
 
 else:
@@ -1118,7 +1146,9 @@ if isLooseCRge2e0Selection:
 	#btagWeight = "(btagWeight[0])"
 	# weights = "evtWeight*PUweight*muEffWeight*eleEffWeight*btagWeight[2]"
 	extraCuts = extraCutsLooseCRge2e0
+	# print "====>", extraCuts
 	extraPhotonCuts = extraPhotonCutsLooseCRge2e0
+	# print "====>", extraPhotonCuts
 	outputhistName = outputhistName + "_looseCRge2e0"
 	dir_="_looseCRge2e0"
 
@@ -1255,7 +1285,7 @@ weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,prefire,Pileup,MuEff,EleEff
 #weights = "%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,1,1,Q2,Pdf,btagWeight)
 print extraCuts
 print extraPhotonCuts
-print "using weights", weights
+# print "using weights", weights
 
 if not runQuiet: print " the output folder is:", outputhistName
 
@@ -1305,6 +1335,7 @@ if plotList is None:
 	elif makedRPlots:
 		plotList=["phosel_dRLeadingPhotonLepton_GenuinePhoton_barrel", "phosel_dRLeadingPhotonLepton_MisIDEle_barrel", "phosel_dRLeadingPhotonLepton_NonPrompt_barrel", "phosel_dRLeadingPhotonLepton_barrel","phosel_dRLeadingPhotonJet_GenuinePhoton_barrel", "phosel_dRLeadingPhotonJet_MisIDEle_barrel", "phosel_dRLeadingPhotonJet_NonPrompt_barrel", "phosel_dRLeadingPhotonJet_barrel"]
 		if not runQuiet: print "Making only dR photon plots"
+
 	elif makegenPlots:
 		plotList=["phosel_LeadingPhotonabsSCEta_barrel", "phosel_LeadingPhotonabsSCEta_GenuinePhoton_barrel","phosel_LeadingPhotonabsSCEta_MisIDEle_barrel","phosel_LeadingPhotonabsSCEta_NonPrompt_barrel","phosel_LeadingPhotonEt_barrel","phosel_LeadingPhotonEt_GenuinePhoton_barrel","phosel_LeadingPhotonEt_MisIDEle_barrel","phosel_LeadingPhotonEt_NonPrompt_barrel", "phosel_GenPhoPt","phosel_GenPhoEta"]
 		if not runQuiet: print "Making only 2D photon plots"
@@ -1444,6 +1475,13 @@ if sample =="QCD_DD":
 #	if "Wtrans" in histogramInfo[hist][1]:continue	
 		histograms[-1].Scale(transferFactor)
 
+# JER_up_ZZTo4L_2016_AnalysisNtuple.root
+# JER_up_ZZ_2016_AnalysisNtuple.root
+# TuneDown_TTGamma_Dilepton_2016_AnalysisNtuple.root
+# TuneDown_TTGamma_SingleLept_2016_AnalysisNtuple.root
+# TuneUp_TTGamma_Dilepton_2016_AnalysisNtuple.root
+# TuneUp_TTGamma_SingleLept_2016_AnalysisNtuple.root
+
 if not "QCD_DD" in sample:
 	if not sample in samples:
 		print "Sample isn't in list"
@@ -1451,12 +1489,30 @@ if not "QCD_DD" in sample:
 		sys.exit()
 	tree = TChain("AnalysisTree")
 	fileListTemp = samples[sample][0]
+
+	if (syst=="elesmear" or syst=="phosmear" or syst=="elescale" or syst=="phoscale") and level=="up":
+		print "==>",syst,level
+		fileListTemp = ["{}{}".format("%s_up_"%syst,i) for i in fileListTemp]
+	elif (syst=="elesmear" or syst=="phosmear" or syst=="elescale" or syst=="phoscale") and level=="down":
+		print "==>",syst,level
+		fileListTemp = ["{}{}".format("%s_down_"%syst,i) for i in fileListTemp]
+
+
+
 	if (syst=="JECTotal" or syst =="JER") and level=="up":
 		print "==>",syst,level
 		fileListTemp = ["{}{}".format("%s_up_"%syst,i) for i in fileListTemp]
 	elif  (syst=="JECTotal" or syst =="JER") and level=="down":
 		print "==>",syst,level
 		fileListTemp = ["{}{}".format("%s_down_"%syst,i) for i in fileListTemp]
+
+	if (syst=="Tune") and level=="up":
+		print "==>",syst,level
+		fileListTemp = ["{}{}".format("%sUp_"%syst,i) for i in fileListTemp]
+	elif  (syst=="Tune") and level=="down":
+		print "==>",syst,level
+		fileListTemp = ["{}{}".format("%sDown_"%syst,i) for i in fileListTemp]
+
 
 	if finalState=="DiMu" or finalState=="DiEle":
 		fileList1 = ["{}{}".format("Dilep_",i) for i in fileListTemp]
@@ -1537,20 +1593,23 @@ if not "QCD_DD" in sample:
 				if options.verbose:
 					print "Variable Name:", h_Info[0]
 					print "Histogram Info:", h_Info
-					print 'Event weight string: "%s"'%evtWeight
+					print '>>> >>>> Event weight string: "%s"'%evtWeight
 			elif h_Info[0][:3]=="pho":
 				evtWeight = "%s*%s[0]"%(evtWeight,PhoEff) # asked for only the first photon
 				if options.verbose:
 					print "Variable Name:", h_Info[0]
 					print "Histogram Info:", h_Info
-					print 'Event weight string: "%s"'%evtWeight
+					print '>>> Event weight string: "%s"'%evtWeight
 			else:
 				evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
 				if options.verbose:
 					print "Variable Name:", h_Info[0]
 					print "Histogram Info:", h_Info
-					print 'Event weight string: "%s"'%evtWeight
+					print '>>>>>>>> Event weight string: "%s"'%evtWeight
 		tree.Draw("%s>>%s_%s"%(h_Info[0],h_Info[1],sample),evtWeight)
+
+if options.verbose: print '>>>>>>>> Event weight string: "%s"'%evtWeight
+
 
 if not os.path.exists(outputhistName):
 	os.makedirs(outputhistName)

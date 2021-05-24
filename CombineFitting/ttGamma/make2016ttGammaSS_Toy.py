@@ -12,7 +12,14 @@ ListOfFiles2016Both = ["fitDiagnostics.TOY_both_2016.root"]
 #parameterDictMu   = {"r":"ttgammaSFmusixteenToy","nonPromptSF":"nonPromptSFmusixteenToy","TTbarSF":"TTbarSFmusixteenToy","WGSF":"WGSFmusixteenToy","ZGSF":"ZGSFmusixteenToy","OtherSF":"OtherSFmusixteenToy"}#,"Other_norm":"OtherNormmusixteenToy"}
 #parameterDictBoth = {"r":"ttgammaSFsixteenToy","nonPromptSF":"nonPromptSFsixteenToy","TTbarSF":"TTbarSFsixteenToy","WGSF":"WGSFsixteenToy","ZGSF":"ZGSFsixteenToy","OtherSF":"OtherSFsixteenToy"}#,"Other_norm":"OtherNormsixteenToy"}
 
-parameterDictEle  = {"r":"ttgammaSFelsixteenToy","TTbarSF":"TTbarSFelsixteenToy","WGSF":"WGSFelsixteenToy","ZGSF":"ZGSFelsixteenToy","OtherSF":"OtherSFelsixteenToy", "Other_norm":"OtherNormelsixteenToy"}
+parameterDictEle  = {
+"r":"ttgammaSFelsixteenToy",
+"TTbarSF":"TTbarSFelsixteenToy",
+"WGSF":"WGSFelsixteenToy",
+"ZGSF":"ZGSFelsixteenToy",
+"OtherSF":"OtherSFelsixteenToy",
+"Other_norm":"OtherNormelsixteenToy"
+}
 parameterDictMu   = {"r":"ttgammaSFmusixteenToy","TTbarSF":"TTbarSFmusixteenToy","WGSF":"WGSFmusixteenToy","ZGSF":"ZGSFmusixteenToy","OtherSF":"OtherSFmusixteenToy", "Other_norm":"OtherNormmusixteenToy"}
 parameterDictBoth = {"r":"ttgammaSFsixteenToy","TTbarSF":"TTbarSFsixteenToy","WGSF":"WGSFsixteenToy","ZGSF":"ZGSFsixteenToy","OtherSF":"OtherSFsixteenToy", "Other_norm":"OtherNormsixteenToy"}
 

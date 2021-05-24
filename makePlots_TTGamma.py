@@ -1,4 +1,4 @@
-from ROOT import Double, TFile, TLegend, TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
+from ROOT import TList, kFullCircle, Double, TFile, TLegend, TCanvas,gPad, TPad, THStack, TF1, TPaveText, TGaxis, SetOwnership, TObject, gStyle,TH1F, gROOT, kBlack,kOrange,kRed,kGreen,kBlue,gApplication,kGray,gSystem,gDirectory,kCyan,kViolet
 #from ROOT import *
 import os
 
@@ -115,6 +115,8 @@ parser.add_option("--noData",dest="noData", default=False, action="store_true",
 parser.add_option("--ratioPlot",dest="ratioPlot", default=False, action="store_true",
 		help="")
 
+parser.add_option("--xsecPlot",dest="xsecPlot", default=False, action="store_true",
+		help="")
 
 ############
 #parser=argparse.ArgumentParser(
@@ -134,6 +136,8 @@ postfitPlots  = options.postfitPlots
 prefitPlots   = options.prefitPlots
 
 ratioPlot     = options.ratioPlot
+xsecPlot      = options.xsecPlot
+
 systematics   = options.systematics
 level         = options.level
 
@@ -152,7 +156,7 @@ useQCDCR      = options.useQCDCR
 noQCD         = options.noQCD
 noData        = options.noData
 
-print noData
+print "Are we using MC only? ",noData
 # sys.exit()
 
 M3Plot        = options.M3Plot
@@ -171,13 +175,52 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal", "JER", "JECTotal"]
-#allsystematics = ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2"]
+commonSystematics= ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal","phosmear","elesmear","phoscale" "elescale"]
+
+RunIISytematics = [
+"BTagSF_b16", "BTagSF_l16", "JER1_16", "JER0_16", "elescale_16", "phoscale_16",
+"BTagSF_b17", "BTagSF_l17", "JER1_17", "JER0_17", "elescale_17", "phoscale_17",
+"BTagSF_b18", "BTagSF_l18", "JER1_18", "JER0_18", "elescale_18", "phoscale_18"]
+
+separateSytematics =  ["JER0", "JECTotal0","JER1", "JECTotal1"]
+
+
+allsystematics = RunIISytematics+commonSystematics+separateSytematics
+
+RunIISytematicsDict = {
+"BTagSF_b16":"BTagSF_b",
+"BTagSF_l16":"BTagSF_l", 
+"JER1_16":"JER", 
+"JER0_16":"JER", 
+"elescale_16":"elescale", 
+"phoscale_16":"phoscale",
+"BTagSF_b17":"BTagSF_b", 
+"BTagSF_l17":"BTagSF_l", 
+"JER1_17":"JER", 
+"JER0_17":"JER", 
+"elescale_17":"elescale", 
+"phoscale_17":"phoscale",
+"BTagSF_b18":"BTagSF_b", 
+"BTagSF_l18":"BTagSF_l", 
+"JER1_18":"JER", 
+"JER0_18":"JER", 
+"elescale_18":"elescale", 
+"phoscale_18":"phoscale"
+}
+
+print RunIISytematics
+print commonSystematics
+print separateSytematics
+print allsystematics
+
 
 if systematics in allsystematics: print "running on systematics"
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
 
 print(Style.RESET_ALL) 
+
+
+# [systematics=="BTagSF_b16",systematics=="BTagSF_l16",systematics=="JER16",systematics=="BTagSF_b17",systematics=="BTagSF_l17",systematics=="JER17",systematics=="BTagSF_b18",systematics=="BTagSF_l18",systematics=="JER18"]
 
 if level=='up':   mylevel='Up'
 if level=='down': mylevel='Down'
@@ -185,17 +228,34 @@ if level=='down': mylevel='Down'
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
 crName = ""
 if M3Plot or ChIsoPlot:      #SR8 
-	isSelection = "looseCRge2e0"
+	# isSelection = "looseCRge2e0"
+	isSelection = "looseCRge4e0"
 	crName = "signal"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	fileDirNom  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 	if systematics in allsystematics:
-		fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
-		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
-		regionText = "N_{j}#geq4, N_{b}#geq1"
+		if systematics in RunIISytematics: 
+			print systematics, " For full RunII ==>", RunIISytematicsDict[systematics]
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,RunIISytematicsDict[systematics],level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}#geq1"
+		
+		# elif systematics=="JECTotal0" or systematics=="JER0" or systematics=="JECTotal1" or systematics=="JER1": 
+		elif systematics in separateSytematics:
+			print "JECTotal and JER stuffs. ==>", systematics[:-1]
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics[:-1],level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}#geq1"
+
+		elif systematics in commonSystematics:
+			print "common systematics. ==>", systematics
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}#geq1"
 	else:
+		print "******** Caution********** this is nominal run"
 		fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
@@ -203,16 +263,32 @@ if M3Plot or ChIsoPlot:      #SR8
 	
 	
 elif btag0:      #CR3 >=4jet 0 btag
-	isSelection = "looseCRge2e0"
+	# isSelection = "looseCRge2e0"
+	isSelection = "looseCRge4e0"
 	crName = "btag0"
 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	fileDirNom  = "histograms_%s/%s/hists_looseCRge4e0/"%(selYear, channel)
 	if systematics in allsystematics:
-		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics,level)
-		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
-		regionText = "N_{j}#geq4, N_{b}=0"
+		if systematics in RunIISytematics: 
+			print systematics, "For full RunII",RunIISytematicsDict[systematics]
+			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,RunIISytematicsDict[systematics],level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}=0"
+		
+		# elif systematics=="JECTotal0" or systematics=="JER0" or systematics=="JECTotal1" or systematics=="JER1": 
+		elif systematics in separateSytematics:
+			print "JECTotal and JER stuffs."
+			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics[:-1],level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}=0"
+
+		elif systematics in commonSystematics:
+			print "Common systematics"
+			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics,level)
+			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+			regionText = "N_{j}#geq4, N_{b}#geq1"	
 	else:
 		fileDir  = "histograms_%s/%s/hists_looseCRge4e0/"%(selYear, channel)
 		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
@@ -220,29 +296,58 @@ elif btag0:      #CR3 >=4jet 0 btag
 		regionText = "N_{j}#geq4, N_{b}=0"
 
 
-elif btag0_3j:      #CR3 >=4jet 0 btag
-	isSelection = "looseCRge2e0"
-	crName = "btag0"
-	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
-	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
-	fileDirNom  = "histograms_%s/%s/hists_looseCRe3e0/"%(selYear, channel)
-	if systematics in allsystematics:
-		fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe3e0/"%(selYear, channel,systematics,level)
-		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
-		regionText = "N_{j}==3, N_{b}=0"
-	else:
-		fileDir  = "histograms_%s/%s/hists_looseCRe3e0/"%(selYear, channel)
-		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
-		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
-		regionText = "N_{j}==3, N_{b}=0"
+# elif btag0:      #CR2 ==3jet 0 btag
+# 	# isSelection = "looseCRge2e0"
+# 	isSelection = "looseCRe3e0"
+# 	crName = "btag0"
+# 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+# 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+# 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+# 	fileDirNom  = "histograms_%s/%s/hists_looseCRe3e0/"%(selYear, channel)
+# 	if systematics in allsystematics:
+# 		if "1" in systematics:
+# 			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe3e0/"%(selYear, channel,systematics[:-2],level)
+# 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+# 			regionText = "N_{j}=3, N_{b}=0"
+# 		else:
+# 			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRe3e0/"%(selYear, channel,systematics,level)
+# 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+# 			regionText = "N_{j}=3, N_{b}=0"
+# 	else:
+# 		fileDir  = "histograms_%s/%s/hists_looseCRe3e0/"%(selYear, channel)
+# 		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
+# 		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+# 		regionText = "N_{j}=3, N_{b}=0"
+
+
+# elif btag0:      
+# 	isSelection = "looseCRge2e0"
+# 	crName = "btag0"
+# 	if selYear  =='2016': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection); # use misIDEl for each year but same V sf for all year.
+# 	elif selYear=='2017': ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+# 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
+# 	fileDirNom  = "histograms_%s/%s/hists_looseCRe2e0/"%(selYear, channel)
+# 	if systematics in allsystematics:
+# 		if "1" in systematics: 
+# 			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge2e0/"%(selYear, channel,systematics[:-2],level)
+# 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+# 			regionText = "N_{j}#geq2, N_{b}=0"
+# 		else:
+# 			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge2e0/"%(selYear, channel,systematics,level)
+# 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+# 			regionText = "N_{j}#geq2, N_{b}=0"		
+# 	else:
+# 		fileDir  = "histograms_%s/%s/hists_looseCRge2e0/"%(selYear, channel)
+# 		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
+# 		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
+# 		regionText = "N_{j}#geq2, N_{b}=0"
 
 
 else:
 	print "wrong plot variable"		
 
 eosFolder="root://cmseos.fnal.gov//store/user/npoudyal/"
-localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
+# localFolder="/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/Local_histogramming/"
 
 fileDirNom = eosFolder + fileDirNom
 print fileDirNom
@@ -344,9 +449,27 @@ elif ChIsoPlot:
 	histNameData= "phosel_mediumID_ChIso_%s" 
 	mydistributionName = histNameData[16:-3]
 elif btag0:
-	histName  	= "phosel_M3_%s_%s"
-	histNameData= "phosel_M3_%s" 
+	histName  	= "phosel_MassEGamma_%s_%s"
+	histNameData= "phosel_MassEGamma_%s" 
 	mydistributionName = histNameData[7:-3]+"0btag"
+	
+	# histName  	= "phosel_LeadingPhotonEt_%s_%s"
+	# histNameData= "phosel_LeadingPhotonEt_%s" 
+	# mydistributionName = histNameData[7:-3]+"0btag"
+	
+	# histName  	= "phosel_M3_%s_%s"
+	# histNameData= "phosel_M3_%s" 
+	# mydistributionName = histNameData[7:-3]+"0btag"
+
+	# if channel == "ele":
+	# 	histName  	= "phosel_elePt_%s_%s"
+	# 	histNameData= "phosel_elePt_%s" 
+	# 	mydistributionName = histNameData[7:-3]+"0btag"
+	# else:
+	# 	histName  	= "phosel_muPt_%s_%s"
+	# 	histNameData= "phosel_muPt_%s" 
+	# 	mydistributionName = histNameData[7:-3]+"0btag"
+
 elif btag0_3j:
 	histName  	= "phosel_M3_%s_%s"
 	histNameData= "phosel_M3_%s" 
@@ -392,22 +515,22 @@ templateHist["nonPromptOther"  ] = None
 #templateHist["Total"] = None 
 print sampleList
 
-#print "<==", MisIDEleSF
+print "<==", MisIDEleSF
 
 if systematics=='misIDE' and level=='up':
 	if selYear=="2016":
-		MisIDEleSF=MisIDEleSF+0.19
+		MisIDEleSF=MisIDEleSF+0.34
 	elif selYear=="2017":
-		MisIDEleSF=MisIDEleSF+0.23
+		MisIDEleSF=MisIDEleSF+0.4
 	else:
-		MisIDEleSF=MisIDEleSF+0.12
+		MisIDEleSF=MisIDEleSF+0.27
 if systematics=='misIDE' and level=='down':
 	if selYear=="2016":
-		MisIDEleSF=MisIDEleSF-0.18
+		MisIDEleSF=MisIDEleSF-0.34
 	elif selYear=="2017":
-		MisIDEleSF=MisIDEleSF-0.22
+		MisIDEleSF=MisIDEleSF-0.4
 	else:
-		MisIDEleSF=MisIDEleSF-0.11
+		MisIDEleSF=MisIDEleSF-0.27
 
 print "==>", MisIDEleSF
 
@@ -502,6 +625,12 @@ for item in hist_category:
 	
 #gApplication.Run()
 #print "exited"
+
+
+# grep -r "Error in <TChain" *.* 
+# grep -r "No such file or directory" *.*
+# grep -r "Error in <TNet" *.*
+
 
 # apply SF before plotting or feeding into combine
 #print qcdHist.Print("All")
@@ -604,36 +733,69 @@ if prefitPlots:
 
 
 
-print "=======>",ZJetSF, WJetSF, MisIDEleSF, WGammaSF, ZGammaSF	
+print "scale factors =======>",ZJetSF, WJetSF, MisIDEleSF, WGammaSF, ZGammaSF	
 #print "WGamma ==>",(templateHist["isolatedWGamma"].Integral(-1,-1) + templateHist["nonPromptWGamma"].Integral(-1,-1))
 #rint "ZGamma ==>",(templateHist["isolatedZGamma"].Integral(-1,-1) + templateHist["nonPromptZGamma"].Integral(-1,-1))
 
 if mydistributionName == "M3":
 	myfilename = "M3"
-	#binning = numpy.array([50,105,155,185,260,500.])
-	binning = numpy.array([50,100,125,150,175,200,250,300,500.])
+	# binning = numpy.array([50,500.])
+	# binning = numpy.array([50,100,125,150,175,200,250,350,500.]) #good one
+	binning = numpy.array([60., 100., 140., 160., 180., 200., 240., 280.,340., 420.,500.1]) #best one
+
 	#binning = numpy.array([50,100,125,150,175,200,250,300,500.])
 	#binning = numpy.array([50,100,120,140,160,180,200,220,240,260,280,300,340,400,500.])
-if mydistributionName == "M30btag":
+# if mydistributionName == "M30btag":
+if mydistributionName == "MassEGamma0btag":
 	myfilename = "zerobtag"
 	#binning = numpy.array([50,100,120,140,160,180,200,220,240,260,280,300,340,400,500.])
-	#binning = numpy.array([50,500.])
-	#binning = numpy.array([50,105,155,185,260,500.])
-	binning = numpy.array([50,100,125,150,175,200,250,300,500.])
+	# binning = numpy.array([0,500.]) # for M3 distribution
+	if channel =='ele':
+		# binning = numpy.array([0,80,100,180.])
+		binning = numpy.array([0,80,84,88,92,96,100,180.])
+
+	else:
+		binning = numpy.array([0,91.,180.])
+	#binning = numpy.array([50,100,125,150,175,200,250,350,500.])
+
+if mydistributionName == "M30btag":
+	myfilename = "zerobtag"
+	# binning = numpy.array([60,500.1]) # for M3 distribution best one is yield only
+	# binning = numpy.array([60., 100., 140., 160., 180., 200., 240., 280.,340., 420.,500.1]) # do not use shape
+	# binning = numpy.array([60., 140., 200., 280., 500.1]) # do not use shape
+	binning = numpy.array([60., 500.1]) # do not use shape
+
+# if mydistributionName == "muPt0btag":
+# 	myfilename = "zerobtag"
+# 	binning = numpy.array([35,500.]) # for M3 distribution
+
+# if mydistributionName == "elePt0btag":
+# 	myfilename = "zerobtag"
+# 	binning = numpy.array([25,500.]) # for M3 distribution
+
+if mydistributionName == "LeadingPhotonEt0btag":
+	myfilename = "zerobtag"
+	mylist = [ 20.  ,30.,  40.,  50.,  60.,  70.,  80.,  90., 100., 110., 120., 130., 140.]
+	# binning = numpy.array(mylist) # for photon pt distribution
+	binning = numpy.array([20.,200.]) # for photon pt distribution
 
 if mydistributionName == "ChIso":
 	myfilename = "ChIso"
 	# binning = numpy.array([0,0.5,1,2,5,12,20.])
-	binning = numpy.array([0.,0.1,1.,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.]) # seems better with default plots.
+	# binning = numpy.array([0.,1.141,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.]) # include first bin
+	# binning = numpy.array([1.141,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.,20.]) # without first bin
+	binning = numpy.array([1.141,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.]) # without first bin, removing last bin
+	# binning = numpy.array([1.141,20.]) # seems better with default plots.
+	# binning = numpy.array([1.141,2,3,4,10,18.]) # seems better with default plots.
 
 binWidth = numpy.diff(binning)
-
 print binning
+print "bin width",binWidth
 
 rebinnedHist ={} 	
 
 for ih in templateHist:
-	#print ih
+	print ih
 	rebinnedHist[ih] = templateHist[ih].Rebin(len(binning)-1,"",binning)
 
 if systematics=='': 
@@ -643,60 +805,78 @@ if systematics=='':
 # 	rebinnedqcdHist = qcdHist.Rebin(len(binning)-1,"",binning)
 # 	#print rebinnedqcdHist.Print("All")
 # 	rebinnedHist["nonPromptOther"].Add(rebinnedqcdHist)
-
 	
+sampleData = ""
+if finalState=='Ele' and datadriven: sampleData = "DataEle"
+elif finalState=='Mu' and datadriven: sampleData = "DataMu"
+histo_sieie_MC  = None
+histo_ChIso_MC  = None
+print fileDir
+print fileDirNom
+if datadriven:
+	for i in sampleList:
+		if i =="QCD_DD": continue
+		histoFileChI = TFile.Open("%s%s.root"%(fileDir,i),"read")
+		histo1 = histoFileChI.Get("phosel_AntiSIEIE_ChIso_%s"%i).Clone("histo1") # sideband MC
+		histoChIsoHad = histoFileChI.Get("phosel_mediumID_ChIso_HadronicPhoton_%s"%i).Clone("histoChIsoHad") # signal MC
+		histoChIsoFake = histoFileChI.Get("phosel_mediumID_ChIso_HadronicFake_%s"%i).Clone("histoChIsoFake")
+		histoChIso =  histoChIsoHad.Clone("histoChIso")
+		histoChIso.Add(histoChIsoFake)
+		histo_sieie = histo1.Rebin(len(binning)-1,"",binning)
+		histo_ChIso = histoChIso.Rebin(len(binning)-1,"",binning)
+		print i, histo_sieie.Integral()
+		if histo_ChIso_MC is None:
+			histo_ChIso_MC = histo_ChIso.Clone("histo_ChIso_MC")
+			histo_ChIso_MC.SetDirectory(0)
+		else:
+			histo_ChIso_MC.Add(histo_ChIso)
 
+		if histo_sieie_MC is None:
+			histo_sieie_MC = histo_sieie.Clone("histo_sieie_MC")
+			histo_sieie_MC.SetDirectory(0)
+		else:
+			histo_sieie_MC.Add(histo_sieie)
 
-if finalState=='Ele' and datadriven:
-	sample = "DataEle"
-	histoFile = TFile.Open("%s%s.root"%(fileDirNom,sample),"read")
-	#print fileDirNom
-	histo = histoFile.Get("phosel_AntiSIEIE_ChIso_%s"%sample).Clone("histo")
-	#print histo
-	histo_sieie = histo.Rebin(len(binning)-1,"",binning)
-	#print binning
-	#print histo_sieie.GetBinContent(1)
-	totalEvt = histo_sieie.Integral(-1,-1)
-	#print "total # of events in Ele Channel antisiesie data:", totalEvt, mydistributionName
-	histo_sieie.Scale(1.0/totalEvt)
+	histoFile = TFile.Open("%s%s.root"%(fileDirNom,sampleData),"read")
+	histo = histoFile.Get("phosel_AntiSIEIE_ChIso_%s"%sampleData).Clone("histo")
+	histo_sieie_Data1 = histo.Rebin(len(binning)-1,"",binning)
+	histo_sieie_Data  = histo_sieie_Data1.Clone("histo_sieie_Data")
+	# histo_ChIso_MC.Scale(1/histo_ChIso_MC.Integral())
+	# histo_sieie_MC.Scale(1/histo_sieie_MC.Integral())
+	for ibin in range(1,histo_sieie_MC.GetNbinsX()+1):
+		# print              histo_ChIso_MC.GetBinContent(ibin), histo_sieie_MC.GetBinContent(ibin)	
+		correctionFactor = histo_ChIso_MC.GetBinContent(ibin)/histo_sieie_MC.GetBinContent(ibin)
+		newBinContent = (histo_sieie_Data1.GetBinContent(ibin) * correctionFactor )  #*binWidth[ibin-1]
+		histo_sieie_Data.SetBinContent(ibin,newBinContent)
+
+	print binWidth
+	print len(binWidth)
+
+	canvas = TCanvas()
+	histo_sieie_Data.Scale(1/histo_sieie_Data.Integral())
+	# histo_sieie_Data.Scale(1.,"width")
+	histo_sieie_Data.Draw()
+	canvas.Print("test.pdf")
+
+	# sys.exit()
+
 	for item in rebinnedHist.keys():
 		if "nonPrompt" in item:
 			#print item
-			nMCevents = rebinnedHist[item].Integral(-1,-1)
-			print "==+>", item ,rebinnedHist[item].Integral(-1,-1)
-			rebinnedHist[item] = histo_sieie.Clone("rebinnedHist[%s]"%item)
-			print "***>",item ,rebinnedHist[item].Integral(-1,-1)
+			# nMCevents = rebinnedHist[item].Integral(-1,-1)
+			nMCevents = rebinnedHist[item].Integral()
+			print "==+>", item ,rebinnedHist[item].Integral()
+			rebinnedHist[item] = histo_sieie_Data.Clone("rebinnedHist[%s]"%item)
+			print "***>",item ,rebinnedHist[item].Integral()
 			rebinnedHist[item].Scale(nMCevents)
-			print "+++>",item, rebinnedHist[item].Integral(-1,-1)
-
-
-elif finalState=='Mu' and datadriven:
-	sample = "DataMu"
-	histoFile = TFile.Open("%s%s.root"%(fileDirNom,sample),"read")
-	histo = histoFile.Get("phosel_AntiSIEIE_ChIso_%s"%sample).Clone("histo")
-	histo_sieie = histo.Rebin(len(binning)-1,"",binning)
-	myCanvas1 = TCanvas()
-	histo_sieie.Draw()
-	myCanvas1.Print("my1.pdf")
-	totalEvt = histo_sieie.Integral(-1,-1)
-	histo_sieie.Scale(1.0/totalEvt)
-	#print "total # of events in Ele Channel antisiesie data:", totalEvt, mydistributionName
-	for item in rebinnedHist.keys():
-		if "nonPrompt" in item:
-			#print item
-			nMCevents = rebinnedHist[item].Integral(-1,-1)
-			print "==+>", item ,rebinnedHist[item].Integral(-1,-1)
-			rebinnedHist[item] = histo_sieie.Clone("rebinnedHist[%s]"%item)
-			print "***>",item ,rebinnedHist[item].Integral(-1,-1)
-			rebinnedHist[item].Scale(nMCevents)
-			print "+++>",item, rebinnedHist[item].Integral(-1,-1)
-
+			print "+++>",item, rebinnedHist[item].Integral()
 
 
 for ih in templateHist:
 	rebinnedHist[ih].SetLineColor(template_category[ih])
 	rebinnedHist[ih].SetFillColor(template_category[ih])
-	print "before feeding template/prefit ==>", ih, rebinnedHist[ih].Integral(-1,-1)
+	if "nonPrompt" in ih:	rebinnedHist[ih].SetFillStyle( 3244);
+	print "before feeding template/prefit ==>", ih, rebinnedHist[ih].Integral()
 
 if template:
 	myfile = TFile("%s%s.root"%(plotDirectory,"ttgamma_Prefit"),"update")
@@ -725,9 +905,16 @@ if template:
 	
 		if systematics=='':
 			myhist = rebinnedHist[iprocess].Clone("nominal")
+			for i_bin in range(1,myhist.GetNbinsX()+1):
+				if myhist.GetBinContent(i_bin)==0: 
+					myhist.SetBinContent(i_bin,0.1)
+				# print "TEST*** ",iprocess,i_bin, myhist.GetBinContent(i_bin)
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			if systematics in ["Q2","isr","fsr"]:
+			## check if any bin is empty in the histogram, if empty then 
+			for i_bin in range(1,myhist.GetNbinsX()+1):
+				if myhist.GetBinContent(i_bin)==0: myhist.SetBinContent(i_bin,0.1)
+			if systematics in ["Q2","isr","fsr","Pdf","JECTotal0","JECTotal1","JER0","JER1"]:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
 				if myNominalHist != None:
 			 		valNominal = myNominalHist.Integral()
@@ -770,33 +957,51 @@ else:
 		
 		stack = THStack()
 		stack.Add(rebinnedHist["nonPromptOther"  ])
-		stack.Add(rebinnedHist["isolatedOther"   ])  
 		stack.Add(rebinnedHist["nonPromptZGamma" ])   
-		stack.Add(rebinnedHist["isolatedZGamma"  ])   
 		stack.Add(rebinnedHist["nonPromptWGamma" ])   
-		stack.Add(rebinnedHist["isolatedWGamma"  ])  
 		stack.Add(rebinnedHist["nonPromptTTbar"  ]) 
-		stack.Add(rebinnedHist["isolatedTTbar"   ]) 
 		stack.Add(rebinnedHist["nonPromptTTGamma"])  
-		stack.Add(rebinnedHist["isolatedTTGamma" ]) 	
+		stack.Add(rebinnedHist["isolatedOther"   ])  
+		stack.Add(rebinnedHist["isolatedZGamma"  ])   
+		stack.Add(rebinnedHist["isolatedWGamma"  ])  
+		stack.Add(rebinnedHist["isolatedTTbar"   ]) 
+		stack.Add(rebinnedHist["isolatedTTGamma" ]) 
 		print "prefit stuff"
+		print "Total # of events in M3 distribution", stack.GetStack().Last().Integral("width")
+		if M3Plot: print "Total # of events in M3 distribution", stack.GetStack().Last().Integral("width")
+		if ChIsoPlot: print "Total # of events in 1st bin of ChIso distribution", stack.GetStack().Last().GetBinWidth(1)*stack.GetStack().Last().GetBinContent(1)
 		
+
+		f = TFile("CombinedData/prefit_%s_%s_%s.root"%(channel,selYear,mydistributionName),"RECREATE")
+		rebinnedData.Write("rebinnedData")
+		rebinnedHist["isolatedTTGamma" ].Write()  
+		rebinnedHist["nonPromptTTGamma"].Write()  
+		rebinnedHist["isolatedTTbar"   ].Write()
+		rebinnedHist["nonPromptTTbar"  ].Write()
+		rebinnedHist["isolatedWGamma"  ].Write()		 
+		rebinnedHist["nonPromptWGamma" ].Write()		  
+		rebinnedHist["isolatedZGamma"  ].Write()		  
+		rebinnedHist["nonPromptZGamma" ].Write()		  
+		rebinnedHist["isolatedOther"   ].Write()		 
+		rebinnedHist["nonPromptOther"  ].Write() 
+		f.Close()
+	
 	elif postfitPlots:
-		rebinnedData.Scale(1.,"width")
+		if not noData: rebinnedData.Scale(1.,"width")
 		if ratioPlot == True:
-			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttR%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
+		elif xsecPlot == True:
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttXsection%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
+			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttXsection%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 		else:
-			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel[:-1],selYear)
+			if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
 			if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma%s/fitDiagnostics%s_%s.root"%(selYear,channel,selYear)
-		# if finalState=="Ele": filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel[:-1],selYear)
-		# if finalState=="Mu":  filename = "/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/ttGamma/fitDiagnostics%s_%s.root"%(channel,selYear)
-		#print filename
 		print filename
 		Postfile = TFile(filename,"read")
 		
 		templatePostHist = {}
-		#print len(binning),"==>",len(binWidth)
+		print "bin width",binWidth
 		templatePostHist["isolatedTTGamma" ] = TH1F("isolatedTTGamma" ,"",len(binWidth),binning)
 		templatePostHist["nonPromptTTGamma"] = TH1F("nonPromptTTGamma","",len(binWidth),binning)
 		templatePostHist["isolatedTTbar"   ] = TH1F("isolatedTTbar"   ,"",len(binWidth),binning)   
@@ -813,9 +1018,11 @@ else:
 		for process in template_category.keys():
 			# if process == "nonPromptWGamma" or process== "nonPromptZGamma": continue
 			tempHist = None
-			#print process, myfilename
-			if mydistributionName=="M30btag":tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(myfilename,process))
+			print "distribution name and file name", mydistributionName, myfilename
+			if "0btag" in mydistributionName: tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(myfilename,process))
 			else:tempHist = Postfile.Get("shapes_fit_s/%s/%s"%(mydistributionName,process))
+			print tempHist
+
 			print process, tempHist
 			if tempHist:
 				for ibin in range(1,len(binning)):
@@ -826,20 +1033,65 @@ else:
 			templatePostHist[process].SetLineColor(template_category[process])
 			templatePostHist[process].SetFillColor(template_category[process])
 			templatePostHist[process].Scale(1.,"width")
+			if "nonPrompt" in process:	templatePostHist[process].SetFillStyle( 3244);
 
 		stack = THStack()
 		stack.Add(templatePostHist["nonPromptOther"  ])
-		stack.Add(templatePostHist["isolatedOther"   ])  
 		stack.Add(templatePostHist["nonPromptZGamma" ])   
 		stack.Add(templatePostHist["nonPromptWGamma" ])   
+		stack.Add(templatePostHist["nonPromptTTbar"  ]) 
+		stack.Add(templatePostHist["nonPromptTTGamma"])  
+		stack.Add(templatePostHist["isolatedOther"   ])  
 		stack.Add(templatePostHist["isolatedZGamma"  ])   
 		stack.Add(templatePostHist["isolatedWGamma"  ])  
-		stack.Add(templatePostHist["nonPromptTTbar"  ]) 
 		stack.Add(templatePostHist["isolatedTTbar"   ]) 
-		stack.Add(templatePostHist["nonPromptTTGamma"])  
 		stack.Add(templatePostHist["isolatedTTGamma" ]) 
+
+		# stack.Add(templatePostHist["nonPromptOther"  ])
+		# stack.Add(templatePostHist["isolatedOther"   ])  
+		# stack.Add(templatePostHist["nonPromptZGamma" ])   
+		# stack.Add(templatePostHist["nonPromptWGamma" ])   
+		# stack.Add(templatePostHist["isolatedZGamma"  ])   
+		# stack.Add(templatePostHist["isolatedWGamma"  ])  
+		# stack.Add(templatePostHist["nonPromptTTbar"  ]) 
+		# stack.Add(templatePostHist["isolatedTTbar"   ]) 
+		# stack.Add(templatePostHist["nonPromptTTGamma"])  
+		# stack.Add(templatePostHist["isolatedTTGamma" ]) 
 		print "postfit stuff"
 
+
+		if noData:
+			rebinnedData = TH1F("rebinnedData" ,"",len(binWidth),binning)
+			fakeData = Postfile.Get("shapes_fit_s/%s/%s"%(myfilename,"data"))
+			nPoints = fakeData.GetN()
+			x = Double(0.)
+			y = Double(0.)
+			for i in range(0,nPoints):
+				# print i
+				fakeData.GetPoint(i, x, y)
+				# print x-0.5,y
+				ey = fakeData.GetErrorY(i)
+				rebinnedData.SetBinContent(i+1, y)
+				rebinnedData.SetBinError(i+1, ey)
+			
+			rebinnedData.Scale(1.,"width")		
+			rebinnedData.SetMarkerStyle(kFullCircle)
+
+
+		f = TFile("CombinedData/postfit_%s_%s_%s.root"%(channel,selYear,mydistributionName),"RECREATE")
+		rebinnedData.Write("rebinnedData")
+		templatePostHist["isolatedTTGamma" ].Write()  
+		templatePostHist["nonPromptTTGamma"].Write()  
+		templatePostHist["isolatedTTbar"   ].Write()
+		templatePostHist["nonPromptTTbar"  ].Write()
+		templatePostHist["isolatedWGamma"  ].Write()		 
+		templatePostHist["nonPromptWGamma" ].Write()		  
+		templatePostHist["isolatedZGamma"  ].Write()		  
+		templatePostHist["nonPromptZGamma" ].Write()		  
+		templatePostHist["isolatedOther"   ].Write()		 
+		templatePostHist["nonPromptOther"  ].Write() 
+		f.Close()
+			# sys.exit()
 		#_file["Data%s"%finalState].cd()
 		#rebinnedMC = stack.GetStack().Last().Clone("rebinnedMC")
 		#x = rebinnedData.Chi2Test(rebinnedMC,"WW CHI2/NDF") 
@@ -899,12 +1151,11 @@ else:
 	    maxVal = max(rebinnedData.GetMaximum(),maxVal)
 
 	minVal = 0.1
-	if mydistributionName == "ChIso": minVal = 20
-	#print minVal
-	# minVal = max(stack.GetStack()[0].GetMinimum(),1)
-	stack.SetMaximum(1.75*maxVal)
-	if mydistributionName == "ChIso": stack.SetMaximum(1.5*maxVal)
+	# if mydistributionName == "ChIso": minVal = 60
 	stack.SetMinimum(minVal)
+	print minVal
+	stack.SetMaximum(1.75*maxVal)
+	if mydistributionName == "ChIso": stack.SetMaximum(2.5*maxVal)
 
 	errorband=stack.GetStack().Last().Clone("errorband")
 	errorband.Sumw2()
@@ -914,8 +1165,10 @@ else:
 	errorband.SetMarkerSize(0)
 	
 
+
 	if not noData == True:
 		legend.AddEntry(rebinnedData,"Data", 'pe')
+	if noData:legend.AddEntry(rebinnedData,"Toy Data", 'pe')
 	legend.AddEntry(errorband,"Uncertainty","f")
 	legend.AddEntry(rebinnedHist["isolatedTTGamma" ],template_categoryName["isolatedTTGamma" ],'f')	
 	legend.AddEntry(rebinnedHist["nonPromptTTGamma"],template_categoryName["nonPromptTTGamma"],'f')  
@@ -929,9 +1182,12 @@ else:
 	legend.AddEntry(rebinnedHist["nonPromptOther"  ],template_categoryName["nonPromptOther"  ],'f')
 	# legend.SetTextSize(0.035)
 	pad1.cd()
+	
 
 	stack.Draw('HIST')
 	if not noData == True:
+		rebinnedData.Draw('E,X0,SAME')
+	if noData:
 		rebinnedData.Draw('E,X0,SAME')
 	legend.Draw("same")
 	stack.GetXaxis().SetTitle('')
@@ -941,7 +1197,7 @@ else:
 	stack.GetYaxis().SetTitleSize(.049)
 	stack.GetYaxis().SetTitleOffset(gStyle.GetTitleYOffset()*(1.-padRatio+padOverlap))
 	stack.SetTitle(';;<Events/GeV>')# '%rebin)
-	if mydistributionName == "ChIso": gPad.SetLogy()
+	# if mydistributionName == "ChIso": gPad.SetLogy()
 
 	#CMS_lumi.channelText = (channelText+"\\n"+regionText)
 	#if postfitPlots: CMS_lumi.channelText =channelText+"\\n "+regionText+"\\n "+chi2Text
@@ -950,6 +1206,9 @@ else:
 	CMS_lumi.writeChannelText = True
 	CMS_lumi.writeExtraText = True
 	CMS_lumi.CMS_lumi(pad1, 4, 11)
+
+	print "Test line"
+
 
 	if not noData:
 		ratio = rebinnedData.Clone("ratio")
@@ -960,6 +1219,7 @@ else:
 	else:
 		ratio = rebinnedData.Clone("ratio")
 		temp = stack.GetStack().Last().Clone("temp")
+		ratio.Divide(temp)
 
 	ratio.SetTitle('')
 	ratio.GetXaxis().SetLabelSize(gStyle.GetLabelSize()/(padRatio+padOverlap))
@@ -1000,6 +1260,7 @@ else:
 	pad2.cd()
 	maxRatio = 1.5
 	minRatio = 0.5
+	print "==", rebinnedData.GetMarkerStyle()
 	ratio.SetMarkerStyle(rebinnedData.GetMarkerStyle())
 	ratio.SetMarkerSize(rebinnedData.GetMarkerSize())
 	ratio.SetLineColor(rebinnedData.GetLineColor())
@@ -1015,10 +1276,14 @@ else:
 
 	if btag0_3j:mydistributionName=mydistributionName+"_3j"
 
+	
 	if postfitPlots:
 		if ratioPlot == True:
 			canvasRatio.SaveAs("%s%s_%s_postfit_ratioPlot.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
 			canvasRatio.Print("%s%s_%s_postfit_ratioPlot.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
+		elif xsecPlot == True:
+			canvasRatio.SaveAs("%s%s_%s_postfit_xsectionPlot.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
+			canvasRatio.Print("%s%s_%s_postfit_xsectionPlot.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
 		else:
 			canvasRatio.SaveAs("%s%s_%s_postfit.root"%(plotDirectory,plotDirectory[:-1],mydistributionName))
 			canvasRatio.Print("%s%s_%s_postfit.pdf" %(plotDirectory,plotDirectory[:-1],mydistributionName))
