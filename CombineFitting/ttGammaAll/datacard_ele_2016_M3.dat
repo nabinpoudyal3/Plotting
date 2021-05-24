@@ -1,0 +1,62 @@
+imax 1
+jmax *
+kmax *
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *      M3     ../../ttgamma_tightplots_ele_2016/ttgamma_Prefit.root M3/$PROCESS/nominal M3/$PROCESS/$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          M3
+observation  -1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bin                               M3                M3                M3                 M3                M3               M3                    M3                M3                 M3                 M3                
+process                           isolatedTTGamma   isolatedTTbar     isolatedZGamma     isolatedWGamma    isolatedOther    nonPromptTTGamma      nonPromptTTbar    nonPromptZGamma    nonPromptWGamma    nonPromptOther    
+process                           0                 1                 2                  3                 4                -1                    5                 6                  7                  8                 
+rate                              -1                -1                -1                 -1                -1               -1                    -1                -1                 -1                 -1                
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+lumi16                  lnN       1.010             1.010             1.010              1.010             1.010            1.010                 1.010             1.010              1.010              1.010             
+lumi161718              lnN       1.006             1.006             1.006              1.006             1.006            1.006                 1.006             1.006              1.006              1.006             
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+BTagSF_b16              shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -               
+BTagSF_l16              shape     -                 -                 1.0                1.0               1.0              -                     -                 1.0                1.0                1.0               
+EleEff                  shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+PU                      shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+prefireEcal             shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0   
+elesmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0
+elescale_16              shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0 
+phosmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0 
+phoscale_16              shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0
+misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
+JECTotal1               shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+JER1_16                 shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+fsr                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+isr                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+Pdf                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+Q2                      shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+Tune                    shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
+color                   shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TTbarSF       param   1.0   0.02
+OtherSF       param   1.0   0.1
+ZGSF          param   1.0   0.60
+WGSF          param   1.0   0.40
+-------------------------------------------------------------------
+nonPromptSF   rateParam  M3  nonPromptTTGamma 1  
+-------------------------------------------------------------------
+nonPromptSF   rateParam  M3  nonPromptTTbar   1  
+nonPromptSF   rateParam  M3  nonPromptOther   1  
+nonPromptSF   rateParam  M3  nonPromptZGamma  1  
+nonPromptSF   rateParam  M3  nonPromptWGamma  1  
+-------------------------------------------------------------------
+TTbarSF       rateParam  M3  nonPromptTTbar   1  
+OtherSF       rateParam  M3  nonPromptOther   1  
+ZGSF          rateParam  M3  nonPromptZGamma  1  
+WGSF          rateParam  M3  nonPromptWGamma  1  
+-------------------------------------------------------------------
+TTbarSF       rateParam  M3  isolatedTTbar    1  
+OtherSF       rateParam  M3  isolatedOther    1  
+ZGSF          rateParam  M3  isolatedZGamma   1  
+WGSF          rateParam  M3  isolatedWGamma   1  
+--------------------------------------------------------------------------------------------------------
+mySyst group = JER1_16 PhoEff Q2 BTagSF_b16 lumi BTagSF_l16 Pdf JECTotal1 PU isr prefireEcal EleEff fsr Tune color elesmear elescale_16 phosmear phoscale_16 misIDE
+--------------------------------------------------------------------------------------------------------
+M3 autoMCStats 20 0 1

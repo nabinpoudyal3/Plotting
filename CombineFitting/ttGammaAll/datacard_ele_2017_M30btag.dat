@@ -1,0 +1,62 @@
+imax 1
+jmax *
+kmax *
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *      zerobtag     ../../ttgamma_tightplots_ele_2017/ttgamma_Prefit.root zerobtag/$PROCESS/nominal zerobtag/$PROCESS/$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          zerobtag
+observation  -1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bin                               zerobtag          zerobtag          zerobtag           zerobtag          zerobtag         zerobtag              zerobtag          zerobtag           zerobtag           zerobtag          
+process                           isolatedTTGamma   isolatedTTbar     isolatedZGamma     isolatedWGamma    isolatedOther    nonPromptTTGamma      nonPromptTTbar    nonPromptZGamma    nonPromptWGamma    nonPromptOther    
+process                           0                 1                 2                  3                 4                -1                    5                 6                  7                  8                 
+rate                              -1                -1                -1                 -1                -1               -1                    -1                -1                 -1                 -1                
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+lumi17                  lnN       1.020             1.020             1.020              1.020             1.020            1.020                 1.020             1.020              1.020              1.020             
+lumi161718              lnN       1.009             1.009             1.009              1.009             1.009            1.009                 1.009             1.009              1.009              1.009             
+lumi1718                lnN       1.006             1.006             1.006              1.006             1.006            1.006                 1.006             1.006              1.006              1.006             
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+BTagSF_l17              shape     -                 -                 1.0                1.0               1.0              -                     -                 1.0                1.0                1.0               
+MuEff                   shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+PU                      shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+prefireEcal             shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+elesmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+elescale17              shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+phosmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+phoscale17              shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
+JECTotal1               shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+JER1_17                 shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+fsr                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+isr                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+Pdf                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+Q2                      shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
+Tune                    shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
+color                   shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TTbarSF       param   1.0   0.02
+#OtherSF       param   1.0   0.1
+ZGSF          param   1.0   0.60
+WGSF          param   1.0   0.40
+-------------------------------------------------------------------
+nonPromptSF   rateParam  zerobtag  nonPromptTTGamma 1  
+-------------------------------------------------------------------
+nonPromptSF   rateParam  zerobtag  nonPromptTTbar   1  
+nonPromptSF   rateParam  zerobtag  nonPromptOther   1  
+nonPromptSF   rateParam  zerobtag  nonPromptZGamma  1  
+nonPromptSF   rateParam  zerobtag  nonPromptWGamma  1  
+-------------------------------------------------------------------
+TTbarSF       rateParam  zerobtag  nonPromptTTbar   1  
+#OtherSF       rateParam  zerobtag  nonPromptOther   1  
+ZGSF          rateParam  zerobtag  nonPromptZGamma  1  
+WGSF          rateParam  zerobtag  nonPromptWGamma  1  
+-------------------------------------------------------------------
+TTbarSF       rateParam  zerobtag  isolatedTTbar    1  
+#OtherSF       rateParam  zerobtag  isolatedOther    1  
+ZGSF          rateParam  zerobtag  isolatedZGamma   1  
+WGSF          rateParam  zerobtag  isolatedWGamma   1  
+--------------------------------------------------------------------------------------------------------
+mySyst group = JER1_17 PhoEff Q2 BTagSF_l17 lumi Pdf JECTotal1 PU isr prefireEcal EleEff fsr Tune color elesmear elescale17 phosmear phoscale17 misIDE
+--------------------------------------------------------------------------------------------------------
+zerobtag autoMCStats 20 0 1

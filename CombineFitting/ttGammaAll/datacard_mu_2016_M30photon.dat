@@ -1,0 +1,49 @@
+imax 1
+jmax *
+kmax *
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *      M30photon     ../../ttgamma_tightplots_mu_2016/ttgamma_Prefit.root M30photon/$PROCESS/nominal M30photon/$PROCESS/$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          M30photon
+observation  -1
+----------------------------------------------------------------------------------------------------------------------------
+bin                               M30photon         M30photon         M30photon          M30photon         M30photon        M30photon        
+process                           TTGamma           TTbar             ZGamma             WGamma            SingleTop        Other            
+process                           0                 1                 2                  3                 4                5                
+rate                              -1                -1                -1                 -1                -1               -1               
+---------------------------------------------------------------------------------------------------------------------------------------------
+lumi16                  lnN       1.010             1.010             1.010              1.010             1.010            1.010            
+lumi161718              lnN       1.006             1.006             1.006              1.006             1.006            1.006            
+---------------------------------------------------------------------------------------------------------------------------------------------
+BTagSF_b16              shape     1.0               1.0               -                  -                 1.0              -              
+BTagSF_l16              shape     -                 -                 1.0                1.0               1.0              1.0              
+MuEff                   shape     1.0               1.0               1.0                1.0               1.0              1.0              
+PU                      shape     1.0               1.0               1.0                1.0               1.0              1.0              
+prefireEcal             shape     1.0               1.0               1.0                1.0               1.0              1.0    
+JECTotal0               shape     1.0               1.0               -                  -                 -                -                
+JER0_16                 shape     1.0               1.0               -                  -                 -                -                
+Pdf                     shape     1.0               1.0               -                  -                 -                -                
+Q2                      shape     1.0               1.0               -                  -                 -                -                
+fsr                     shape     1.0               1.0               -                  -                 -                -                
+isr                     shape     1.0               1.0               -                  -                 -                -       
+Tune                    shape     1.0               -                 -                  -                 -                -        
+color                   shape     1.0               -                 -                  -                 -                -        
+----------------------------------------------------------------------------------------------------------------------------
+TTbarSF       param   1.0   0.02
+Other_norm    param   1.0   0.10
+ZGSF          param   1.0   0.60
+WGSF          param   1.0   0.40
+SingleTopSF   param   1.0   0.10 
+-------------------------------------------------------------------
+TTbarSF       rateParam  M30photon  TTGamma    1  
+TTbarSF       rateParam  M30photon  TTbar      1  
+Other_norm    rateParam  M30photon  Other      1  
+ZGSF          rateParam  M30photon  ZGamma     1  
+WGSF          rateParam  M30photon  WGamma     1  
+SingleTopSF   rateParam  M30photon  SingleTop  1  
+--------------------------------------------------------------------------------------------------------
+mySyst group = JER0_16 Q2 BTagSF_b16 lumi BTagSF_l16 Pdf JECTotal0 PU isr prefireEcal MuEff fsr Tune color
+--------------------------------------------------------------------------------------------------------
+M30photon autoMCStats 20 0 1
+
+

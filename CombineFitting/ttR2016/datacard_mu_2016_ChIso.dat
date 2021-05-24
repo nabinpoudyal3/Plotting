@@ -1,0 +1,64 @@
+imax 1
+jmax *
+kmax *
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *      ChIso     ../../ttgamma_tightplots_mu_2016/ttgamma_Prefit.root ChIso/$PROCESS/nominal ChIso/$PROCESS/$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          ChIso
+observation  -1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bin                               ChIso             ChIso             ChIso              ChIso             ChIso            ChIso                 ChIso             ChIso              ChIso              ChIso             
+process                           isolatedTTGamma   isolatedTTbar     isolatedZGamma     isolatedWGamma    isolatedOther    nonPromptTTGamma      nonPromptTTbar    nonPromptZGamma    nonPromptWGamma    nonPromptOther    
+process                           0                 1                 2                  3                 4                -1                    5                 6                  7                  8                 
+rate                              -1                -1                -1                 -1                -1               -1                    -1                -1                 -1                 -1                
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+lumi                    lnN       1.012             1.012             1.012              1.012             1.012            -                     -                 -                  -                  -                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+BTagSF_b                shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -               
+BTagSF_l                shape     -                 -                 1.0                1.0               1.0              -                     -                 -                  -                  -               
+EleEff                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+PU                      shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+prefireEcal             shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+phosmear                shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+phoscale                shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+
+misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
+JECTotal1               shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
+JER1                    shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
+fsr                     shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
+isr                     shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
+Pdf                     shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
+Q2                      shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
+shapeDD                 shape     -                 -                 -                  -                 -                1                     1                 1                  1                  1                 
+Tune                    shape     1.0               -                 -                  -                 -                -                     -                 -                  -                  -                 
+color                   shape     1.0               -                 -                  -                 -                -                     -                 -                  -                  -                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+OtherSF       param   1.0   0.1
+ZGSF          param   1.0   0.60
+WGSF          param   1.0   0.40
+-------------------------------------------------------------------
+nonPromptSF   rateParam  ChIso  nonPromptTTGamma 1  
+-------------------------------------------------------------------
+nonPromptSF   rateParam  ChIso  nonPromptTTbar   1  
+nonPromptSF   rateParam  ChIso  nonPromptOther   1  
+nonPromptSF   rateParam  ChIso  nonPromptZGamma  1  
+nonPromptSF   rateParam  ChIso  nonPromptWGamma  1  
+-------------------------------------------------------------------
+OtherSF       rateParam  ChIso  nonPromptOther   1  
+ZGSF          rateParam  ChIso  nonPromptZGamma  1  
+WGSF          rateParam  ChIso  nonPromptWGamma  1  
+-------------------------------------------------------------------
+OtherSF       rateParam  ChIso  isolatedOther    1  
+ZGSF          rateParam  ChIso  isolatedZGamma   1  
+WGSF          rateParam  ChIso  isolatedWGamma   1  
+--------------------------------------------------------------------------------------------------------
+mySyst group = JER1 PhoEff Q2 BTagSF_b lumi BTagSF_l Pdf JECTotal1 PU isr prefireEcal MuEff fsr Tune color   phosmear phoscale misIDE shapeDD
+--------------------------------------------------------------------------------------------------------
+renormTTGamma    rateParam *     *TTGamma 0.06292616746918506
+nuisance edit    freeze renormTTGamma ifexists
+renormTTbar      rateParam *     *TTbar   0.0012022698855439068
+nuisance edit    freeze renormTTbar   ifexists
+TTbarSF          rateParam *     *TT*     831.76
+-------------------------------------------------------------------
+ChIso autoMCStats 20 0 1
