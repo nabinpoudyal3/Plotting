@@ -15,7 +15,7 @@ rate                              -1                -1                -1        
 lumi                    lnN       1.025             1.025             1.025              1.025             1.025            1.025                 1.025             1.025              1.025              1.025             
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 BTagSF_l                shape     -                 -                 1.0                1.0               1.0              -                     -                 1.0                1.0                1.0               
-MuEff                   shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
+EleEff                   shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
 PU                      shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
 PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
 elesmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
@@ -33,8 +33,8 @@ Tune                    shape     1.0               -                 -         
 color                   shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #OtherSF       param   1.0   0.1
-ZGSF          param   1.0   0.60
-WGSF          param   1.0   0.40
+ZGSF          param   1.0   0.40
+WGSF          param   1.0   0.10
 -------------------------------------------------------------------
 nonPromptSF   rateParam  zerobtag  nonPromptTTGamma 1  
 -------------------------------------------------------------------
@@ -51,7 +51,7 @@ WGSF          rateParam  zerobtag  nonPromptWGamma  1
 ZGSF          rateParam  zerobtag  isolatedZGamma   1  
 WGSF          rateParam  zerobtag  isolatedWGamma   1  
 --------------------------------------------------------------------------------------------------------
-mySyst group = JER1 PhoEff Q2 BTagSF_l lumi Pdf JECTotal1 PU isr 1.025 EleEff fsr Tune color elesmear elescale phosmear phoscale misIDE
+mySyst group = JER1 PhoEff Q2 BTagSF_l lumi Pdf JECTotal1 PU isr EleEff fsr Tune color elesmear elescale phosmear phoscale misIDE
 --------------------------------------------------------------------------------------------------------
 renormTTGamma    rateParam *     *TTGamma 0.06292616746918506
 nuisance edit    freeze renormTTGamma ifexists

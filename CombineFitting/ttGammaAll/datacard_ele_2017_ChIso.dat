@@ -23,9 +23,9 @@ PU                      shape     1.0               1.0               1.0       
 PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 prefireEcal             shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 elesmear                shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
-elescale17              shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+elescale_17             shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 phosmear                shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
-phoscale_17              shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+phoscale_17             shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
 JECTotal1               shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
 JER1_17                 shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
@@ -37,10 +37,10 @@ shapeDD                 shape     -                 -                 -         
 Tune                    shape     1.0               -                 -                  -                 -                -                     -                 -                  -                  -                 
 color                   shape     1.0               -                 -                  -                 -                -                     -                 -                  -                  -                 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TTbarSF       param   1.0   0.02
+TTbarSF       param   1.0   0.01
 OtherSF       param   1.0   0.1
-ZGSF          param   1.0   0.60
-WGSF          param   1.0   0.40
+ZGSF          param   1.0   0.40
+WGSF          param   1.0   0.10
 -------------------------------------------------------------------
 nonPromptSF   rateParam  ChIso  nonPromptTTGamma 1  
 -------------------------------------------------------------------
@@ -59,6 +59,6 @@ OtherSF       rateParam  ChIso  isolatedOther    1
 ZGSF          rateParam  ChIso  isolatedZGamma   1  
 WGSF          rateParam  ChIso  isolatedWGamma   1  
 --------------------------------------------------------------------------------------------------------
-mySyst group = JER1_17 PhoEff Q2 BTagSF_b17 lumi BTagSF_l17 Pdf JECTotal1 PU isr prefireEcal EleEff fsr Tune color elesmear elescale17 phosmear phoscale_17 misIDE shapeDD
+mySyst group = JER1_17 PhoEff Q2 BTagSF_b17 lumi17 lumi161718 lumi1718 BTagSF_l17 Pdf JECTotal1 PU isr prefireEcal EleEff fsr Tune color elesmear elescale_17 phosmear phoscale_17 misIDE shapeDD
 --------------------------------------------------------------------------------------------------------
 ChIso autoMCStats 20 0 1

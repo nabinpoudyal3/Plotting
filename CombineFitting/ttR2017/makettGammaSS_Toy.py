@@ -71,20 +71,20 @@ for ifile in ListOfFiles2017Mu:
             line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(parameterDictMu[param][0],fit.GetParameter(1),fit.GetParameter(2),fit.GetParameter(2))
         del hist
 
-for ifile in ListOfFiles2017Both:
-    myfile = ROOT.TFile(ifile,"read")
-    limit = myfile.Get("limit")
-    for param in parameterDictBoth.keys():
-        hist = ROOT.TH1F("hist","",parameterDictBoth[param][1][0],parameterDictBoth[param][1][1],parameterDictBoth[param][1][2])
-        limit.Draw("%s>>hist"%(param))
-        hist = ROOT.gDirectory.Get('hist')
-        hist.Fit("gaus")
-        fit = hist.GetFunction("gaus")
-        if param == "trackedParam_r":
-            line += "\\newcommand{\\%s} {\ensuremath{%.5f \\substack{+%.5f \\\\ -%.5f}}}\n"%(parameterDictBoth[param][0],fit.GetParameter(1),fit.GetParameter(2),fit.GetParameter(2))
-        else:
-            line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(parameterDictBoth[param][0],fit.GetParameter(1),fit.GetParameter(2),fit.GetParameter(2))
-        del hist
+# for ifile in ListOfFiles2017Both:
+#     myfile = ROOT.TFile(ifile,"read")
+#     limit = myfile.Get("limit")
+#     for param in parameterDictBoth.keys():
+#         hist = ROOT.TH1F("hist","",parameterDictBoth[param][1][0],parameterDictBoth[param][1][1],parameterDictBoth[param][1][2])
+#         limit.Draw("%s>>hist"%(param))
+#         hist = ROOT.gDirectory.Get('hist')
+#         hist.Fit("gaus")
+#         fit = hist.GetFunction("gaus")
+#         if param == "trackedParam_r":
+#             line += "\\newcommand{\\%s} {\ensuremath{%.5f \\substack{+%.5f \\\\ -%.5f}}}\n"%(parameterDictBoth[param][0],fit.GetParameter(1),fit.GetParameter(2),fit.GetParameter(2))
+#         else:
+#             line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ -%.2f}}}\n"%(parameterDictBoth[param][0],fit.GetParameter(1),fit.GetParameter(2),fit.GetParameter(2))
+#         del hist
 
 
 print line

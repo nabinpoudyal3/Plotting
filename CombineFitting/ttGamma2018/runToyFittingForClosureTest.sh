@@ -1,28 +1,28 @@
 #!/bin/bash
 
-rm *el_201?_nonPrompt_*.root
-rm *mu_201?_nonPrompt_*.root
-rm *el_201?_*.root
-rm *mu_201?_*.root
+# rm *el_201?_nonPrompt_*.root
+# rm *mu_201?_nonPrompt_*.root
+# rm *el_201?_*.root
+# rm *mu_201?_*.root
 
-rm ttgamma_closure_ele_201?.pdf
-rm ttgamma_closure_mu_201?.pdf
-rm nonPrompt_closure_ele_201?.pdf
-rm nonPrompt_closure_mu_201?.pdf
+# rm ttgamma_closure_ele_201?.pdf
+# rm ttgamma_closure_mu_201?.pdf
+# rm nonPrompt_closure_ele_201?.pdf
+# rm nonPrompt_closure_mu_201?.pdf
 
 
 
-./allCombine.sh
-echo "Just check the following:"
+# ./allCombine.sh
+# echo "Just check the following:"
 
-text2workspace.py  datacard_ele_2018.txt 
-ValidateDatacards.py datacard_ele_2018.txt --printLevel 3 --checkUncertOver 0.1 
+# text2workspace.py  datacard_ele_2018.dat 
+# ValidateDatacards.py datacard_ele_2018.dat --printLevel 3 --checkUncertOver 0.1 
 
-text2workspace.py  datacard_mu_2018.txt 
-ValidateDatacards.py datacard_mu_2018.txt --printLevel 3 --checkUncertOver 0.1 
+# text2workspace.py  datacard_mu_2018.dat 
+# ValidateDatacards.py datacard_mu_2018.dat --printLevel 3 --checkUncertOver 0.1 
 
-text2workspace.py  datacard_both_2018.txt 
-ValidateDatacards.py datacard_both_2018.txt --printLevel 3 --checkUncertOver 0.1 
+# text2workspace.py  datacard_both_2018.dat 
+# ValidateDatacards.py datacard_both_2018.dat --printLevel 3 --checkUncertOver 0.1 
 
 
 for i in $(seq 0.4 0.2 2.6)
@@ -54,8 +54,8 @@ else
         x=1234260
 fi
         echo $x
-        combine -M MultiDimFit -n el_2018_nonPrompt_$i datacard_ele_2018.txt --setParameters nonPromptSF=$i -s $x -t 500 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3&
-        combine -M MultiDimFit -n mu_2018_nonPrompt_$i datacard_mu_2018.txt  --setParameters nonPromptSF=$i -s $x -t 500 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3&
+        combine -M MultiDimFit -n el_2018_nonPrompt_$i datacard_ele_2018.dat --setParameters nonPromptSF=$i -s $x -t 300 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3&
+        combine -M MultiDimFit -n mu_2018_nonPrompt_$i datacard_mu_2018.dat  --setParameters nonPromptSF=$i -s $x -t 300 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3&
        
 done
 
@@ -90,15 +90,15 @@ else
         x=1234260
 fi
         echo $x
-        combine -M MultiDimFit -n el_2018_$i datacard_ele_2018.txt -s $x -t 500 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3& 
-        combine -M MultiDimFit -n mu_2018_$i datacard_mu_2018.txt  -s $x -t 500 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3&        
+        combine -M MultiDimFit -n el_2018_$i datacard_ele_2018.dat -s $x -t 300 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3& 
+        combine -M MultiDimFit -n mu_2018_$i datacard_mu_2018.dat  -s $x -t 300 --expectSignal=$i --redefineSignalPOIs r,nonPromptSF -v3&        
 done
 
 wait
 
-echo "python ttGamma_closureTest.py"
-python ttGamma_closureTest.py
-echo "python ttGamma_closureTest_nonPrompt.py"
-python ttGamma_closureTest_nonPrompt.py
+# echo "python ttGamma_closureTest.py"
+# python ttGamma_closureTest.py
+# echo "python ttGamma_closureTest_nonPrompt.py"
+# python ttGamma_closureTest_nonPrompt.py
 
-exit 1
+# exit 1

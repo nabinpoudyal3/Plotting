@@ -21,7 +21,8 @@ PU                      shape     1.0               1.0               1.0       
 PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
 phosmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
 phoscale                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
-misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
+misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+
 JECTotal1               shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
 JER1                    shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
 fsr                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
@@ -31,10 +32,10 @@ Q2                      shape     1.0               1.0               -         
 Tune                    shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
 color                   shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TTbarSF       param   1.0   0.02
-OtherSF       param   1.0   0.1
-ZGSF          param   1.0   0.60
-WGSF          param   1.0   0.40
+TTbarSF       param   1.0   0.01
+OtherSF       param   1.0   0.10
+ZGSF          param   1.0   0.40
+WGSF          param   1.0   0.10
 -------------------------------------------------------------------
 nonPromptSF   rateParam  M3  nonPromptTTGamma 1  
 -------------------------------------------------------------------
@@ -53,6 +54,6 @@ OtherSF       rateParam  M3  isolatedOther    1
 ZGSF          rateParam  M3  isolatedZGamma   1  
 WGSF          rateParam  M3  isolatedWGamma   1  
 --------------------------------------------------------------------------------------------------------
-mySyst group = JER1 PhoEff Q2 BTagSF_b lumi BTagSF_l Pdf JECTotal1 PU isr  MuEff fsr Tune color   phosmear phoscale misIDE
+mySyst group = JER1 PhoEff Q2 BTagSF_b lumi BTagSF_l Pdf JECTotal1 PU isr  MuEff fsr Tune color   phosmear phoscale 
 --------------------------------------------------------------------------------------------------------
 M3 autoMCStats 20 0 1

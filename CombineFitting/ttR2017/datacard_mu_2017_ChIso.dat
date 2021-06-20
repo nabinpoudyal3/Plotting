@@ -16,14 +16,14 @@ lumi                    lnN       1.023             1.023             1.023     
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 BTagSF_b                shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -               
 BTagSF_l                shape     -                 -                 1.0                1.0               1.0              -                     -                 -                  -                  -               
-EleEff                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+MuEff                   shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 PU                      shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 prefireEcal             shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 phosmear                shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 phoscale                shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
+misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -               
 
-misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
 JECTotal1               shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
 JER1                    shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
 fsr                     shape     1.0               1.0               -                  -                 -                -                     -                 -                  -                  -                 
@@ -34,9 +34,9 @@ shapeDD                 shape     -                 -                 -         
 Tune                    shape     1.0               -                 -                  -                 -                -                     -                 -                  -                  -                 
 color                   shape     1.0               -                 -                  -                 -                -                     -                 -                  -                  -                 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-OtherSF       param   1.0   0.1
-ZGSF          param   1.0   0.60
-WGSF          param   1.0   0.40
+OtherSF       param   1.0   0.10
+ZGSF          param   1.0   0.40
+WGSF          param   1.0   0.10
 -------------------------------------------------------------------
 nonPromptSF   rateParam  ChIso  nonPromptTTGamma 1  
 -------------------------------------------------------------------
@@ -53,12 +53,14 @@ OtherSF       rateParam  ChIso  isolatedOther    1
 ZGSF          rateParam  ChIso  isolatedZGamma   1  
 WGSF          rateParam  ChIso  isolatedWGamma   1  
 --------------------------------------------------------------------------------------------------------
-mySyst group = JER1 PhoEff Q2 BTagSF_b lumi BTagSF_l Pdf JECTotal1 PU isr prefireEcal MuEff fsr Tune color   phosmear phoscale misIDE shapeDD
+mySyst group = JER1 PhoEff Q2 BTagSF_b lumi BTagSF_l Pdf JECTotal1 PU isr prefireEcal MuEff fsr Tune color   phosmear phoscale  shapeDD misIDE
 --------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 renormTTGamma    rateParam *     *TTGamma 0.06292616746918506
 nuisance edit    freeze renormTTGamma ifexists
-renormTTbar      rateParam *     *TTbar   0.0012022698855439068
+renormTTbar      rateParam *     *TTbar   0.001022698855439068
 nuisance edit    freeze renormTTbar   ifexists
 TTbarSF          rateParam *     *TT*     831.76
--------------------------------------------------------------------
+----------------------------------------------------------------------------------
+
 ChIso autoMCStats 20 0 1

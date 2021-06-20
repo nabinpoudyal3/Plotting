@@ -22,9 +22,9 @@ EleEff                  shape     1.0               1.0               1.0       
 PU                      shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
 PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
 elesmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0
-elescale_18              shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0 
+elescale_18             shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0 
 phosmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0 
-phoscale_18              shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0
+phoscale_18             shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0
 misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
 JECTotal1               shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
 JER1_18                 shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
@@ -35,10 +35,10 @@ Q2                      shape     1.0               1.0               -         
 Tune                    shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
 color                   shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TTbarSF       param   1.0   0.02
+TTbarSF       param   1.0   0.01
 OtherSF       param   1.0   0.1
-ZGSF          param   1.0   0.60
-WGSF          param   1.0   0.40
+ZGSF          param   1.0   0.40
+WGSF          param   1.0   0.10
 -------------------------------------------------------------------
 nonPromptSF   rateParam  M3  nonPromptTTGamma 1  
 -------------------------------------------------------------------
@@ -57,6 +57,6 @@ OtherSF       rateParam  M3  isolatedOther    1
 ZGSF          rateParam  M3  isolatedZGamma   1  
 WGSF          rateParam  M3  isolatedWGamma   1  
 --------------------------------------------------------------------------------------------------------
-mySyst group = JER1_18 PhoEff Q2 BTagSF_b18 lumi BTagSF_l18 Pdf JECTotal1 PU isr  EleEff fsr Tune color elesmear elescale_18 phosmear phoscale_18 misIDE
+mySyst group = JER1_18 PhoEff Q2 BTagSF_b18 lumi18 lumi161718 lumi1718 BTagSF_l18 Pdf JECTotal1 PU isr  EleEff fsr Tune color elesmear elescale_18 phosmear phoscale_18 misIDE
 --------------------------------------------------------------------------------------------------------
 M3 autoMCStats 20 0 1

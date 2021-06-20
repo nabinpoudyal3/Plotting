@@ -200,13 +200,14 @@ template_categoryName = {"isolatedTTGamma":"t#bar{t}#gamma iso", "nonPromptTTGam
 # 	myDir = {"ele/MisIDEleEighteen":"ele_MisIDEleEighteen","ele/WgammaBkgPhoton":"ele_WgammaBkgPhoton","ele/ZgammaBkgPhoton":"ele_ZgammaBkgPhoton","ele/OtherSampleBkgPhoton":"ele_OtherSampleBkgPhoton",
 #              "mu/MisIDEleEighteen":"mu_MisIDEleEighteen","mu/WgammaBkgPhoton":"mu_WgammaBkgPhoton","mu/ZgammaBkgPhoton":"mu_ZgammaBkgPhoton","mu/OtherSampleBkgPhoton":"mu_OtherSampleBkgPhoton"}
 if plotVariable=="M30photon":
-	# systematicList = ["PhoEff","BTagSF_b","BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
+	systematicList = ["JECTotal0","JER0"]
 	# systematicList = ["fsr"] #,"BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
 	myDir= {"%s/ZGamma"%plotVariable:  "%s_ZGamma"%plotVariable,
 	 		"%s/TTGamma"%plotVariable: "%s_TTGamma"%plotVariable,
 	 		"%s/TTbar"%plotVariable:   "%s_TTbar"%plotVariable,
 	 		"%s/Other"%plotVariable:   "%s_Other"%plotVariable,
 	 		"%s/WGamma"%plotVariable:  "%s_WGamma"%plotVariable,
+	 		"%s/SingleTop"%plotVariable:  "%s_t"%plotVariable,
 	}
 	myDirName = {
 
@@ -215,12 +216,13 @@ if plotVariable=="M30photon":
 	 		"%s/TTbar"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["TTbar"]),
 	 		"%s/Other"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["Other"]),
 	 		"%s/WGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["WGamma"]),
+	 		"%s/SingleTop"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["SingleTop"]),
 
 
 
 	}
 else:
-	systematicList = ["shapeDD"]
+	systematicList = ["PhoEff"]
 
 	# systematicList = ["PhoEff","misIDE","BTagSF_b","BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
 	# systematicList = ["fsr"] #,"BTagSF_l","MuEff","EleEff","PU","JECTotal","JER","isr","fsr","Q2","Pdf"]
@@ -229,11 +231,11 @@ else:
 	 		"%s/nonPromptTTbar"%plotVariable:   "%s_nonPromptTTbar"%plotVariable,
 	 		"%s/nonPromptOther"%plotVariable:   "%s_nonPromptOther"%plotVariable,
 	 		"%s/nonPromptWGamma"%plotVariable:  "%s_nonPromptWGamma"%plotVariable,
-	 		# "%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
-	 		# "%s/isolatedOther"%plotVariable:    "%s_isolatedOther"%plotVariable,
-	 		# "%s/isolatedZGamma"%plotVariable:   "%s_isolatedZGamma"%plotVariable,
-	 		# "%s/isolatedTTbar"%plotVariable:    "%s_isolatedTTbar"%plotVariable,
-	 		# "%s/isolatedWGamma"%plotVariable:   "%s_isolatedWGamma"%plotVariable,
+	 		"%s/isolatedTTGamma"%plotVariable:  "%s_isolatedTTGamma"%plotVariable,
+	 		"%s/isolatedOther"%plotVariable:    "%s_isolatedOther"%plotVariable,
+	 		"%s/isolatedZGamma"%plotVariable:   "%s_isolatedZGamma"%plotVariable,
+	 		"%s/isolatedTTbar"%plotVariable:    "%s_isolatedTTbar"%plotVariable,
+	 		"%s/isolatedWGamma"%plotVariable:   "%s_isolatedWGamma"%plotVariable,
 	}
 
 	myDirName= {"%s/nonPromptZGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["nonPromptZGamma"]),
@@ -241,11 +243,11 @@ else:
 	 		    "%s/nonPromptTTbar"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["nonPromptTTbar"]),
 	 		    "%s/nonPromptOther"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["nonPromptOther"]),
 	 		    "%s/nonPromptWGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["nonPromptWGamma"]),
-	 		    # "%s/isolatedTTGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["isolatedTTGamma"]),
-	 		    # "%s/isolatedOther"%plotVariable:    "%s %s "%(plotVariable,template_categoryName["isolatedOther"]),
-	 		    # "%s/isolatedZGamma"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["isolatedZGamma"]),
-	 		    # "%s/isolatedTTbar"%plotVariable:    "%s %s "%(plotVariable,template_categoryName["isolatedTTbar"]),
-	 		    # "%s/isolatedWGamma"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["isolatedWGamma"])
+	 		    "%s/isolatedTTGamma"%plotVariable:  "%s %s "%(plotVariable,template_categoryName["isolatedTTGamma"]),
+	 		    "%s/isolatedOther"%plotVariable:    "%s %s "%(plotVariable,template_categoryName["isolatedOther"]),
+	 		    "%s/isolatedZGamma"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["isolatedZGamma"]),
+	 		    "%s/isolatedTTbar"%plotVariable:    "%s %s "%(plotVariable,template_categoryName["isolatedTTbar"]),
+	 		    "%s/isolatedWGamma"%plotVariable:   "%s %s "%(plotVariable,template_categoryName["isolatedWGamma"])
 	}
 systematicsDictionary = {
 "lumi"       : "Luminosity",
@@ -257,8 +259,10 @@ systematicsDictionary = {
 "BTagSF_l"   : "l tagging ",
 "EleEff"     : "Electron Efficiency",
 "prefireEcal": "L1 prefire Efficiency",
-"JECTotal"   : "Jet Energy Correction",
-"JER"        : "Jet Energy Resolution",
+"JECTotal1"   : "Jet Energy Correction 1",
+"JECTotal0"   : "Jet Energy Correction 0",
+"JER1"        : "Jet Energy Resolution 1",
+"JER0"        : "Jet Energy Resolution 0",
 "OtherSF"    : "1#gamma other bkg norm",
 "Other_norm" : "0#gamma other bkg norm",
 "TTbarSF"    : "tt norm",
@@ -488,7 +492,7 @@ for idir in myDir.keys():
 		else:
 			ratioUp.GetYaxis().SetRangeUser(2-1.1*maxRatio,1.1*maxRatio)
 
-		ratioUp.GetYaxis().SetRangeUser(0.8,1.2)
+		ratioUp.GetYaxis().SetRangeUser(0.95,1.05)
 
 		# ratioUp.GetYaxis().SetNdivisions(504)
 		#ratioUp.GetXaxis().SetTitle(inputfilename[:-12])
@@ -557,3 +561,52 @@ with open("oneSigmaVariation/emptyTemplate_%s_%s_%s.py"%(plotVariable,channel,se
 
 #print plotDirectory[:-1]+'/'+plotDirectory[:-1]+'_%s.pdf'%plotVariable
 
+
+'''
+
+
+
+mv all_ele_2016.pdf  all_ele_2016_3bin.pdf
+mv all_mu_2016.pdf  all_mu_2016_3bin.pdf
+mv all_ele_2017.pdf  all_ele_2017_3bin.pdf
+mv all_mu_2017.pdf  all_mu_2017_3bin.pdf
+mv all_ele_2018.pdf  all_ele_2018_3bin.pdf
+mv all_mu_2018.pdf  all_mu_2018_3bin.pdf
+
+
+/home/npoudyal/PlottingBackup_WorkingOne
+
+cp /home/npoudyal/PlottingBackup_WorkingOne/ttgamma_tightplots_mu_2016/ttgamma_Prefit.root  ttgamma_tightplots_mu_2016
+cp /home/npoudyal/PlottingBackup_WorkingOne/ttgamma_tightplots_ele_2016/ttgamma_Prefit.root  ttgamma_tightplots_ele_2016
+cp /home/npoudyal/PlottingBackup_WorkingOne/ttgamma_tightplots_ele_2017/ttgamma_Prefit.root  ttgamma_tightplots_ele_2017
+cp /home/npoudyal/PlottingBackup_WorkingOne/ttgamma_tightplots_ele_2018/ttgamma_Prefit.root  ttgamma_tightplots_ele_2018
+cp /home/npoudyal/PlottingBackup_WorkingOne/ttgamma_tightplots_mu_2017/ttgamma_Prefit.root  ttgamma_tightplots_mu_2017
+cp /home/npoudyal/PlottingBackup_WorkingOne/ttgamma_tightplots_mu_2018/ttgamma_Prefit.root  ttgamma_tightplots_mu_2018
+
+
+cp -R ttgamma_tightplots_mu_2016  ttgamma_tightplots_mu_2016_backup  
+cp -R ttgamma_tightplots_ele_2016  ttgamma_tightplots_ele_2016_backup  
+cp -R ttgamma_tightplots_ele_2017  ttgamma_tightplots_ele_2017_backup  
+cp -R ttgamma_tightplots_ele_2018  ttgamma_tightplots_ele_2018_backup  
+cp -R ttgamma_tightplots_mu_2017  ttgamma_tightplots_mu_2017_backup  
+cp -R ttgamma_tightplots_mu_2018  ttgamma_tightplots_mu_2018_backup  
+
+
+rm -rf ttgamma_tightplots_mu_2016 
+rm -rf ttgamma_tightplots_ele_2016
+rm -rf ttgamma_tightplots_ele_2017
+rm -rf ttgamma_tightplots_ele_2018
+rm -rf ttgamma_tightplots_mu_2017 
+rm -rf ttgamma_tightplots_mu_2018 
+
+
+mv ttgamma_tightplots_mu_2016_backup   ttgamma_tightplots_mu_2016  
+mv  ttgamma_tightplots_ele_2016_backup   ttgamma_tightplots_ele_2016 
+mv  ttgamma_tightplots_ele_2017_backup   ttgamma_tightplots_ele_2017 
+mv  ttgamma_tightplots_ele_2018_backup   ttgamma_tightplots_ele_2018 
+mv ttgamma_tightplots_mu_2017_backup   ttgamma_tightplots_mu_2017  
+mv ttgamma_tightplots_mu_2018_backup   ttgamma_tightplots_mu_2018  
+
+
+
+'''

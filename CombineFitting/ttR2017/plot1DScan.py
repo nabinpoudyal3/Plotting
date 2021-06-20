@@ -186,7 +186,7 @@ crossings = main_scan['crossings']
 val_nom = main_scan['val']
 val_2sig = main_scan['val_2sig']
 
-textfit = '%s = %.3f{}^{#plus %.3f}_{#minus %.3f}' % (fixed_name, val_nom[0], val_nom[1], abs(val_nom[2]))
+textfit = '%s = %.5f{}^{#plus %.5f}_{#minus %.5f}' % (fixed_name, val_nom[0], val_nom[1], abs(val_nom[2]))
 
 
 pt = ROOT.TPaveText(0.59, 0.82 - len(other_scans)*0.08, 0.95, 0.91, 'NDCNB')
@@ -194,7 +194,7 @@ pt.AddText(textfit)
 
 if args.breakdown is None:
     for i, other in enumerate(other_scans):
-        textfit = '#color[%s]{%s = %.3f{}^{#plus %.3f}_{#minus %.3f}}' % (other_scans_opts[i][2], fixed_name, other['val'][0], other['val'][1], abs(other['val'][2]))
+        textfit = '#color[%s]{%s = %.5f{}^{#plus %.5f}_{#minus %.5f}}' % (other_scans_opts[i][2], fixed_name, other['val'][0], other['val'][1], abs(other['val'][2]))
         pt.AddText(textfit)
 
 
@@ -212,7 +212,7 @@ if args.breakdown is not None:
         v_hi.append(other['val'][1])
         v_lo.append(other['val'][2])
     assert(len(v_hi) == len(breakdown))
-    textfit = '%s = %.3f' % (fixed_name, val_nom[0])
+    textfit = '%s = %.5f' % (fixed_name, val_nom[0])
     for i, br in enumerate(breakdown):
         if i < (len(breakdown) - 1):
             if (abs(v_hi[i+1]) > abs(v_hi[i])):
@@ -228,7 +228,7 @@ if args.breakdown is not None:
         else:
             hi = v_hi[i]
             lo = v_lo[i]
-        textfit += '{}^{#plus %.3f}_{#minus %.3f}(%s)' % (hi, abs(lo), br)
+        textfit += '{}^{#plus %.5f}_{#minus %.5f}(%s)' % (hi, abs(lo), br)
     pt.AddText(textfit)
 
 
@@ -252,7 +252,7 @@ for i, other in enumerate(other_scans):
 legend.Draw()
 
 save_graph = main_scan['graph'].Clone()
-save_graph.GetXaxis().SetTitle('%s = %.3f %+.3f/%+.3f' % (fixed_name, val_nom[0], val_nom[2], val_nom[1]))
+save_graph.GetXaxis().SetTitle('%s = %.5f %+.5f/%+.5f' % (fixed_name, val_nom[0], val_nom[2], val_nom[1]))
 outfile = ROOT.TFile(args.output+'.root', 'RECREATE')
 outfile.WriteTObject(save_graph)
 outfile.Close()

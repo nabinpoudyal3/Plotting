@@ -16,14 +16,15 @@ lumi17                  lnN       1.020             1.020             1.020     
 lumi161718              lnN       1.009             1.009             1.009              1.009             1.009            1.009                 1.009             1.009              1.009              1.009             
 lumi1718                lnN       1.006             1.006             1.006              1.006             1.006            1.006                 1.006             1.006              1.006              1.006             
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-BTagSF_l17              shape     -                 -                 1.0                1.0               1.0              -                     -                 1.0                1.0                1.0               
-MuEff                   shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
-PU                      shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
-PhoEff                  shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
-prefireEcal             shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
-phosmear                shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
-phoscale_17              shape     1.0               1.0               1.0                1.0               1.0              1.0                   1.0               1.0                1.0                1.0               
-misIDE                  shape     1.0               1.0               1.0                1.0               1.0              -                     -                 -                  -                  -                 
+BTagSF_l17              shape     -                 -                 1.0                1.0               -                -                     -                 1.0                1.0                -               
+MuEff                   shape     1.0               1.0               1.0                1.0               -                1.0                   1.0               1.0                1.0                -               
+PU                      shape     1.0               1.0               1.0                1.0               -                1.0                   1.0               1.0                1.0                -               
+PhoEff                  shape     1.0               1.0               1.0                1.0               -                1.0                   1.0               1.0                1.0                -               
+prefireEcal             shape     1.0               1.0               1.0                1.0               -                1.0                   1.0               1.0                1.0                -               
+phosmear                shape     1.0               1.0               1.0                1.0               -                1.0                   1.0               1.0                1.0                -               
+phoscale_17             shape     1.0               1.0               1.0                1.0               -                1.0                   1.0               1.0                1.0                -               
+misIDE                  shape     1.0               1.0               1.0                1.0               -                -                     -                 -                  -                  -               
+
 JECTotal1               shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
 JER1_17                 shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
 fsr                     shape     1.0               1.0               -                  -                 -                1.0                   1.0               -                  -                  -                 
@@ -33,10 +34,10 @@ Q2                      shape     1.0               1.0               -         
 Tune                    shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
 color                   shape     1.0               -                 -                  -                 -                1.0                   -                 -                  -                  -                 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TTbarSF       param   1.0   0.02
+TTbarSF       param   1.0   0.01
 #OtherSF       param   1.0   0.1
-ZGSF          param   1.0   0.60
-WGSF          param   1.0   0.40
+ZGSF          param   1.0   0.40
+WGSF          param   1.0   0.10
 -------------------------------------------------------------------
 nonPromptSF   rateParam  zerobtag  nonPromptTTGamma 1  
 -------------------------------------------------------------------
@@ -55,6 +56,6 @@ TTbarSF       rateParam  zerobtag  isolatedTTbar    1
 ZGSF          rateParam  zerobtag  isolatedZGamma   1  
 WGSF          rateParam  zerobtag  isolatedWGamma   1  
 --------------------------------------------------------------------------------------------------------
-mySyst group = JER1_17 PhoEff Q2 BTagSF_l17 lumi Pdf JECTotal1 PU isr prefireEcal MuEff fsr Tune color   phosmear phoscale_17 misIDE
+mySyst group = JER1_17 PhoEff Q2 BTagSF_l17 lumi17 lumi161718 lumi1718 Pdf JECTotal1 PU isr prefireEcal MuEff fsr Tune color   phosmear phoscale_17 misIDE
 --------------------------------------------------------------------------------------------------------
 zerobtag autoMCStats 20 0 1

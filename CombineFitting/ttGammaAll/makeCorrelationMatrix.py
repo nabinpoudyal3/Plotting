@@ -32,9 +32,91 @@ canvas.SetBottomMargin(0.15);
 canvas.SetFrameFillColor(0);
 canvas.SetFrameBorderMode(0);
    
+############
+
+f1 = ROOT.TFile.Open('fitDiagnostics.Asimov_ele.root','read')
+
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+print mypal
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
    
-f1 = ROOT.TFile.Open('fitDiagnostics.Data.root','read')
-#h_background = f1.Get('covariance_fit_b')
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('correlation_ttgamma_Asimov_ele.pdf') #########################################################
+f1 = ROOT.TFile.Open('fitDiagnostics.Asimov_mu.root','read')
+
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('correlation_ttgamma_Asimov_mu.pdf') #####################################################################
+
+
+f1 = ROOT.TFile.Open('fitDiagnostics.Asimov_both.root','read')
+
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('correlation_ttgamma_Asimov_both.pdf') #####################################################################
+
+
+
+f1 = ROOT.TFile.Open('fitDiagnosticsele.root','read')
+
 h_signal = f1.Get('covariance_fit_s')
 
 h_signal.GetYaxis().SetLabelSize(0.02)
@@ -55,13 +137,12 @@ mypal.SetY1NDC(0.1);
 mypal.SetY2NDC(0.9);
 canvas.Modified();
 canvas.Update();
+   
 #ROOT.gApplication.Run()
-canvas.SaveAs('correlation_ttgamma_data.pdf') #########################################################
 
+canvas.SaveAs('correlation_ttgamma_data_ele.pdf') #########################################################
+f1 = ROOT.TFile.Open('fitDiagnosticsmu.root','read')
 
-
-f1 = ROOT.TFile.Open('fitDiagnostics.TOY.root','read')
-#h_background = f1.Get('covariance_fit_b')
 h_signal = f1.Get('covariance_fit_s')
 
 h_signal.GetYaxis().SetLabelSize(0.02)
@@ -75,21 +156,48 @@ h_signal.SetContour(99)
 h_signal.Draw('colz, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
-print mypal
 mypal.SetX1NDC(0.02);
 mypal.SetX2NDC(0.06);
 mypal.SetY1NDC(0.1);
 mypal.SetY2NDC(0.9);
 canvas.Modified();
-canvas.Update(); 
+canvas.Update();
+   
 #ROOT.gApplication.Run()
-canvas.SaveAs('correlation_ttgamma_toy.pdf') #########################################################
+
+canvas.SaveAs('correlation_ttgamma_data_mu.pdf') #####################################################################
 
 
-f1 = ROOT.TFile.Open('fitDiagnostics.Asimov.root','read')
-#h_background = f1.Get('covariance_fit_b')
+f1 = ROOT.TFile.Open('fitDiagnosticsboth.root','read')
+
 h_signal = f1.Get('covariance_fit_s')
 
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('correlation_ttgamma_data_both.pdf') #####################################################################
+
+
+f1 = ROOT.TFile.Open('fitDiagnostics.TOY_ele.root','read')
+
+h_signal = f1.Get('covariance_fit_s')
 h_signal.GetYaxis().SetLabelSize(0.02)
 h_signal.GetXaxis().SetLabelSize(0.02)
 h_signal.GetZaxis().SetLabelSize(0.03)
@@ -108,10 +216,64 @@ mypal.SetY1NDC(0.1);
 mypal.SetY2NDC(0.9);
 canvas.Modified();
 canvas.Update();
+   
 #ROOT.gApplication.Run()
-canvas.SaveAs('correlation_ttgamma_Asimov.pdf') #########################################################
+
+canvas.SaveAs('correlation_ttgamma_toy_ele.pdf') #########################################################
+f1 = ROOT.TFile.Open('fitDiagnostics.TOY_mu.root','read')
+
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
 
 
-print "Done"
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('correlation_ttgamma_toy_mu.pdf') #####################################################################
+
+
+f1 = ROOT.TFile.Open('fitDiagnostics.TOY_both.root','read')
+
+h_signal = f1.Get('covariance_fit_s')
+
+h_signal.GetYaxis().SetLabelSize(0.02)
+h_signal.GetXaxis().SetLabelSize(0.02)
+h_signal.GetZaxis().SetLabelSize(0.03)
+h_signal.SetMarkerSize(0.7)
+h_signal.LabelsOption("v", "X")
+
+
+h_signal.SetContour(99)
+h_signal.Draw('colz, Y+')
+
+mypal = h_signal.GetListOfFunctions().FindObject('palette')
+mypal.SetX1NDC(0.02);
+mypal.SetX2NDC(0.06);
+mypal.SetY1NDC(0.1);
+mypal.SetY2NDC(0.9);
+canvas.Modified();
+canvas.Update();
+   
+#ROOT.gApplication.Run()
+
+canvas.SaveAs('correlation_ttgamma_toy_both.pdf') #####################################################################
+
+
+
 sys.exit()
 

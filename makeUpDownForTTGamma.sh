@@ -1,7 +1,36 @@
 #!/bin/bash
 
-# declare -a YEAR=("2016" "2017" "2018")
-declare -a YEAR=("2016")
+
+
+
+python testRatio.py -y 2016 -c Ele --tight --plotVariable M3  &
+python testRatio.py -y 2016 -c Ele --tight --plotVariable ChIso  &
+python testRatio.py -y 2016 -c Ele --tight --plotVariable zerobtag &
+
+python testRatio.py -y 2016 -c Mu --tight --plotVariable M3  &
+python testRatio.py -y 2016 -c Mu --tight --plotVariable ChIso  &
+python testRatio.py -y 2016 -c Mu --tight --plotVariable zerobtag &
+
+wait
+echo "Done"
+exit 1
+
+
+python testRatio.py -y 2016 -c Ele --tight --plotVariable M30photon &
+python testRatio.py -y 2016 -c Mu --tight --plotVariable M30photon &
+
+wait
+exit 1
+
+
+
+
+
+
+
+
+declare -a YEAR=("2016" "2017" "2018")
+# declare -a YEAR=("2016")
 
 for year in ${YEAR[@]}; do
 

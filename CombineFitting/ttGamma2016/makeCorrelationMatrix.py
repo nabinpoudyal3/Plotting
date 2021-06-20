@@ -46,7 +46,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 print mypal
@@ -72,7 +72,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 mypal.SetX1NDC(0.02);
@@ -99,7 +99,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 mypal.SetX1NDC(0.02);
@@ -127,7 +127,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 print mypal
@@ -153,7 +153,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 mypal.SetX1NDC(0.02);
@@ -180,7 +180,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 mypal.SetX1NDC(0.02);
@@ -206,7 +206,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 print mypal
@@ -232,7 +232,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 mypal.SetX1NDC(0.02);
@@ -259,7 +259,7 @@ h_signal.LabelsOption("v", "X")
 
 
 h_signal.SetContour(99)
-h_signal.Draw('colz, Y+')
+h_signal.Draw('colz,text, Y+')
 
 mypal = h_signal.GetListOfFunctions().FindObject('palette')
 mypal.SetX1NDC(0.02);

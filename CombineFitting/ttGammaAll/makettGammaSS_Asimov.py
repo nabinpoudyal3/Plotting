@@ -4,16 +4,17 @@ import sys
 
 
 #if sys.argv[1]=="toyFitting":
-#	ListOfFiles2016Ele  = ["fitDiagnostics.TOY_ele_2016.root"]
-#	ListOfFiles2016Mu   = ["fitDiagnostics.TOY_ele_2016.root"]
-	#ListOfFiles2016Both = ["fitDiagnostics.TOY_ele_2016.root"]
+#	ListOfFilesEle  = ["fitDiagnostics.TOY_ele_.root"]
+#	ListOfFilesMu   = ["fitDiagnostics.TOY_ele_.root"]
+	#ListOfFilesBoth = ["fitDiagnostics.TOY_ele_.root"]
 	
 #else:
-ListOfFiles  = ["fitDiagnostics.datacard_Asimov.root"]
-
+ListOfFilesEle  = ["fitDiagnostics.Asimov_ele.root"]
+ListOfFilesMu   = ["fitDiagnostics.Asimov_mu.root"]
+ListOfFilesBoth = ["fitDiagnostics.Asimov_both.root"]
 
 # lineTest = ""
-# for ifile in ListOfFiles2016Ele:
+# for ifile in ListOfFilesEle:
 #     myfile = ROOT.TFile(ifile,"read")
 #     if myfile.GetListOfKeys().Contains("fit_s") is False:
 #         print ifile[14:-10], ": Fit failed."
@@ -27,79 +28,109 @@ ListOfFiles  = ["fitDiagnostics.datacard_Asimov.root"]
 #     lineTest += "%s = %.2f [+%.2f  %.2f]\n" %("Other     ",fit_s.floatParsFinal().find("OtherSF").getVal(),fit_s.floatParsFinal().find("OtherSF").getErrorHi(),fit_s.floatParsFinal().find("OtherSF").getErrorLo())
 #     lineTest += "%s = %.2f [+%.2f  %.2f]\n" %("OtherNorm ",fit_s.floatParsFinal().find("Other_norm").getVal(),fit_s.floatParsFinal().find("Other_norm").getErrorHi(),fit_s.floatParsFinal().find("Other_norm").getErrorLo())
 
-# with open("TTGamma_nonPrompt_2016_Asimov.txt","w") as _file:
+# with open("TTGamma_nonPrompt__Asimov.txt","w") as _file:
 #     _file.write(lineTest)
 
-#line = ""
-#for ifile in ListOfFiles2016Ele:
-#    myfile = ROOT.TFile(ifile,"read")
-#    if myfile.GetListOfKeys().Contains("fit_s") is False:
-#        print ifile[14:-10], ": Fit failed."
-#        continue
-#    fit_s = myfile.Get("fit_s")
-#    line +=   "ttgammaSF_el_2016 = %.2f \n"%(fit_s.floatParsFinal().find("r").getVal())
-#    line += "nonPromptSF_el_2016 = %.2f \n"%(fit_s.floatParsFinal().find("nonPromptSF").getVal())
-#    line +=     "TTbarSF_el_2016 = %.2f \n"%(fit_s.floatParsFinal().find("TTbarSF").getVal())
-#    line +=        "WGSF_el_2016 = %.2f \n"%(fit_s.floatParsFinal().find("WGSF").getVal())
-#    line +=        "ZGSF_el_2016 = %.2f \n"%(fit_s.floatParsFinal().find("ZGSF").getVal())
-#    line +=     "OtherSF_el_2016 = %.2f \n"%(fit_s.floatParsFinal().find("OtherSF").getVal())
-    #line +=     "Other_norm_el_2016 = %.2f \n"%(fit_s.floatParsFinal().find("Other_norm").getVal())
+line = ""
+for ifile in ListOfFilesEle:
+   myfile = ROOT.TFile(ifile,"read")
+   if myfile.GetListOfKeys().Contains("fit_s") is False:
+       print ifile[14:-10], ": Fit failed."
+       continue
+   fit_s = myfile.Get("fit_s")
+   line +=   "ttgammaSF_el = %.2f \n"%(fit_s.floatParsFinal().find("r").getVal())
+   line += "nonPromptSF_el = %.2f \n"%(fit_s.floatParsFinal().find("nonPromptSF").getVal())
+   line +=     "TTbarSF_el = %.2f \n"%(fit_s.floatParsFinal().find("TTbarSF").getVal())
+   line +=        "WGSF_el = %.2f \n"%(fit_s.floatParsFinal().find("WGSF").getVal())
+   line +=        "ZGSF_el = %.2f \n"%(fit_s.floatParsFinal().find("ZGSF").getVal())
+   line +=     "OtherSF_el = %.2f \n"%(fit_s.floatParsFinal().find("OtherSF").getVal())
+   line +=  "Other_norm_el = %.2f \n"%(fit_s.floatParsFinal().find("Other_norm").getVal())
 	
-#for ifile in ListOfFiles2016Mu:
-#    myfile = ROOT.TFile(ifile,"read")
-#    if myfile.GetListOfKeys().Contains("fit_s") is False:
-#        print ifile[14:-10], ": Fit failed."
-#        continue
-#    fit_s = myfile.Get("fit_s")
-#    line +=   "ttgammaSF_mu_2016 = %.2f \n"%(fit_s.floatParsFinal().find("r").getVal())
-#    line += "nonPromptSF_mu_2016 = %.2f \n"%(fit_s.floatParsFinal().find("nonPromptSF").getVal())
-#    line +=     "TTbarSF_mu_2016 = %.2f \n"%(fit_s.floatParsFinal().find("TTbarSF").getVal())
-#    line +=        "WGSF_mu_2016 = %.2f \n"%(fit_s.floatParsFinal().find("WGSF").getVal())
-#    line +=        "ZGSF_mu_2016 = %.2f \n"%(fit_s.floatParsFinal().find("ZGSF").getVal())
-#    line +=     "OtherSF_mu_2016 = %.2f \n"%(fit_s.floatParsFinal().find("OtherSF").getVal())
-    #line +=     "Other_norm_mu_2016 = %.2f \n"%(fit_s.floatParsFinal().find("Other_norm").getVal())	
+for ifile in ListOfFilesMu:
+   myfile = ROOT.TFile(ifile,"read")
+   if myfile.GetListOfKeys().Contains("fit_s") is False:
+       print ifile[14:-10], ": Fit failed."
+       continue
+   fit_s = myfile.Get("fit_s")
+   line +=   "ttgammaSF_mu = %.2f \n"%(fit_s.floatParsFinal().find("r").getVal())
+   line += "nonPromptSF_mu = %.2f \n"%(fit_s.floatParsFinal().find("nonPromptSF").getVal())
+   line +=     "TTbarSF_mu = %.2f \n"%(fit_s.floatParsFinal().find("TTbarSF").getVal())
+   line +=        "WGSF_mu = %.2f \n"%(fit_s.floatParsFinal().find("WGSF").getVal())
+   line +=        "ZGSF_mu = %.2f \n"%(fit_s.floatParsFinal().find("ZGSF").getVal())
+   line +=     "OtherSF_mu = %.2f \n"%(fit_s.floatParsFinal().find("OtherSF").getVal())
+   line +=  "Other_norm_mu = %.2f \n"%(fit_s.floatParsFinal().find("Other_norm").getVal())	
 	
-#for ifile in ListOfFiles2016Both:
+#for ifile in ListOfFilesBoth:
 #    myfile = ROOT.TFile(ifile,"read")
 #    if myfile.GetListOfKeys().Contains("fit_s") is False:
 #        print ifile[14:-10], ": Fit failed."
 #        continue
 #    fit_s = myfile.Get("fit_s")
-#    line +=   "ttgammaSF_2016 = %.2f \n"%(fit_s.floatParsFinal().find("r").getVal())
-#    line += "nonPromptSF_2016 = %.2f \n"%(fit_s.floatParsFinal().find("nonPromptSF").getVal())
-#    line +=     "TTbarSF_2016 = %.2f \n"%(fit_s.floatParsFinal().find("TTbarSF").getVal())
-#    line +=        "WGSF_2016 = %.2f \n"%(fit_s.floatParsFinal().find("WGSF").getVal())
-#    line +=        "ZGSF_2016 = %.2f \n"%(fit_s.floatParsFinal().find("ZGSF").getVal())
-#    line +=     "OtherSF_2016 = %.2f \n"%(fit_s.floatParsFinal().find("OtherSF").getVal())
-#    line +=     "Other_norm_2016 = %.2f \n"%(fit_s.floatParsFinal().find("Other_norm").getVal())
+#    line +=   "ttgammaSF_ = %.2f \n"%(fit_s.floatParsFinal().find("r").getVal())
+#    line += "nonPromptSF_ = %.2f \n"%(fit_s.floatParsFinal().find("nonPromptSF").getVal())
+#    line +=     "TTbarSF_ = %.2f \n"%(fit_s.floatParsFinal().find("TTbarSF").getVal())
+#    line +=        "WGSF_ = %.2f \n"%(fit_s.floatParsFinal().find("WGSF").getVal())
+#    line +=        "ZGSF_ = %.2f \n"%(fit_s.floatParsFinal().find("ZGSF").getVal())
+#    line +=     "OtherSF_ = %.2f \n"%(fit_s.floatParsFinal().find("OtherSF").getVal())
+#    line +=     "Other_norm_ = %.2f \n"%(fit_s.floatParsFinal().find("Other_norm").getVal())
 
-#with open("TTGamma_nonPrompt_2016.py","w") as _file:
-#    _file.write(line)
+with open("TTGamma_nonPrompt_Full_Asimov.py","w") as _file:
+   _file.write(line)
 
 # ## copy the file to plotting folder
-#shutil.copy("TTGamma_nonPrompt_2016.py",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting')
+#shutil.copy("TTGamma_nonPrompt_.py",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting')
 
 
 line = ""
-for ifile in ListOfFiles:
+for ifile in ListOfFilesEle:
     myfile = ROOT.TFile(ifile,"read")
     if myfile.GetListOfKeys().Contains("fit_s") is False:
-        print " Fit failed."
+        print ifile[14:-10], ": Fit failed."
         continue
     fit_s = myfile.Get("fit_s")
-    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ttgammaSFAsimov",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
-    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("nonPromptSFAsimov",fit_s.floatParsFinal().find("nonPromptSF").getVal(),fit_s.floatParsFinal().find("nonPromptSF").getErrorHi(),fit_s.floatParsFinal().find("nonPromptSF").getErrorLo())
-    # line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("TTbarSFAsimov",fit_s.floatParsFinal().find("TTbarSF").getVal(),fit_s.floatParsFinal().find("TTbarSF").getErrorHi(),fit_s.floatParsFinal().find("TTbarSF").getErrorLo())
-    # line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("WGSFAsimov",fit_s.floatParsFinal().find("WGSF").getVal(),fit_s.floatParsFinal().find("WGSF").getErrorHi(),fit_s.floatParsFinal().find("WGSF").getErrorLo())
-    # line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ZGSFAsimov",fit_s.floatParsFinal().find("ZGSF").getVal(),fit_s.floatParsFinal().find("ZGSF").getErrorHi(),fit_s.floatParsFinal().find("ZGSF").getErrorLo())
-    # line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherSFAsimov",fit_s.floatParsFinal().find("OtherSF").getVal(),fit_s.floatParsFinal().find("OtherSF").getErrorHi(),fit_s.floatParsFinal().find("OtherSF").getErrorLo())
-    # line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherNormAsimov",fit_s.floatParsFinal().find("Other_norm").getVal(),fit_s.floatParsFinal().find("Other_norm").getErrorHi(),fit_s.floatParsFinal().find("Other_norm").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ttgammaSFelFullAsimov",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("nonPromptSFelFullAsimov",fit_s.floatParsFinal().find("nonPromptSF").getVal(),fit_s.floatParsFinal().find("nonPromptSF").getErrorHi(),fit_s.floatParsFinal().find("nonPromptSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("TTbarSFelFullAsimov",fit_s.floatParsFinal().find("TTbarSF").getVal(),fit_s.floatParsFinal().find("TTbarSF").getErrorHi(),fit_s.floatParsFinal().find("TTbarSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("WGSFelFullAsimov",fit_s.floatParsFinal().find("WGSF").getVal(),fit_s.floatParsFinal().find("WGSF").getErrorHi(),fit_s.floatParsFinal().find("WGSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ZGSFelFullAsimov",fit_s.floatParsFinal().find("ZGSF").getVal(),fit_s.floatParsFinal().find("ZGSF").getErrorHi(),fit_s.floatParsFinal().find("ZGSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherSFelFullAsimov",fit_s.floatParsFinal().find("OtherSF").getVal(),fit_s.floatParsFinal().find("OtherSF").getErrorHi(),fit_s.floatParsFinal().find("OtherSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherNormelFullAsimov",fit_s.floatParsFinal().find("Other_norm").getVal(),fit_s.floatParsFinal().find("Other_norm").getErrorHi(),fit_s.floatParsFinal().find("Other_norm").getErrorLo())
 
-with open("TTGamma_nonPrompt_Asimov.tex","w") as _file:
+
+for ifile in ListOfFilesMu:
+    myfile = ROOT.TFile(ifile,"read")
+    if myfile.GetListOfKeys().Contains("fit_s") is False:
+        print ifile[14:-10], ": Fit failed."
+        continue
+    fit_s = myfile.Get("fit_s")
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ttgammaSFmuFullAsimov",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("nonPromptSFmuFullAsimov",fit_s.floatParsFinal().find("nonPromptSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("nonPromptSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("TTbarSFmuFullAsimov",fit_s.floatParsFinal().find("TTbarSF").getVal(),fit_s.floatParsFinal().find("TTbarSF").getErrorHi(),fit_s.floatParsFinal().find("TTbarSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("WGSFmuFullAsimov",fit_s.floatParsFinal().find("WGSF").getVal(),fit_s.floatParsFinal().find("WGSF").getErrorHi(),fit_s.floatParsFinal().find("WGSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ZGSFmuFullAsimov",fit_s.floatParsFinal().find("ZGSF").getVal(),fit_s.floatParsFinal().find("ZGSF").getErrorHi(),fit_s.floatParsFinal().find("ZGSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherSFmuFullAsimov",fit_s.floatParsFinal().find("OtherSF").getVal(),fit_s.floatParsFinal().find("OtherSF").getErrorHi(),fit_s.floatParsFinal().find("OtherSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherNormmuFullAsimov",fit_s.floatParsFinal().find("Other_norm").getVal(),fit_s.floatParsFinal().find("Other_norm").getErrorHi(),fit_s.floatParsFinal().find("Other_norm").getErrorLo())
+
+for ifile in ListOfFilesBoth:
+    myfile = ROOT.TFile(ifile,"read")
+    if myfile.GetListOfKeys().Contains("fit_s") is False:
+        print ifile[14:-10], ": Fit failed."
+        continue
+    fit_s = myfile.Get("fit_s")
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ttgammaSFFullAsimov",fit_s.floatParsFinal().find("r").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("r").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("nonPromptSFFullAsimov",fit_s.floatParsFinal().find("nonPromptSF").getVal(),fit_s.floatParsFinal().find("r").getErrorHi(),fit_s.floatParsFinal().find("nonPromptSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("TTbarSFFullAsimov",fit_s.floatParsFinal().find("TTbarSF").getVal(),fit_s.floatParsFinal().find("TTbarSF").getErrorHi(),fit_s.floatParsFinal().find("TTbarSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("WGSFFullAsimov",fit_s.floatParsFinal().find("WGSF").getVal(),fit_s.floatParsFinal().find("WGSF").getErrorHi(),fit_s.floatParsFinal().find("WGSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("ZGSFFullAsimov",fit_s.floatParsFinal().find("ZGSF").getVal(),fit_s.floatParsFinal().find("ZGSF").getErrorHi(),fit_s.floatParsFinal().find("ZGSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherSFFullAsimov",fit_s.floatParsFinal().find("OtherSF").getVal(),fit_s.floatParsFinal().find("OtherSF").getErrorHi(),fit_s.floatParsFinal().find("OtherSF").getErrorLo())
+    line += "\\newcommand{\\%s} {\ensuremath{%.2f \\substack{+%.2f \\\\ %.2f}}}\n"%("OtherNormFullAsimov",fit_s.floatParsFinal().find("Other_norm").getVal(),fit_s.floatParsFinal().find("Other_norm").getErrorHi(),fit_s.floatParsFinal().find("Other_norm").getErrorLo())
+
+print line
+with open("TTGamma_nonPrompt_Full_Asimov.tex","w") as _file:
     _file.write(line)
 
 # ## copy the file to plotting folder
 #get_ipython().system('cp MisIDEleSFvalues.tex ../AllTexFiles ')
-#shutil.copy("TTGamma_nonPrompt_2016_Asimov.tex",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/AllTexFiles')
+#shutil.copy("TTGamma_nonPrompt__Asimov.tex",'/uscms_data/d3/npoudyal/TTGammaSemiLeptonic13TeV/Plotting/CombineFitting/AllTexFiles')
 
 

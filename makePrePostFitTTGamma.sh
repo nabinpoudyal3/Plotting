@@ -25,38 +25,26 @@ for year in ${YEAR16[@]}; do
 	           python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton --prefitPlots 
 	           python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton --prefitPlots 
  
-	           python makePlots_TTGamma.py  -y $year -c Ele   --ChIsoPlot  --postfitPlots --datadriven 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --ChIsoPlot  --postfitPlots --datadriven 
-	           python makePlots_TTGamma.py  -y $year -c Ele   --M3Plot     --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --M3Plot     --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Ele   --btag0      --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --btag0      --postfitPlots 
-	           python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton --postfitPlots 
-	           python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton --postfitPlots 
+	           # python makePlots_TTGamma.py  -y $year -c Ele   --ChIsoPlot  --postfitPlots --datadriven 
+	           # python makePlots_TTGamma.py  -y $year -c Mu    --ChIsoPlot  --postfitPlots --datadriven 
+	           # python makePlots_TTGamma.py  -y $year -c Ele   --M3Plot     --postfitPlots 
+	           # python makePlots_TTGamma.py  -y $year -c Mu    --M3Plot     --postfitPlots 
+	           # python makePlots_TTGamma.py  -y $year -c Ele   --btag0      --postfitPlots 
+	           # python makePlots_TTGamma.py  -y $year -c Mu    --btag0      --postfitPlots 
+	           # python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton --postfitPlots 
+	           # python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton --postfitPlots 
 
-	           python makePlots_TTGamma.py  -y $year -c Ele   --ChIsoPlot  --ratioPlot --postfitPlots --datadriven 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --ChIsoPlot  --ratioPlot --postfitPlots --datadriven 
-	           python makePlots_TTGamma.py  -y $year -c Ele   --M3Plot     --ratioPlot --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --M3Plot     --ratioPlot --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Ele   --btag0      --ratioPlot --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --btag0      --ratioPlot --postfitPlots 
-	           python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton --ratioPlot --postfitPlots 
-	           python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton --ratioPlot --postfitPlots 
-
-
-	           python makePlots_TTGamma.py  -y $year -c Ele   --ChIsoPlot  --xsecPlot --postfitPlots --datadriven 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --ChIsoPlot  --xsecPlot --postfitPlots --datadriven 
-	           python makePlots_TTGamma.py  -y $year -c Ele   --M3Plot     --xsecPlot --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --M3Plot     --xsecPlot --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Ele   --btag0      --xsecPlot --postfitPlots 
-	           python makePlots_TTGamma.py  -y $year -c Mu    --btag0      --xsecPlot --postfitPlots 
-	           python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton --xsecPlot --postfitPlots 
-	           python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton --xsecPlot --postfitPlots 
-
+	           # python makePlots_TTGamma.py  -y $year -c Ele   --ChIsoPlot  --ratioPlot --postfitPlots --datadriven 
+	           # python makePlots_TTGamma.py  -y $year -c Mu    --ChIsoPlot  --ratioPlot --postfitPlots --datadriven 
+	           # python makePlots_TTGamma.py  -y $year -c Ele   --M3Plot     --ratioPlot --postfitPlots 
+	           # python makePlots_TTGamma.py  -y $year -c Mu    --M3Plot     --ratioPlot --postfitPlots 
+	           # python makePlots_TTGamma.py  -y $year -c Ele   --btag0      --ratioPlot --postfitPlots 
+	           # python makePlots_TTGamma.py  -y $year -c Mu    --btag0      --ratioPlot --postfitPlots 
+	           # python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton --ratioPlot --postfitPlots 
+	           # python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton --ratioPlot --postfitPlots 
 
 done
 
-exit 1
 
 for year in ${YEAR1718[@]}; do
 	           python makePlots_TTGamma.py  -y $year -c Ele   --ChIsoPlot   --prefitPlots  --noData --datadriven
@@ -72,6 +60,7 @@ for year in ${YEAR1718[@]}; do
 	           # python makePlots_TTGamma.py  -y $year -c Mu    --ChIsoPlot   --postfitPlots  --noData --datadriven
 	           # python makePlots_TTGamma.py  -y $year -c Ele   --M3Plot      --postfitPlots  --noData
 	           # python makePlots_TTGamma.py  -y $year -c Mu    --M3Plot      --postfitPlots  --noData
+
 	           # python makePlots_TTGamma.py  -y $year -c Ele   --btag0       --postfitPlots  
 	           # python makePlots_TTGamma.py  -y $year -c Mu    --btag0       --postfitPlots  
 	           # python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton  --postfitPlots  
@@ -81,11 +70,6 @@ for year in ${YEAR1718[@]}; do
 	           # python makePlots_TTGamma.py  -y $year -c Mu    --btag0       --postfitPlots --ratioPlot 
 	           # python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton  --postfitPlots --ratioPlot 
 	           # python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton  --postfitPlots --ratioPlot 
-
-	           # python makePlots_TTGamma.py  -y $year -c Ele   --btag0       --postfitPlots --xsecPlot  
-	           # python makePlots_TTGamma.py  -y $year -c Mu    --btag0       --postfitPlots --xsecPlot  
-	           # python makePlot_M3Control.py -y $year -c Ele   --zeroPhoton  --postfitPlots --xsecPlot  
-	           # python makePlot_M3Control.py -y $year -c Mu    --zeroPhoton  --postfitPlots --xsecPlot  
 
 done
 

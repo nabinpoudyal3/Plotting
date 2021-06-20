@@ -7,25 +7,23 @@ ROOT.gROOT.SetBatch(True)
 ROOT.gStyle.SetOptStat(0)
 
 ListOfFiles = [
-               "higgsCombineel_2018_nonPrompt_0.4.MultiDimFit.mH120.123440.root",
-               "higgsCombineel_2018_nonPrompt_0.6.MultiDimFit.mH120.123460.root",
-               "higgsCombineel_2018_nonPrompt_0.8.MultiDimFit.mH120.123480.root",
-               "higgsCombineel_2018_nonPrompt_1.0.MultiDimFit.mH120.1234100.root",
-               "higgsCombineel_2018_nonPrompt_1.2.MultiDimFit.mH120.1234120.root",
-               "higgsCombineel_2018_nonPrompt_1.4.MultiDimFit.mH120.1234140.root",
-               "higgsCombineel_2018_nonPrompt_1.6.MultiDimFit.mH120.1234160.root",
-               "higgsCombineel_2018_nonPrompt_1.8.MultiDimFit.mH120.1234180.root",
-               "higgsCombineel_2018_nonPrompt_2.0.MultiDimFit.mH120.1234200.root",                                                                                          
-               "higgsCombineel_2018_nonPrompt_2.2.MultiDimFit.mH120.1234220.root",
-               "higgsCombineel_2018_nonPrompt_2.4.MultiDimFit.mH120.1234240.root",
-               "higgsCombineel_2018_nonPrompt_2.6.MultiDimFit.mH120.1234260.root",                                            
+               "higgsCombineel_2018_nonPrompt_0.01.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.02.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.03.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.04.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.05.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.06.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.07.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.08.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.09.MultiDimFit.mH120.1234260.root",
+               "higgsCombineel_2018_nonPrompt_0.10.MultiDimFit.mH120.1234260.root",
               ]
               
 
-c1 = ROOT.TCanvas( 'c1', '', 800,800 )
+c1 = ROOT.TCanvas()
 c1.SetGrid()
 
-xData = list(numpy.arange(0.4,2.8,0.2))
+xData = list(numpy.arange(0.01,0.1,0.01))
 yData = []
 n = len(xData)
 errMinusData = []
@@ -46,16 +44,16 @@ y = array.array( 'f', yData )
 errMinus = array.array( 'f', errMinusData )
 errPlus  = array.array( 'f', errPlusData )
 zeros = array.array('f',zerosData)
-oneLine = ROOT.TF1("oneline","x",0,3)
+oneLine = ROOT.TF1("oneline","x",0,0.1)
 
 gr = ROOT.TGraphAsymmErrors( n, x, y, zeros,zeros,errMinus, errPlus)
-gr.SetTitle('Bias test for  non prompt normalization for tt/tt#gamma fitting')
-gr.GetXaxis().SetTitle("Expected non prompt normalization values");
-gr.GetYaxis().SetTitle("Measured non prompt normalization values");
+gr.SetTitle('Bias test for  non prompt normalization for t#bar{t}#gamma/t#bar{t} fitting')
+gr.GetXaxis().SetTitle("Expected non prompt norm");
+gr.GetYaxis().SetTitle("Measured non prompt norm");
 gr.SetMarkerColor(2)
 gr.SetMarkerStyle(7)
-gr.GetXaxis().SetRangeUser(0,3)
-gr.GetYaxis().SetRangeUser(0,3)
+gr.GetXaxis().SetRangeUser(0,0.1)
+gr.GetYaxis().SetRangeUser(0,0.1)
 # gr.SetMarkerSize(3)
 gr.Draw()
 gr.Fit("pol1")
@@ -75,23 +73,21 @@ myText.Draw("same")
 c1.Print("nonPrompt_closure_ele_2018.pdf") #####
 
 ListOfFiles = [
-               "higgsCombinemu_2018_nonPrompt_0.4.MultiDimFit.mH120.123440.root",
-               "higgsCombinemu_2018_nonPrompt_0.6.MultiDimFit.mH120.123460.root",
-               "higgsCombinemu_2018_nonPrompt_0.8.MultiDimFit.mH120.123480.root",
-               "higgsCombinemu_2018_nonPrompt_1.0.MultiDimFit.mH120.1234100.root",
-               "higgsCombinemu_2018_nonPrompt_1.2.MultiDimFit.mH120.1234120.root",
-               "higgsCombinemu_2018_nonPrompt_1.4.MultiDimFit.mH120.1234140.root",
-               "higgsCombinemu_2018_nonPrompt_1.6.MultiDimFit.mH120.1234160.root",
-               "higgsCombinemu_2018_nonPrompt_1.8.MultiDimFit.mH120.1234180.root",
-               "higgsCombinemu_2018_nonPrompt_2.0.MultiDimFit.mH120.1234200.root",                                                                                          
-               "higgsCombinemu_2018_nonPrompt_2.2.MultiDimFit.mH120.1234220.root",
-               "higgsCombinemu_2018_nonPrompt_2.4.MultiDimFit.mH120.1234240.root",
-               "higgsCombinemu_2018_nonPrompt_2.6.MultiDimFit.mH120.1234260.root",                                            
+               "higgsCombinemu_2018_nonPrompt_0.01.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.02.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.03.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.04.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.05.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.06.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.07.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.08.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.09.MultiDimFit.mH120.1234260.root",
+               "higgsCombinemu_2018_nonPrompt_0.10.MultiDimFit.mH120.1234260.root",
               ]
-c1 = ROOT.TCanvas( 'c1', '', 800,800 )
+c1 = ROOT.TCanvas()
 c1.SetGrid()
 
-xData = list(numpy.arange(0.4,2.8,0.2))
+xData = list(numpy.arange(0.01,0.1,0.01))
 yData = []
 n = len(xData)
 errMinusData = []
@@ -112,16 +108,16 @@ y = array.array( 'f', yData )
 errMinus = array.array( 'f', errMinusData )
 errPlus  = array.array( 'f', errPlusData )
 zeros = array.array('f',zerosData)
-oneLine = ROOT.TF1("oneline","x",0,3)
+oneLine = ROOT.TF1("oneline","x",0,0.1)
 
 gr = ROOT.TGraphAsymmErrors( n, x, y, zeros,zeros,errMinus, errPlus)
 gr.SetTitle('Bias test for  non prompt normalization ')
-gr.GetXaxis().SetTitle("Expected non prompt normalization values");
-gr.GetYaxis().SetTitle("Measured non prompt normalization values");
+gr.GetXaxis().SetTitle("Expected non prompt norm");
+gr.GetYaxis().SetTitle("Measured non prompt norm");
 gr.SetMarkerColor(2)
 gr.SetMarkerStyle(7)
-gr.GetXaxis().SetRangeUser(0,3)
-gr.GetYaxis().SetRangeUser(0,3)
+gr.GetXaxis().SetRangeUser(0,0.1)
+gr.GetYaxis().SetRangeUser(0,0.1)
 # gr.SetMarkerSize(3)
 gr.Draw()
 gr.Fit("pol1")

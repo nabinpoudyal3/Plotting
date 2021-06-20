@@ -9,8 +9,8 @@ ListOfFiles2016Mu   = ["higgsCombine.TOY_mu_2016.FitDiagnostics.mH120.314159.roo
 ListOfFiles2016Both = ["higgsCombine.TOY_both_2016.FitDiagnostics.mH120.314159.root"]
 
 parameterDictEle={
-"trackedParam_r":["ttgammaSFelsixteenToyRatio",             [100,0,0.1]],
-"trackedParam_TTbarSF":["TTbarSFelsixteenToyRatio",         [100,700,900]],
+"trackedParam_r":["ttgammaSFelsixteenToyRatio",             [100,0,0.1]],   
+"trackedParam_TTbarSF":["TTbarSFelsixteenToyRatio",         [100,700,900]], 
 "trackedParam_WGSF":["WGSFelsixteenToyRatio",               [100,0,2]],
 "trackedParam_ZGSF":["ZGSFelsixteenToyRatio",               [100,0,2]],
 "trackedParam_OtherSF":["OtherSFelsixteenToyRatio",         [100,0,2]],

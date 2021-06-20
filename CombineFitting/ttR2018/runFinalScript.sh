@@ -1,7 +1,6 @@
 #!/bin/bash
 
-./runToyFittingForClosureTest.sh
-
-wait
 
 ./finalScript.sh
+./onlyToyFinalScript.sh
+./runToyFittingForClosureTest.sh

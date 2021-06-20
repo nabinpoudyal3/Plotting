@@ -149,43 +149,16 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-commonSystematics= ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal","phosmear","elesmear","phoscale" "elescale"]
-
-RunIISytematics = [
-"BTagSF_b16", "BTagSF_l16", "JER1_16", "JER0_16", "elescale_16", "phoscale_16",
-"BTagSF_b17", "BTagSF_l17", "JER1_17", "JER0_17", "elescale_17", "phoscale_17",
-"BTagSF_b18", "BTagSF_l18", "JER1_18", "JER0_18", "elescale_18", "phoscale_18"]
-
+RunIISytematics = ["BTagSF_b16","BTagSF_l16","JER16","BTagSF_b17","BTagSF_l17","JER17","BTagSF_b18","BTagSF_l18","JER18"]
+commonSystematics= ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal","Tune"]
 separateSytematics =  ["JER0", "JECTotal0","JER1", "JECTotal1"]
-
-
 allsystematics = RunIISytematics+commonSystematics+separateSytematics
-
-RunIISytematicsDict = {
-"BTagSF_b16":"BTagSF_b",
-"BTagSF_l16":"BTagSF_l", 
-"JER1_16":"JER", 
-"JER0_16":"JER", 
-"elescale_16":"elescale", 
-"phoscale_16":"phoscale",
-"BTagSF_b17":"BTagSF_b", 
-"BTagSF_l17":"BTagSF_l", 
-"JER1_17":"JER", 
-"JER0_17":"JER", 
-"elescale_17":"elescale", 
-"phoscale_17":"phoscale",
-"BTagSF_b18":"BTagSF_b", 
-"BTagSF_l18":"BTagSF_l", 
-"JER1_18":"JER", 
-"JER0_18":"JER", 
-"elescale_18":"elescale", 
-"phoscale_18":"phoscale"
-}
 
 print RunIISytematics
 print commonSystematics
 print separateSytematics
 print allsystematics
+
 
 if systematics in allsystematics: print "running on systematics"
 else: print(Fore.RED + "systematics is not in list. Add the systematics in the list if you are running for systematics.")
@@ -211,8 +184,8 @@ if zeroPhoton:      #tight but 0 photon
 	fileDirQCD = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 	if systematics in allsystematics:
 		if systematics in RunIISytematics: 
-			print systematics, " For full RunII",RunIISytematicsDict[systematics]
-			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,RunIISytematicsDict[systematics],level)
+			print systematics, " For full RunII"
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics[:-2],level)
 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
 			regionText = "N_{j}#geq4, N_{b}#geq1"
 		
@@ -284,8 +257,11 @@ from Style import *
 
 gROOT.ForceStyle()
 
-
-sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+if systematics=="Tune":
+	sampleList=['TTGamma']
+else:
+	sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+# sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 # sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 # sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
 sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
@@ -321,8 +297,7 @@ elif noQCD:
 	sampleList.remove("QCD")
 	sampleList.remove("GJets") 
 else:
-	sampleList[-1] = "QCD_DD"
-	sampleList.remove("GJets") 
+	print ""
 	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
 
 print sampleList
@@ -381,19 +356,20 @@ for sample in sampleList:
 templateHist = {}
 
 templateHist["TTGamma" ] = None 
-templateHist["TTbar"   ] = None
-templateHist["WGamma"  ] = None 
-templateHist["ZGamma"  ] = None  
-templateHist["SingleTop"  ] = None  
-templateHist["Other"   ] = None 
+# templateHist["TTbar"   ] = None
+# templateHist["WGamma"  ] = None 
+# templateHist["ZGamma"  ] = None  
+# templateHist["SingleTop"  ] = None  
+# templateHist["Other"   ] = None 
 
 print sampleList
 
 mystack = THStack()
 for sample in sampleList:
 	if sample=='QCD_DD': continue 
+
 	tempHist = _file[sample].Get(histName%(sample))
-	#print tempHist
+	print tempHist
 	
 	if sample=='ZJets': tempHist.Scale(ZJetSF)
 	if sample=='WJets': tempHist.Scale(WJetSF)
@@ -417,12 +393,9 @@ for sample in sampleList:
 		
 		print ""
 		
-templateHist["WGamma"].Scale(WGammaSF)
-templateHist["ZGamma"].Scale(ZGammaSF)
-
-binning = numpy.array([60., 100., 140., 160., 180., 200., 240., 280.,340., 420.,500.1]) # 10 bins
+binning = numpy.array([60., 100., 140., 160., 180., 200., 240., 280.,340., 420.,500.1]) # best one
 # binning = numpy.array([60.,140.,200., 500.1]) # 3bins
-# binning = numpy.array([60.,500.1]) # 1bin
+# binning = numpy.array([60.,500.1]) # 1bins
 
 print binning
 binWidth = numpy.diff(binning)
@@ -434,8 +407,8 @@ for ih in templateHist:
 	rebinnedHist[ih].SetLineColor(template_category[ih])
 	rebinnedHist[ih].SetFillColor(template_category[ih])
 
-rebinnedqcdHist = qcdHist.Rebin(len(binning)-1,"",binning)
-rebinnedHist["Other"].Add(rebinnedqcdHist)
+# rebinnedqcdHist = qcdHist.Rebin(len(binning)-1,"",binning)
+# rebinnedHist["Other"].Add(rebinnedqcdHist)
 
 if systematics=='':	
 	if finalState=='Ele':
@@ -535,7 +508,7 @@ if template:
 			myDatahist.Write()
 	# create directory only if it does not exist
 	### ele channel
-	for iprocess in template_category.keys():
+	for iprocess in ["TTGamma"]:
 
 		myfile.cd()
 		mydir =  "%s/%s/"%(myfilename,iprocess) 
@@ -545,10 +518,8 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("nominal")
 		else:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
-			for i_bin in range(1,myhist.GetNbinsX()+1):
-				if myhist.GetBinContent(i_bin)==0: myhist.SetBinContent(i_bin,0.05)
-			if systematics in ["Q2","isr","fsr","Pdf","JECTotal0","JECTotal1","JER0","JER1"]:
-			# if systematics in ["Q2","fsr","JECTotal0","JER0"]:
+			# if systematics in ["Q2","isr","fsr","Pdf","JECTotal0","JECTotal1","JER0","JER1","Tune"]:
+			if systematics in ["Tune"]:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
 			 	if myNominalHist != None:
 					valNominal = myNominalHist.Integral()
@@ -580,7 +551,7 @@ if template:
 	sys.exit()
 
 else:
-
+	print "Done"
 	if prefitPlots:
 		rebinnedData.Scale(1.,"width")
 		for ih in rebinnedHist:

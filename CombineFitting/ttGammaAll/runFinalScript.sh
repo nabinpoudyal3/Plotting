@@ -1,1 +1,6 @@
-(./finalScript.sh > out.log) >& err.log
+
+
+./newFinalScript.sh
+./onlyToyFinalScript.sh
+./runToyFittingForClosureTest.sh
+

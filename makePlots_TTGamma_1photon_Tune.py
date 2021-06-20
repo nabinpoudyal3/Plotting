@@ -175,42 +175,14 @@ if finalState=='Ele':
 	channel = 'ele'
 	channelText = "e+jets"
 
-commonSystematics= ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal","phosmear","elesmear","phoscale" "elescale"]
+RunIISystematics = ["BTagSF_b16","BTagSF_l16","JER16","BTagSF_b17","BTagSF_l17","JER17","BTagSF_b18","BTagSF_l18","JER18"]
+commonSystematics= ["PU","MuEff","BTagSF_l","PhoEff", "BTagSF_b","EleEff","Q2","Pdf","fsr","isr", "prefireEcal","Tune"]
+separateSystematics =  ["JER0", "JECTotal0","JER1", "JECTotal1"]
 
-RunIISytematics = [
-"BTagSF_b16", "BTagSF_l16", "JER1_16", "JER0_16", "elescale_16", "phoscale_16",
-"BTagSF_b17", "BTagSF_l17", "JER1_17", "JER0_17", "elescale_17", "phoscale_17",
-"BTagSF_b18", "BTagSF_l18", "JER1_18", "JER0_18", "elescale_18", "phoscale_18"]
-
-separateSytematics =  ["JER0", "JECTotal0","JER1", "JECTotal1"]
-
-
-allsystematics = RunIISytematics+commonSystematics+separateSytematics
-
-RunIISytematicsDict = {
-"BTagSF_b16":"BTagSF_b",
-"BTagSF_l16":"BTagSF_l", 
-"JER1_16":"JER", 
-"JER0_16":"JER", 
-"elescale_16":"elescale", 
-"phoscale_16":"phoscale",
-"BTagSF_b17":"BTagSF_b", 
-"BTagSF_l17":"BTagSF_l", 
-"JER1_17":"JER", 
-"JER0_17":"JER", 
-"elescale_17":"elescale", 
-"phoscale_17":"phoscale",
-"BTagSF_b18":"BTagSF_b", 
-"BTagSF_l18":"BTagSF_l", 
-"JER1_18":"JER", 
-"JER0_18":"JER", 
-"elescale_18":"elescale", 
-"phoscale_18":"phoscale"
-}
-
-print RunIISytematics
+allsystematics = RunIISystematics+commonSystematics+separateSystematics
+print RunIISystematics
 print commonSystematics
-print separateSytematics
+print separateSystematics
 print allsystematics
 
 
@@ -236,26 +208,25 @@ if M3Plot or ChIsoPlot:      #SR8
 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	fileDirNom  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 	if systematics in allsystematics:
-		if systematics in RunIISytematics: 
-			print systematics, " For full RunII ==>", RunIISytematicsDict[systematics]
-			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,RunIISytematicsDict[systematics],level)
+		if systematics in RunIISystematics: 
+			print systematics, " For full RunII"
+			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics[:-2],level)
 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
 			regionText = "N_{j}#geq4, N_{b}#geq1"
 		
 		# elif systematics=="JECTotal0" or systematics=="JER0" or systematics=="JECTotal1" or systematics=="JER1": 
-		elif systematics in separateSytematics:
-			print "JECTotal and JER stuffs. ==>", systematics[:-1]
+		elif systematics in separateSystematics:
+			print "JECTotal and JER stuffs."
 			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics[:-1],level)
 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
 			regionText = "N_{j}#geq4, N_{b}#geq1"
 
 		elif systematics in commonSystematics:
-			print "common systematics. ==>", systematics
+			print "common systematics"
 			fileDir  = "histograms_%s/%s/hists_%s_%s_tight/"%(selYear, channel,systematics,level)
 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
 			regionText = "N_{j}#geq4, N_{b}#geq1"
 	else:
-		print "******** Caution********** this is nominal run"
 		fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 		#fileDir  = "histograms_%s/%s/hists_tight/"%(selYear, channel)
 		plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
@@ -271,14 +242,14 @@ elif btag0:      #CR3 >=4jet 0 btag
 	else :                ZJetSF = getZJetsSF(selYear,isSelection); WJetSF = getWJetsSF(selYear,isSelection); MisIDEleSF,ZGammaSF,WGammaSF = getMisIDEleSF(selYear,isSelection);
 	fileDirNom  = "histograms_%s/%s/hists_looseCRge4e0/"%(selYear, channel)
 	if systematics in allsystematics:
-		if systematics in RunIISytematics: 
-			print systematics, "For full RunII",RunIISytematicsDict[systematics]
-			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,RunIISytematicsDict[systematics],level)
+		if systematics in RunIISystematics: 
+			print systematics, "For full RunII"
+			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics[:-2],level)
 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
 			regionText = "N_{j}#geq4, N_{b}=0"
 		
 		# elif systematics=="JECTotal0" or systematics=="JER0" or systematics=="JECTotal1" or systematics=="JER1": 
-		elif systematics in separateSytematics:
+		elif systematics in separateSystematics:
 			print "JECTotal and JER stuffs."
 			fileDir  = "histograms_%s/%s/hists_%s_%s_looseCRge4e0/"%(selYear, channel,systematics[:-1],level)
 			plotDirectory = "ttgamma_tightplots_%s_%s/"%(channel,selYear)
@@ -366,7 +337,10 @@ from Style import *
 gROOT.ForceStyle()
 
 
-sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
+if systematics=="Tune":
+	sampleList=['TTGamma']
+else:
+	sampleList = ['TTGamma', 'TTbar', 'SingleTop', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV','GJets',"QCD"]
 sampleListColor = {'TTGamma':kOrange, 'TTbar':kRed+1, 'SingleTop':kOrange-3, 'WJets':kCyan-3, 'ZJets':kCyan-5, 'WGamma':kBlue-4,'ZGamma':kBlue-2,'Diboson':kCyan-7,'TTV':kRed-7,'GJets':kGreen+1,"QCD":kGreen+3}
 
 #sampleList = ['TTGamma', 'TTbar', 'TGJets', 'WJets', 'ZJets', 'WGamma','ZGamma','Diboson','TTV']
@@ -402,9 +376,7 @@ if useQCDMC:
 elif noQCD:
 	sampleList.remove("QCD")
 	sampleList.remove("GJets") 
-else:
-	sampleList[-1] = "QCD_DD"
-	sampleList.remove("GJets") 
+
 	#samples["QCD_DD"] = [[],kGreen+3,"Multijet",isMC]
 
 print sampleList
@@ -503,14 +475,6 @@ templateHist = {}
 
 templateHist["isolatedTTGamma" ] = None 
 templateHist["nonPromptTTGamma"] = None 
-templateHist["isolatedTTbar"   ] = None
-templateHist["nonPromptTTbar"  ] = None
-templateHist["isolatedWGamma"  ] = None 
-templateHist["nonPromptWGamma" ] = None  
-templateHist["isolatedZGamma"  ] = None  
-templateHist["nonPromptZGamma" ] = None  
-templateHist["isolatedOther"   ] = None 
-templateHist["nonPromptOther"  ] = None 
 
 #templateHist["Total"] = None 
 print sampleList
@@ -519,18 +483,18 @@ print "<==", MisIDEleSF
 
 if systematics=='misIDE' and level=='up':
 	if selYear=="2016":
-		MisIDEleSF=MisIDEleSF+0.18
+		MisIDEleSF=MisIDEleSF+0.34
 	elif selYear=="2017":
-		MisIDEleSF=MisIDEleSF+0.23
+		MisIDEleSF=MisIDEleSF+0.4
 	else:
-		MisIDEleSF=MisIDEleSF+0.10
+		MisIDEleSF=MisIDEleSF+0.27
 if systematics=='misIDE' and level=='down':
 	if selYear=="2016":
-		MisIDEleSF=MisIDEleSF-0.18
+		MisIDEleSF=MisIDEleSF-0.34
 	elif selYear=="2017":
-		MisIDEleSF=MisIDEleSF-0.23
+		MisIDEleSF=MisIDEleSF-0.4
 	else:
-		MisIDEleSF=MisIDEleSF-0.10
+		MisIDEleSF=MisIDEleSF-0.27
 
 print "==>", MisIDEleSF
 
@@ -638,19 +602,7 @@ for item in hist_category:
 
 #sys.exit()
 
-if _file["QCD_DD"] is not None: 
-	print sample
-	print "Yes using QCD DD "
-	qcdHist = _file[sample].Get(histNameData%(sample))
-	templateHist["nonPromptOther"].Add(qcdHist)
-	print "qcdHist data driven ==>",qcdHist.Integral(-1,-1)
-	errorQCD = Double(0.)
-	nQCDEvents = qcdHist.IntegralAndError(1,qcdHist.GetNbinsX(),errorQCD,"width")
 
-templateHist[ "isolatedWGamma"].Scale(WGammaSF)
-templateHist["nonPromptWGamma"].Scale(WGammaSF)
-templateHist[ "isolatedZGamma"].Scale(ZGammaSF)
-templateHist["nonPromptZGamma"].Scale(ZGammaSF)
 
 if systematics=='':	
 	if finalState=='Ele':
@@ -671,6 +623,7 @@ if systematics=='':
 		sys.exit()		
 
 	data_obs = dataHist.Clone("data_obs")
+	#rebinnedData = data_obs.Rebin(len(binning)-1,"",binning)
 	dataError = Double(0.)
 	nEventData = data_obs.IntegralAndError(1,data_obs.GetNbinsX(),dataError,"width")
 	print "nEventsData ==>", nEventData
@@ -733,10 +686,13 @@ if prefitPlots:
 
 
 print "scale factors =======>",ZJetSF, WJetSF, MisIDEleSF, WGammaSF, ZGammaSF	
+#print "WGamma ==>",(templateHist["isolatedWGamma"].Integral(-1,-1) + templateHist["nonPromptWGamma"].Integral(-1,-1))
+#rint "ZGamma ==>",(templateHist["isolatedZGamma"].Integral(-1,-1) + templateHist["nonPromptZGamma"].Integral(-1,-1))
 
 if mydistributionName == "M3":
 	myfilename = "M3"
 	binning = numpy.array([60., 100., 140., 160., 180., 200., 240., 280.,340., 420.,500.1]) #best one
+	# binning = numpy.array([60.,500.1]) #best one
 
 if mydistributionName == "MassEGamma0btag":
 	myfilename = "zerobtag"
@@ -744,10 +700,12 @@ if mydistributionName == "MassEGamma0btag":
 		binning = numpy.array([0,80,100,180.])
 	else:
 		binning = numpy.array([0,91.,180.])
-	
+
 if mydistributionName == "M30btag":
 	myfilename = "zerobtag"
-	binning = numpy.array([60., 500.1]) # do not use shape
+	binning = numpy.array([60., 100., 140., 160., 180., 200., 240., 280.,340., 420.,500.1]) # do not use shape
+	# binning = numpy.array([60., 140., 200., 280., 500.1]) # do not use shape
+	# binning = numpy.array([60., 500.1]) # do not use shape
 
 if mydistributionName == "LeadingPhotonEt0btag":
 	myfilename = "zerobtag"
@@ -757,6 +715,7 @@ if mydistributionName == "LeadingPhotonEt0btag":
 if mydistributionName == "ChIso":
 	myfilename = "ChIso"
 	binning = numpy.array([1.141,2.,3.,4.,5.,7.,9.,11.,13.,15.,17.]) # without first bin, removing last bin
+	# binning = numpy.array([1.141,17.]) # without first bin, removing last bin
 
 binWidth = numpy.diff(binning)
 print binning
@@ -868,7 +827,7 @@ if template:
 # create directory only if it does not exist
 ### ele channel
 
-	for iprocess in template_category.keys():
+	for iprocess in ["isolatedTTGamma","nonPromptTTGamma"]:
 		myfile.cd()
 		mydir =  "%s/%s/"%(myfilename,iprocess) 
 		#print "%s/%s/"%(myfilename,iprocess) 
@@ -883,9 +842,8 @@ if template:
 			myhist = rebinnedHist[iprocess].Clone("%s%s"%(systematics,mylevel))
 			## check if any bin is empty in the histogram, if empty then 
 			for i_bin in range(1,myhist.GetNbinsX()+1):
-				if myhist.GetBinContent(i_bin)==0: myhist.SetBinContent(i_bin,0.05)
-			if systematics in ["Q2","isr","fsr","Pdf","JECTotal0","JECTotal1","JER0","JER1"]:
-			# if systematics in ["Q2","fsr","JECTotal0","JER0"]:
+				if myhist.GetBinContent(i_bin)==0: myhist.SetBinContent(i_bin,0.1)
+			if systematics in ["Q2","isr","fsr","Pdf","JECTotal0","JECTotal1","JER0","JER1","Tune"]:
 			 	myNominalHist = myfile.Get(mydir+"nominal")
 				if myNominalHist != None:
 			 		valNominal = myNominalHist.Integral()
